@@ -8,6 +8,7 @@
 #include "border_router_launch.h"
 
 #include "workload.h"
+#include "utilities.h"
 
 #include <assert.h>
 #include <stdio.h>
