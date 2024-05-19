@@ -7,6 +7,8 @@
 
 #include "border_router_launch.h"
 
+#include "workload.h"
+
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -44,6 +46,23 @@
 
 #define TAG "esp_ot_br"
 #define RCP_VERSION_MAX_SIZE 100
+
+#define COMMANDS_LENGTH 2
+
+static const otCliCommand commands[] = {
+  {"exp-server-start", expServerStart},
+  {"exp-server-stop", expServerFree}
+};
+
+void otCliVendorSetUserCommands() {
+  otError error = otCliSetUserCommands(commands, COMMANDS_LENGTH, NULL);
+  if (error != OT_ERROR_NONE) {
+    otLogCritPlat("Failed to set custom commands.");
+  } else {
+    otLogNotePlat("Successfully set custom commands.");
+  }
+  return;
+}
 
 static esp_openthread_platform_config_t s_openthread_platform_config;
 
@@ -132,6 +151,9 @@ static void ot_task_worker(void *ctx)
     ESP_ERROR_CHECK(esp_openthread_auto_start((error == OT_ERROR_NONE) ? &dataset : NULL));
 #endif // CONFIG_OPENTHREAD_BR_AUTO_START
     esp_openthread_lock_release();
+
+    // TX power must be set before starting the OpenThread CLI.
+    setTxPower();
 
     // Run the main loop
     esp_openthread_cli_create_task();
