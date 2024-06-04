@@ -74,7 +74,8 @@ void defaultRequestHandler(void* aContext,
   return;
 }
 
-otError createResource(otCoapResource *resource, Test test) {
+otError createResource(otCoapResource *resource, Test test)
+{
   resource->mNext = NULL;
   resource->mContext = NULL;
 

@@ -19,11 +19,15 @@ otError expServerStart(void* aContext, uint8_t argsLength, char* aArgs[])
   startCoapServer(OT_DEFAULT_COAP_PORT);
 
   throughput = calloc(1, sizeof(otCoapResource));
+  createResource(throughput, Throughput);
 
   return OT_ERROR_NONE;
 }
 
 otError expServerFree(void* aContext, uint8_t argsLength, char* aArgs[])
 {
+  otCoapRemoveResource(OT_INSTANCE, throughput);
+  otCoapStop(OT_INSTANCE);
+  free(throughput);
   return OT_ERROR_NONE;
 }
