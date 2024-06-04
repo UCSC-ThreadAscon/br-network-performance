@@ -21,7 +21,7 @@ otError expServerStart(void* aContext, uint8_t argsLength, char* aArgs[])
   throughput = calloc(1, sizeof(otCoapResource));
   createResource(throughput, Throughput);
 
-  otLogNotePlat("Created throughput server at %s", throughput->mUriPath);
+  otLogNotePlat("Created throughput server at %s.", throughput->mUriPath);
 
   return OT_ERROR_NONE;
 }
