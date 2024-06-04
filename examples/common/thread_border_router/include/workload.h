@@ -1,4 +1,8 @@
+#pragma once
+
 #include "print_statement.h"
+#include "test.h"
+#include "utilities.h"
 
 #include "esp_err.h"
 #include "esp_log.h"
@@ -46,4 +50,4 @@ uint16_t getPayloadLength(const otMessage *aMessage);
 void getPayload(const otMessage *aMessage, void* buffer);
 
 /* ---- CoAP Server API ---- */
-otError createResource(otCoapResource *resource);
+otError createResource(otCoapResource *resource, Test test);

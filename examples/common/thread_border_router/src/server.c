@@ -4,7 +4,7 @@
  *
  * https://github.com/UCSC-ThreadAscon/openthread/tree/main/src/cli
 */
-#include "server.h"
+#include "workload.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -58,8 +58,40 @@ void sendCoapResponse(otMessage *aRequest, const otMessageInfo *aRequestInfo)
   return;
 }
 
-otError createResource(otCoapResource *resource) {
+void defaultRequestHandler(void* aContext,
+                           otMessage *aMessage,
+                           const otMessageInfo *aMessageInfo)
+{
+  uint32_t length = getPayloadLength(aMessage);
+
+  char sender[OT_IP6_ADDRESS_STRING_SIZE];
+  EmptyMemory(sender, OT_IP6_ADDRESS_STRING_SIZE);
+  getPeerAddrString(aMessageInfo, sender);
+
+  otLogNotePlat("Received %" PRIu32 " bytes from %s", length, sender);
+
+  sendCoapResponse(aMessage, aMessageInfo);
+  return;
+}
+
+otError createResource(otCoapResource *resource, Test test) {
   resource->mNext = NULL;
   resource->mContext = NULL;
+
+  switch (test) {
+    case Throughput:
+      resource->mUriPath = THROUGHPUT_URI;
+      break;
+    case PacketLoss:
+      resource->mUriPath = PACKET_LOSS_URI;
+      break;
+    case Delay:
+      resource->mUriPath = DELAY_URI;
+      break;
+    default:
+      otLogCritPlat("Failed to create resource: test does not exist.");
+      resource->mUriPath = "";
+  }
+
   return OT_ERROR_NONE;
 }

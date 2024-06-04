@@ -7,7 +7,7 @@
 
 #include "border_router_launch.h"
 
-#include "server.h"
+#include "workload.h"
 
 #include <assert.h>
 #include <stdio.h>

@@ -1,4 +1,4 @@
-#include "server.h"
+#include "workload.h"
 
 #include <openthread/thread.h>
 #include <openthread/platform/radio.h>
