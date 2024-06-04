@@ -21,6 +21,8 @@ otError expServerStart(void* aContext, uint8_t argsLength, char* aArgs[])
   throughput = calloc(1, sizeof(otCoapResource));
   createResource(throughput, Throughput);
 
+  otLogNotePlat("Created throughput server at %s", throughput->mUriPath);
+
   return OT_ERROR_NONE;
 }
 
@@ -29,5 +31,6 @@ otError expServerFree(void* aContext, uint8_t argsLength, char* aArgs[])
   otCoapRemoveResource(OT_INSTANCE, throughput);
   otCoapStop(OT_INSTANCE);
   free(throughput);
+  otLogNotePlat("Closed throughput server.");
   return OT_ERROR_NONE;
 }
