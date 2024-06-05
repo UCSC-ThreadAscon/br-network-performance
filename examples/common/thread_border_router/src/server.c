@@ -78,6 +78,7 @@ otError createResource(otCoapResource *resource, Test test)
 {
   resource->mNext = NULL;
   resource->mContext = NULL;
+  resource->mHandler = defaultRequestHandler;
 
   switch (test) {
     case Throughput:
@@ -90,7 +91,7 @@ otError createResource(otCoapResource *resource, Test test)
       resource->mUriPath = DELAY_URI;
       break;
     default:
-      otLogCritPlat("Failed to create resource: test does not exist.");
+      otLogCritPlat("Failed to create resource.");
       resource->mUriPath = "";
   }
 
