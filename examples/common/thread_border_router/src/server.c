@@ -68,7 +68,7 @@ void defaultRequestHandler(void* aContext,
   EmptyMemory(sender, OT_IP6_ADDRESS_STRING_SIZE);
   getPeerAddrString(aMessageInfo, sender);
 
-  otLogNotePlat("Received %" PRIu32 " bytes from %s", length, sender);
+  otLogNotePlat("Received %" PRIu32 " bytes from %s.", length, sender);
 
   sendCoapResponse(aMessage, aMessageInfo);
   return;
