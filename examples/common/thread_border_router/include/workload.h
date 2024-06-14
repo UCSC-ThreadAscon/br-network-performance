@@ -50,4 +50,7 @@ uint16_t getPayloadLength(const otMessage *aMessage);
 void getPayload(const otMessage *aMessage, void* buffer);
 
 /* ---- CoAP Server API ---- */
-otError createResource(otCoapResource *resource, Test test);
+otError createResource(otCoapResource *resource,
+                       Test test,
+                       const char *resourceName);
+void resourceDestructor(otCoapResource *resource);

@@ -1,6 +1,7 @@
 #include "workload.h"
 
-static otCoapResource *throughput;
+static otCoapResource *confirmable;
+static otCoapResource *nonConfirmable;
 
 void startCoapServer(uint16_t port) {
   otError error = otCoapStart(OT_INSTANCE, port);
@@ -18,20 +19,17 @@ otError expServerStart(void* aContext, uint8_t argsLength, char* aArgs[])
   checkConnection(OT_INSTANCE);
   startCoapServer(OT_DEFAULT_COAP_PORT);
 
-  throughput = calloc(1, sizeof(otCoapResource));
-  createResource(throughput, Throughput);
-  otCoapAddResource(OT_INSTANCE, throughput);
-
-  otLogNotePlat("Created throughput server at '%s'.", throughput->mUriPath);
+  createResource(confirmable, Confirmable, "Throughput Confirmable");
+  createResource(nonConfirmable, NonConfirmable, "Throughput Non-Confirmable");
 
   return OT_ERROR_NONE;
 }
 
 otError expServerFree(void* aContext, uint8_t argsLength, char* aArgs[])
 {
-  otCoapRemoveResource(OT_INSTANCE, throughput);
+  resourceDestructor(confirmable);
+  resourceDestructor(nonConfirmable);
+
   otCoapStop(OT_INSTANCE);
-  free(throughput);
-  otLogNotePlat("Closed throughput server.");
   return OT_ERROR_NONE;
 }

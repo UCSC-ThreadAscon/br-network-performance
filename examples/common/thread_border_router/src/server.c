@@ -74,15 +74,21 @@ void defaultRequestHandler(void* aContext,
   return;
 }
 
-otError createResource(otCoapResource *resource, Test test)
+otError createResource(otCoapResource *resource,
+                       Test test,
+                       const char *resourceName)
 {
+  resource = calloc(1, sizeof(otCoapResource));
   resource->mNext = NULL;
   resource->mContext = NULL;
   resource->mHandler = defaultRequestHandler;
 
   switch (test) {
-    case Throughput:
-      resource->mUriPath = THROUGHPUT_URI;
+    case Confirmable:
+      resource->mUriPath = THROUGHPUT_CONFIRMABLE_URI;
+      break;
+    case NonConfirmable:
+      resource->mUriPath = THROUGHPUT_NONCONFIRMABLE_URI;
       break;
     case PacketLoss:
       resource->mUriPath = PACKET_LOSS_URI;
@@ -95,5 +101,15 @@ otError createResource(otCoapResource *resource, Test test)
       resource->mUriPath = "";
   }
 
+  otCoapAddResource(OT_INSTANCE, resource);
+  otLogNotePlat("Created %s server at '%s'.", resourceName, resource->mUriPath);
   return OT_ERROR_NONE;
+}
+
+void resourceDestructor(otCoapResource *resource)
+{
+  otLogNotePlat("Closing '%s'", resource->mUriPath);
+  otCoapRemoveResource(OT_INSTANCE, resource);
+  free(resource);
+  return;
 }
