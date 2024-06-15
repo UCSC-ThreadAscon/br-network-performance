@@ -11,9 +11,6 @@
 #include <stdint.h>
 #include <inttypes.h>
 
-#define PRINT_UPTIME 1
-#define PRINT_PAYLOADS 0
-
 void getPeerAddrString(const otMessageInfo *aMessageInfo, char *ipString) {
   otIp6AddressToString(&(aMessageInfo->mPeerAddr), ipString,
                        OT_IP6_ADDRESS_STRING_SIZE);
@@ -67,9 +64,7 @@ void sendCoapResponse(otMessage *aRequest, const otMessageInfo *aRequestInfo)
   otLogNotePlat("Received %" PRIu32 " bytes, %s, from %s.",   \
                 length, coapTypeString, sender);              \
 
-void defaultRequestHandler(void* aContext,
-                           otMessage *aMessage,
-                           const otMessageInfo *aMessageInfo)
+void printRequest(otMessage *aMessage, const otMessageInfo *aMessageInfo)
 {
   uint32_t length = getPayloadLength(aMessage);
 
@@ -94,7 +89,13 @@ void defaultRequestHandler(void* aContext,
     default:
       otLogCritPlat("The request has an invalid CoAP message type.");
   }
+}
 
+void defaultRequestHandler(void* aContext,
+                           otMessage *aMessage,
+                           const otMessageInfo *aMessageInfo)
+{
+  printRequest(aMessage, aMessageInfo);
   sendCoapResponse(aMessage, aMessageInfo);
   return;
 }
