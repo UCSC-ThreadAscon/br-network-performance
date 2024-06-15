@@ -60,7 +60,7 @@ void sendCoapResponse(otMessage *aRequest, const otMessageInfo *aRequestInfo)
 
 #define CONFIRMABLE_STRING "Confirmable"
 #define NONCONFIRMABLE_STRING "Non-Confirmable"
-#define ACK_STIRNG "Acknowledgement"
+#define ACK_STRING "Acknowledgement"
 #define RESET_STRING "Reset"
 
 #define PrintMessage(coapTypeString, length, sender)          \
@@ -86,7 +86,7 @@ void defaultRequestHandler(void* aContext,
       PrintMessage(NONCONFIRMABLE_STRING, length, sender);
       break;
     case OT_COAP_TYPE_ACKNOWLEDGMENT:
-      PrintMessage(ACK_STIRNG, length, sender);
+      PrintMessage(ACK_STRING, length, sender);
       break;
     case OT_COAP_TYPE_RESET:
       PrintMessage(RESET_STRING, length, sender);
