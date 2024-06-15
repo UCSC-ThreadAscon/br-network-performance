@@ -1,13 +1,10 @@
 #pragma once
 
-typedef enum Test {
+typedef enum PacketType {
   Confirmable,
-  NonConfirmable,
-  PacketLoss,
-  Delay
-} Test;
+  NonConfirmable
+} PacketType;
 
-#define THROUGHPUT_CONFIRMABLE_URI "confirmable"
-#define THROUGHPUT_NONCONFIRMABLE_URI "nonconfirmable"
-#define PACKET_LOSS_URI "packetloss"
+#define CONFIRMABLE_URI "confirmable"
+#define NONCONFIRMABLE_URI "nonconfirmable"
 #define DELAY_URI "delay"

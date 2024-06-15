@@ -51,7 +51,7 @@ void getPayload(const otMessage *aMessage, void* buffer);
 
 /* ---- CoAP Server API ---- */
 otError createResource(otCoapResource *resource,
-                       Test test,
+                       PacketType test,
                        const char *resourceName,
                        otCoapRequestHandler requestHandler);
 

@@ -1,8 +1,8 @@
 #include "workload.h"
 #include "handler.h"
 
-static otCoapResource *tpConfirmable;
-static otCoapResource *tpNonConfirmable;
+static otCoapResource *Confirmable;
+static otCoapResource *NonConfirmable;
 
 void startCoapServer(uint16_t port) {
   otError error = otCoapStart(OT_INSTANCE, port);
@@ -20,9 +20,9 @@ otError expServerStart(void* aContext, uint8_t argsLength, char* aArgs[])
   checkConnection(OT_INSTANCE);
   startCoapServer(OT_DEFAULT_COAP_PORT);
 
-  createResource(tpConfirmable, Confirmable, "Throughput Confirmable",
+  createResource(Confirmable, Confirmable, "Throughput Confirmable",
                  throughputRequestHandler);
-  createResource(tpNonConfirmable, NonConfirmable, "Throughput Non-Confirmable",
+  createResource(NonConfirmable, NonConfirmable, "Throughput Non-Confirmable",
                  throughputRequestHandler);
 
   return OT_ERROR_NONE;
@@ -30,8 +30,8 @@ otError expServerStart(void* aContext, uint8_t argsLength, char* aArgs[])
 
 otError expServerFree(void* aContext, uint8_t argsLength, char* aArgs[])
 {
-  resourceDestructor(tpConfirmable);
-  resourceDestructor(tpNonConfirmable);
+  resourceDestructor(Confirmable);
+  resourceDestructor(NonConfirmable);
 
   otCoapStop(OT_INSTANCE);
   return OT_ERROR_NONE;
