@@ -13,7 +13,8 @@ void throughputRequestHandler(void* aContext,
                               otMessage *aMessage,
                               const otMessageInfo *aMessageInfo)
 {
-  printRequest(aMessage, aMessageInfo);
+  otLogNotePlat("Hello from the Throughput Request Handler!");
+  // printRequest(aMessage, aMessageInfo);
 
   /**
    * Calling sendCoapResponse() will not affect the Non-Confirmable tests,

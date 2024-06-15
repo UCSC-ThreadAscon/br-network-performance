@@ -52,7 +52,8 @@ void getPayload(const otMessage *aMessage, void* buffer);
 /* ---- CoAP Server API ---- */
 otError createResource(otCoapResource *resource,
                        Test test,
-                       const char *resourceName);
+                       const char *resourceName,
+                       otCoapRequestHandler requestHandler);
 
 void resourceDestructor(otCoapResource *resource);
 void sendCoapResponse(otMessage *aRequest, const otMessageInfo *aRequestInfo);

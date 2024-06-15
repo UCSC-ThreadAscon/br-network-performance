@@ -90,16 +90,18 @@ void printRequest(otMessage *aMessage, const otMessageInfo *aMessageInfo)
     default:
       otLogCritPlat("The request has an invalid CoAP message type.");
   }
+  return;
 }
 
 otError createResource(otCoapResource *resource,
                        Test test,
-                       const char *resourceName)
+                       const char *resourceName,
+                       otCoapRequestHandler requestHandler)
 {
   resource = calloc(1, sizeof(otCoapResource));
   resource->mNext = NULL;
   resource->mContext = NULL;
-  resource->mHandler = defaultRequestHandler;
+  resource->mHandler = requestHandler;
 
   switch (test) {
     case Confirmable:
