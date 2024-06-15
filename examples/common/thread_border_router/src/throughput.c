@@ -20,7 +20,7 @@ void throughputRequestHandler(void* aContext,
   static struct timeval startTime;
   static struct timeval endTime;
 
-  if (packetNum <= SAMPLE_SIZE_PACKETS) {
+  if (packetNum < SAMPLE_SIZE_PACKETS) {
     packetNum += 1;
 
     if (packetNum == 1) {
