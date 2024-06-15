@@ -58,6 +58,15 @@ void sendCoapResponse(otMessage *aRequest, const otMessageInfo *aRequestInfo)
   return;
 }
 
+#define CONFIRMABLE_STRING "Confirmable"
+#define NONCONFIRMABLE_STRING "Non-Confirmable"
+#define ACK_STIRNG "Acknowledgement"
+#define RESET_STRING "Reset"
+
+#define PrintMessage(coapTypeString, length, sender)          \
+  otLogNotePlat("Received %" PRIu32 " bytes, %s, from %s.",   \
+                coapTypeString, length, sender);              \
+
 void defaultRequestHandler(void* aContext,
                            otMessage *aMessage,
                            const otMessageInfo *aMessageInfo)
@@ -68,7 +77,23 @@ void defaultRequestHandler(void* aContext,
   EmptyMemory(sender, OT_IP6_ADDRESS_STRING_SIZE);
   getPeerAddrString(aMessageInfo, sender);
 
-  otLogNotePlat("Received %" PRIu32 " bytes from %s.", length, sender);
+  switch (otCoapMessageGetType(aMessage))
+  {
+    case OT_COAP_TYPE_CONFIRMABLE:
+      PrintMessage(CONFIRMABLE_STRING, length, sender);
+      break;
+    case OT_COAP_TYPE_NON_CONFIRMABLE:
+      PrintMessage(NONCONFIRMABLE_STRING, length, sender);
+      break;
+    case OT_COAP_TYPE_ACKNOWLEDGMENT:
+      PrintMessage(ACK_STIRNG, length, sender);
+      break;
+    case OT_COAP_TYPE_RESET:
+      PrintMessage(RESET_STRING, length, sender);
+      break;
+    default:
+      otLogCritPlat("The request has an invalid CoAP message type.");
+  }
 
   sendCoapResponse(aMessage, aMessageInfo);
   return;
