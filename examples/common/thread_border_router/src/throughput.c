@@ -32,6 +32,31 @@ void throughputRequestHandler(void* aContext,
     otLogNotePlat("Received packet number %" PRIu32 ".", packetNum);
     printRequest(aMessage, aMessageInfo);
 
+    if (packetNum == SAMPLE_SIZE_PACKETS) {
+      /**
+       * The throughput formula is:
+       *
+       *                   t_end - t_start
+       *      -----------------------------------------
+       *      SAMPLE_SIZE_PACKETS * PAYLOAD_SIZE_BYTES
+       */
+      endTime = getTimevalNow();
+
+      double numeratorUs = timeDiffMicro(startTime, endTime);
+      double numeratorMs = US_TO_MS(numeratorUs);
+      double numeratorSecs = US_TO_SECONDS(numeratorUs);
+      double denominator = SAMPLE_SIZE_PACKETS * PAYLOAD_SIZE_BYTES;
+
+      double throughputSecs = numeratorSecs / denominator;
+      double throughputMs = numeratorMs / denominator;
+      double throughputUs = numeratorUs / denominator;
+
+      otLogNotePlat("The throughput is:");
+      otLogNotePlat("%.7f bytes/second, or", throughputSecs);
+      otLogNotePlat("%.7f bytes/ms, or", throughputMs);
+      otLogNotePlat("%.7f bytes/us.", throughputUs);
+    }
+
     /**
      * Calling sendCoapResponse() will not affect the Non-Confirmable tests,
      * since the function will only ACK if the request is a GET or Confirmable.

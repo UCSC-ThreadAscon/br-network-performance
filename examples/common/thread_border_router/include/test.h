@@ -1,6 +1,7 @@
 #pragma once
 
 #define SAMPLE_SIZE_PACKETS 1000
+#define PAYLOAD_SIZE_BYTES 4
 
 typedef enum PacketType {
   Confirmable,
