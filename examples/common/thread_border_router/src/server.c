@@ -65,7 +65,7 @@ void sendCoapResponse(otMessage *aRequest, const otMessageInfo *aRequestInfo)
 
 #define PrintMessage(coapTypeString, length, sender)          \
   otLogNotePlat("Received %" PRIu32 " bytes, %s, from %s.",   \
-                coapTypeString, length, sender);              \
+                length, coapTypeString, sender);              \
 
 void defaultRequestHandler(void* aContext,
                            otMessage *aMessage,
