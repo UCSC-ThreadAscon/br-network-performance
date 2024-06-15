@@ -1,8 +1,7 @@
 #include "workload.h"
 #include "handler.h"
 
-static otCoapResource *confirmableUri;
-static otCoapResource *nonConfirmableUri;
+static otCoapResource *experimentRoute;
 
 void startCoapServer(uint16_t port) {
   otError error = otCoapStart(OT_INSTANCE, port);
@@ -20,19 +19,24 @@ otError expServerStart(void* aContext, uint8_t argsLength, char* aArgs[])
   checkConnection(OT_INSTANCE);
   startCoapServer(OT_DEFAULT_COAP_PORT);
 
-  createResource(confirmableUri, Confirmable, "Throughput Confirmable",
+#if NO_EXPERIMENT
+  otLogNotePlat("No experiments to set up.");
+  otLogNotePlat("Edit the EXPERIMENT flag in `idf.py menuconfig` to choose which");
+  otLogNotePlat("experiment the CoAP server will run.");
+#elif EXPERIMENT_THROUGHPUT_CONFIRMABLE
+  createResource(experimentRoute, Confirmable, "Throughput Confirmable",
                  throughputRequestHandler);
-  createResource(nonConfirmableUri, NonConfirmable, "Throughput Non-Confirmable",
+#elif EXPERIMENT_THROUGHPUT_NONCONFIRMABLE
+  createResource(experimentRoute, NonConfirmable, "Throughput Non-Confirmable",
                  throughputRequestHandler);
+#endif
 
   return OT_ERROR_NONE;
 }
 
 otError expServerFree(void* aContext, uint8_t argsLength, char* aArgs[])
 {
-  resourceDestructor(confirmableUri);
-  resourceDestructor(nonConfirmableUri);
-
+  resourceDestructor(experimentRoute);
   otCoapStop(OT_INSTANCE);
   return OT_ERROR_NONE;
 }

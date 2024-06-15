@@ -1,4 +1,4 @@
-menu "UCSC Thread-Ascon Border Router Throughput Experiments"
+menu "UCSC Thread-Ascon Border Router Network Performance Experiments"
 
   menu "TX Power"
     config TX_POWER
@@ -8,6 +8,17 @@ menu "UCSC Thread-Ascon Border Router Throughput Experiments"
       help
           Set the 802.15.4 transmission power (in dBm) for OpenThread.
           The recommended TX power values are 20 dBm, 9 dBm, 0 dBm, and -25 dBm.
+  endmenu
+
+  menu "Network Performance Experiment Settings"
+    config EXPERIMENT
+      int 'The network performance experiment to run.'
+      range 0 2
+      default 0
+      help
+        Set '0' to not run any experiment (primarily used for debugging purposes).
+        Set '1' to enable the route for the Throughput Confirmable experiment.
+        Set '2' to enable the router for the Throughput Non-Confirmable experiment.
   endmenu
 
   choice ESP_BR_BOARD_TYPE
