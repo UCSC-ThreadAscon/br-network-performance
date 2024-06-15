@@ -16,30 +16,34 @@ void throughputRequestHandler(void* aContext,
                               otMessage *aMessage,
                               const otMessageInfo *aMessageInfo)
 {
-  static uint32_t numPackets = 0;
+  static uint32_t packetNum = 0;
   static struct timeval startTime;
   static struct timeval endTime;
 
-  numPackets += 1;
+  if ((packetNum >= 1) && (packetNum <= SAMPLE_SIZE_PACKETS)) {
+    packetNum += 1;
 
-  /**
-   * First packet is received. Initialize static variables,
-   * and grab the start time.
-   */
-  if (numPackets == 1) {
-    EmptyMemory(&startTime, sizeof(struct timeval));
-    EmptyMemory(&endTime, sizeof(struct timeval));
+    if (packetNum == 1) {
+      EmptyMemory(&startTime, sizeof(struct timeval));
+      EmptyMemory(&endTime, sizeof(struct timeval));
 
-    startTime = getTimevalNow();
-    otLogNotePlat("Received First Packet!");
+      startTime = getTimevalNow();
+      otLogNotePlat("Received First Packet!");
+    }
+    else if (packetNum == SAMPLE_SIZE_PACKETS) {
+      otLogNotePlat("Received last packet!");
+    }
+    else {
+      otLogNotePlat("Received packet number %" PRIu32 ".", packetNum);
+    }
+
+    printRequest(aMessage, aMessageInfo);
+
+    /**
+     * Calling sendCoapResponse() will not affect the Non-Confirmable tests,
+     * since the function will only ACK if the request is a GET or Confirmable.
+     */
+    sendCoapResponse(aMessage, aMessageInfo);
   }
-
-  printRequest(aMessage, aMessageInfo);
-
-  /**
-   * Calling sendCoapResponse() will not affect the Non-Confirmable tests,
-   * since the function will only ACK if the request is a GET or Confirmable.
-   */
-  sendCoapResponse(aMessage, aMessageInfo);
   return;
 }

@@ -10,8 +10,7 @@
   otLogNotePlat("Received %" PRIu32 " bytes, %s, from %s.",   \
                 length, coapTypeString, sender);              \
 
-void getPeerAddrString(const otMessageInfo *aMessageInfo, char *ipString)
-{
+void getPeerAddrString(const otMessageInfo *aMessageInfo, char *ipString) {
   otIp6AddressToString(&(aMessageInfo->mPeerAddr), ipString,
                        OT_IP6_ADDRESS_STRING_SIZE);
   return;
