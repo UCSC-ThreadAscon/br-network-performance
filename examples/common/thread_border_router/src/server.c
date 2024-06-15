@@ -5,6 +5,7 @@
  * https://github.com/UCSC-ThreadAscon/openthread/tree/main/src/cli
 */
 #include "workload.h"
+#include "handler.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -89,15 +90,6 @@ void printRequest(otMessage *aMessage, const otMessageInfo *aMessageInfo)
     default:
       otLogCritPlat("The request has an invalid CoAP message type.");
   }
-}
-
-void defaultRequestHandler(void* aContext,
-                           otMessage *aMessage,
-                           const otMessageInfo *aMessageInfo)
-{
-  printRequest(aMessage, aMessageInfo);
-  sendCoapResponse(aMessage, aMessageInfo);
-  return;
 }
 
 otError createResource(otCoapResource *resource,

@@ -53,4 +53,7 @@ void getPayload(const otMessage *aMessage, void* buffer);
 otError createResource(otCoapResource *resource,
                        Test test,
                        const char *resourceName);
+
 void resourceDestructor(otCoapResource *resource);
+void sendCoapResponse(otMessage *aRequest, const otMessageInfo *aRequestInfo);
+void printRequest(otMessage *aMessage, const otMessageInfo *aMessageInfo);
