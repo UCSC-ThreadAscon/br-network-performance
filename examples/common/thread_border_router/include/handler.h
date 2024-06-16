@@ -10,3 +10,7 @@ void defaultRequestHandler(void* aContext,
 void throughputRequestHandler(void* aContext,
                               otMessage *aMessage,
                               const otMessageInfo *aMessageInfo);
+
+void packetLossRequestHandler(void* aContext,
+                              otMessage *aMessage,
+                              const otMessageInfo *aMessageInfo);

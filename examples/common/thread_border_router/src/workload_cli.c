@@ -31,10 +31,10 @@ otError expServerStart(void* aContext, uint8_t argsLength, char* aArgs[])
                  throughputRequestHandler);
 #elif EXPERIMENT_PACKET_LOSS_CONFIRMABLE
   createResource(experimentRoute, PacketLossConfirmable, "Packet Loss Confirmable",
-                 defaultRequestHandler);
+                 packetLossRequestHandler);
 #elif EXPERIMENT_PACKET_LOSS_NONCONFIRMABLE
   createResource(experimentRoute, PacketLossNonConfirmable, "Packet Loss Non-Confirmable",
-                 defaultRequestHandler);
+                 packetLossRequestHandler);
 #endif
   return OT_ERROR_NONE;
 }
