@@ -24,10 +24,10 @@ otError expServerStart(void* aContext, uint8_t argsLength, char* aArgs[])
   otLogNotePlat("Edit the EXPERIMENT flag in `idf.py menuconfig` to choose which");
   otLogNotePlat("experiment the CoAP server will run.");
 #elif EXPERIMENT_THROUGHPUT_CONFIRMABLE
-  createResource(experimentRoute, Confirmable, "Throughput Confirmable",
+  createResource(experimentRoute, ThroughputConfirmable, "Throughput Confirmable",
                  throughputRequestHandler);
 #elif EXPERIMENT_THROUGHPUT_NONCONFIRMABLE
-  createResource(experimentRoute, NonConfirmable, "Throughput Non-Confirmable",
+  createResource(experimentRoute, ThroughputNonConfirmable, "Throughput Non-Confirmable",
                  throughputRequestHandler);
 #endif
 

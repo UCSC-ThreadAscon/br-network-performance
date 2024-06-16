@@ -51,7 +51,7 @@ void sendCoapResponse(otMessage *aRequest, const otMessageInfo *aRequestInfo)
 }
 
 otError createResource(otCoapResource *resource,
-                       PacketType type,
+                       Test test,
                        const char *resourceName,
                        otCoapRequestHandler requestHandler)
 {
@@ -60,15 +60,20 @@ otError createResource(otCoapResource *resource,
   resource->mContext = NULL;
   resource->mHandler = requestHandler;
 
-  switch (type) {
-    case Confirmable:
-      resource->mUriPath = CONFIRMABLE_URI;
+  switch (test) {
+    case ThroughputConfirmable:
+      resource->mUriPath = THROUGHPUT_CONFIRMABLE_URI;
       break;
-    case NonConfirmable:
-      resource->mUriPath = NONCONFIRMABLE_URI;
+    case ThroughputNonConfirmable:
+      resource->mUriPath = THROUGHPUT_NONCONFIRMABLE_URI;
       break;
+    case PacketLossConfirmable:
+      resource->mUriPath = PACKET_LOSS_CONFIRMABLE_URI;
+      break;
+    case PacketLossNonConfirmable:
+      resource->mUriPath = PACKET_LOSS_NONCONFIRMABLE_URI;
     default:
-      otLogCritPlat("Failed to create resource: type not defined.");
+      otLogCritPlat("Failed to create resource: test not defined.");
       resource->mUriPath = "";
   }
 
