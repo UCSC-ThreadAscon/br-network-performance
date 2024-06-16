@@ -1,5 +1,14 @@
 #include "handler.h"
 
+/**
+ * TODO:
+ *  1. When receiving the first packet, record the START TIME.
+ *
+ *  2. For each packet received afterwards, print out the time in which they were received
+ *     RELATIVE to the START TIME.
+ *
+ *  3. For the first packet received AFTER 30 seconds, STOP counting packets.
+ */
 void packetLossRequestHandler(void* aContext,
                               otMessage *aMessage,
                               const otMessageInfo *aMessageInfo)
