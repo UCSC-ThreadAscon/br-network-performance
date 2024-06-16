@@ -72,6 +72,7 @@ otError createResource(otCoapResource *resource,
       break;
     case PacketLossNonConfirmable:
       resource->mUriPath = PACKET_LOSS_NONCONFIRMABLE_URI;
+      break;
     default:
       otLogCritPlat("Failed to create resource: test not defined.");
       resource->mUriPath = "";
