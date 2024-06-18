@@ -21,8 +21,7 @@ void throughputRequestHandler(void* aContext,
     printRequest(aMessage, aMessageInfo);
 
     if (packetNum == SAMPLE_SIZE_PACKETS) {
-      /**
-       * The throughput formula is:
+      /** The throughput formula is:
        *
        *                   t_end - t_start
        *      -----------------------------------------
@@ -45,9 +44,8 @@ void throughputRequestHandler(void* aContext,
       otLogNotePlat("%.7f bytes/us.", throughputUs);
     }
 
-    /**
-     * Calling sendCoapResponse() will not affect the Non-Confirmable tests,
-     * since the function will only ACK if the request is a GET or Confirmable.
+    /** Calling sendCoapResponse() will not affect the Non-Confirmable tests,
+     *  since the function will only ACK if the request is a GET or Confirmable.
      */
     sendCoapResponse(aMessage, aMessageInfo);
   }
