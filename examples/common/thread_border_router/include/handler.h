@@ -21,6 +21,8 @@ typedef struct PacketLossStats
 }
 PacketLossStats;
 
+#define PrintDelimiter() otLogNotePlat("---------------------------");
+
 #define PACKET_LOSS_DURATION_SECONDS 60
 #define PACKET_LOSS_DURATION_US SECONDS_TO_US(PACKET_LOSS_DURATION_SECONDS)
 

@@ -35,13 +35,15 @@ void packetLossRequestHandler(void* aContext,
                               otMessage *aMessage,
                               const otMessageInfo *aMessageInfo)
 {
+  PrintDelimiter();
+
   if (stats.state == NotStarted) {
-    stats.state = Counting;
     stats.start = getTimevalNow();
 
     stats.packetsExpected = 1;
     stats.packetsReceived = 1;
     stats.nextSeqNumExpected = getSequenceNum(aMessage) + 1;
+    stats.state = Counting;
   }
 
   if (stats.state == Counting) {
@@ -89,5 +91,6 @@ void packetLossRequestHandler(void* aContext,
     stats.state = Finished;
   }
 
+  PrintDelimiter();
   return;
 }
