@@ -3,6 +3,14 @@
 #include "workload.h"
 #include "time_api.h"
 
+typedef enum PacketLossExpStatus
+{
+  NoStarted,
+  Calculating,
+  ShowCalculations,
+  Finished
+} PacketLossExpStatus; 
+
 typedef struct PacketLossStats
 {
   bool receivedFirstPacket;
