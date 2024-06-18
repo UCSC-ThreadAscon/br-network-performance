@@ -50,6 +50,23 @@ void packetLossRequestHandler(void* aContext,
   if (elapsedUs <= PACKET_LOSS_DURATION_US) {
     printPacketInfo(aMessage, aMessageInfo, sequenceNum, elapsedUs);
 
+    if (sequenceNum == stats.nextSeqNumExpected) {
+      // We got the packet we expected - there is no packet loss.
+      stats.packetsExpected += 1;
+      stats.packetsReceived += 1;
+      stats.nextSeqNumExpected = sequenceNum + 1;
+    }
+    else if (sequenceNum > stats.nextSeqNumExpected) {
+      // We lost a packet with sequence number "sequenceNum".
+      stats.packetsExpected += 1;
+      stats.nextSeqNumExpected = sequenceNum + 1;
+    }
+    else if (sequenceNum < stats.nextSeqNumExpected) {
+      // This packet arrived late. You assumed it was lost earlier,
+      // but actually, it is not lost.
+      stats.packetsReceived += 1;
+    }
+
     /** Calling sendCoapResponse() will not affect the Non-Confirmable tests,
      *  since the function will only ACK if the request is a GET or Confirmable.
      */
