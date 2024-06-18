@@ -3,22 +3,23 @@
 #include "workload.h"
 #include "time_api.h"
 
-typedef enum PacketLossExpStatus
+typedef enum PacketLossExpState
 {
-  NoStarted,
-  Calculating,
-  ShowCalculations,
+  NotStarted,
+  Counting,
+  DisplayedResults,
   Finished
-} PacketLossExpStatus; 
+} PacketLossExpState; 
 
 typedef struct PacketLossStats
 {
-  bool receivedFirstPacket;
   struct timeval start;
   uint32_t nextSeqNumExpected;
   uint64_t packetsReceived;
   uint64_t packetsExpected;
-} PacketLossStats;
+  PacketLossExpState state;
+}
+PacketLossStats;
 
 #define PACKET_LOSS_DURATION_SECONDS 60
 #define PACKET_LOSS_DURATION_US SECONDS_TO_US(PACKET_LOSS_DURATION_SECONDS)

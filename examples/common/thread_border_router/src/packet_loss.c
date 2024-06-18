@@ -1,11 +1,11 @@
 #include "handler.h"
 
 static PacketLossStats stats = {
-  false,      // receivedFirstPacket
-  { 0, 0 },   // start timeval
-  0,          // nextSeqNumExpected
-  0,          // packetsReceived
-  0           // packetsExpected
+  { 0, 0 },     // start timeval
+  0,            // nextSeqNumExpected
+  0,            // packetsReceived
+  0,            // packetsExpected
+  NotStarted    // state enum
 };
 
 double getElpasedUs(struct timeval start)
@@ -35,11 +35,14 @@ void packetLossRequestHandler(void* aContext,
                               otMessage *aMessage,
                               const otMessageInfo *aMessageInfo)
 {
+  otLogNotePlat("------------------");
+  printRequest(aMessage, aMessageInfo);
   uint32_t sequenceNum = getSequenceNum(aMessage);
+  otLogNotePlat("The sequence number is %" PRIu32 ".", sequenceNum);
   double elapsedUs = getElpasedUs(stats.start);
 
-  if (!stats.receivedFirstPacket) {
-    stats.receivedFirstPacket = true;
+  if (stats.state == NotStarted) {
+    stats.state = Counting;
     stats.start = getTimevalNow();
 
     stats.packetsExpected = 1;
@@ -72,6 +75,25 @@ void packetLossRequestHandler(void* aContext,
      */
     sendCoapResponse(aMessage, aMessageInfo);
   }
+  else {
+    if (stats.state == Counting) {
+      otLogNotePlat("Expected packets: %" PRIu64 ".", stats.packetsExpected);
+      otLogNotePlat("Packets Received: %" PRIu64 ".", stats.packetsReceived);
 
+      double packetLossRatio = ((double) stats.packetsReceived) /
+                               ((double) stats.packetsExpected); 
+      otLogNotePlat("Packet loss ratio: %.5f.", packetLossRatio);
+
+      stats.state = DisplayedResults;
+    }
+    else if (stats.state == DisplayedResults) {
+      /** Packet loss has already been counted and displayed. The server
+       *  will not be doing anymore packet loss calculations.
+       */
+      stats.state = Finished;
+    }
+  }
+
+  otLogNotePlat("------------------");
   return;
 }
