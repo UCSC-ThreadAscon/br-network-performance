@@ -18,6 +18,7 @@
 
 #include <stdint.h>
 #include <inttypes.h>
+#include <stdbool.h>
 
 #define OT_INSTANCE esp_openthread_get_instance()
 

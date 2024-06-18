@@ -1,9 +1,8 @@
 #include "handler.h"
 
-static PacketLossStats stats =
-{
+static PacketLossStats stats = {
   false,      // receivedFirstPacket
-  0,          // start
+  { 0, 0 },   // start
   0,          // nextSeqNumExpected
   0,          // packetsReceived
   0           // packetsExpected
