@@ -31,8 +31,8 @@ void throughputRequestHandler(void* aContext,
       endTime = getTimevalNow();
 
       double denominatorUs = timeDiffMicro(startTime, endTime);
-      double denominatorMs = US_TO_MS(numeratorUs);
-      double denominatorSecs = US_TO_SECONDS(numeratorUs);
+      double denominatorMs = US_TO_MS(denominatorUs);
+      double denominatorSecs = US_TO_SECONDS(denominatorUs);
       double numerator = SAMPLE_SIZE_PACKETS * PAYLOAD_SIZE_BYTES;
 
       double throughputSecs = numerator / denominatorSecs;
