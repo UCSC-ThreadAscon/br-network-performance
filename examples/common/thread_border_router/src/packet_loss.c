@@ -65,12 +65,6 @@ void packetLossRequestHandler(void* aContext,
         stats.packetsExpected += 1;
         stats.nextSeqNumExpected = sequenceNum + 1;
       }
-      else if (sequenceNum < stats.nextSeqNumExpected) {
-        // This packet arrived late. You assumed it was lost earlier,
-        // but actually, it is not lost.
-        otLogNotePlat("Retranmission happened for packet %" PRIu32 ".", sequenceNum);
-        stats.packetsReceived += 1;
-      }
 
       /** Calling sendCoapResponse() will not affect the Non-Confirmable tests,
        *  since the function will only ACK if the request is a GET or Confirmable.
