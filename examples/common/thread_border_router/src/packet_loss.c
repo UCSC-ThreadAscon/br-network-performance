@@ -68,6 +68,7 @@ void packetLossRequestHandler(void* aContext,
       else if (sequenceNum < stats.nextSeqNumExpected) {
         // This packet arrived late. You assumed it was lost earlier,
         // but actually, it is not lost.
+        otLogNotePlat("Retranmission happened for packet %" PRIu32 ".", sequenceNum);
         stats.packetsReceived += 1;
       }
 
