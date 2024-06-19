@@ -23,20 +23,21 @@ void throughputRequestHandler(void* aContext,
     if (packetNum == SAMPLE_SIZE_PACKETS) {
       /** The throughput formula is:
        *
-       *                   t_end - t_start
-       *      -----------------------------------------
        *      SAMPLE_SIZE_PACKETS * PAYLOAD_SIZE_BYTES
+       *      -----------------------------------------   bytes/time
+       *                    t_end - t_start
+       * 
        */
       endTime = getTimevalNow();
 
-      double numeratorUs = timeDiffMicro(startTime, endTime);
-      double numeratorMs = US_TO_MS(numeratorUs);
-      double numeratorSecs = US_TO_SECONDS(numeratorUs);
-      double denominator = SAMPLE_SIZE_PACKETS * PAYLOAD_SIZE_BYTES;
+      double denominatorUs = timeDiffMicro(startTime, endTime);
+      double denominatorMs = US_TO_MS(numeratorUs);
+      double denominatorSecs = US_TO_SECONDS(numeratorUs);
+      double numerator = SAMPLE_SIZE_PACKETS * PAYLOAD_SIZE_BYTES;
 
-      double throughputSecs = numeratorSecs / denominator;
-      double throughputMs = numeratorMs / denominator;
-      double throughputUs = numeratorUs / denominator;
+      double throughputSecs = numerator / denominatorSecs;
+      double throughputMs = numerator / denominatorMs;
+      double throughputUs = numerator / denominatorUs;
 
       otLogNotePlat("The throughput is:");
       otLogNotePlat("%.7f bytes/second, or", throughputSecs);
