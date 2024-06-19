@@ -15,8 +15,8 @@ typedef struct PacketLossStats
 {
   struct timeval start;
   uint32_t nextSeqNumExpected;
-  uint64_t packetsReceived;
-  uint64_t packetsExpected;
+  uint32_t packetsReceived;
+  uint32_t packetsExpected;
   PacketLossExpState state;
 }
 PacketLossStats;

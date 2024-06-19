@@ -83,10 +83,10 @@ void packetLossRequestHandler(void* aContext,
 
   if (stats.state == DisplayedResults) {
     double packetLossRatio = ((double) stats.packetsReceived) /
-                              ((double) stats.packetsExpected); 
+                             ((double) stats.packetsExpected); 
 
-    otLogNotePlat("Expected packets: %" PRIu64 ".", stats.packetsExpected);
-    otLogNotePlat("Packets Received: %" PRIu64 ".", stats.packetsReceived);
+    otLogNotePlat("Expected packets: %" PRIu32 ".", stats.packetsExpected);
+    otLogNotePlat("Packets Received: %" PRIu32 ".", stats.packetsReceived);
     otLogNotePlat("Packet loss ratio: %.5f.", packetLossRatio);
 
     stats.state = Finished;
