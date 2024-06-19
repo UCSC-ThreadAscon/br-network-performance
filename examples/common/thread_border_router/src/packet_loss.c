@@ -62,6 +62,7 @@ void packetLossRequestHandler(void* aContext,
       }
       else if (sequenceNum > stats.nextSeqNumExpected) {
         // We lost a packet with sequence number "sequenceNum".
+        otLogNotePlat("Lost packet with sequence number %" PRIu32 ".", sequenceNum);
         stats.packetsExpected += 1;
         stats.nextSeqNumExpected = sequenceNum + 1;
       }
