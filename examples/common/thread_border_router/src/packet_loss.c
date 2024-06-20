@@ -77,7 +77,8 @@ void packetLossRequestHandler(void* aContext,
         stats.nextSeqNumExpected = sequenceNum + 1;
       }
 
-      // Packet loss.
+      // Packet loss. Packets that arrive late will also be counted
+      // as lost packets.
       else if (sequenceNum > stats.nextSeqNumExpected) {
         // Expected to receive the packets lost.
         stats.packetsExpected += getPacketsLost(sequenceNum, stats);
