@@ -31,6 +31,22 @@ void printPacketInfo(otMessage *aMessage,
   return;
 }
 
+/**
+ * You get packet "p_j", the packet you expect to get next "p_i".
+ * That means you’re missing packets "p_k", for i <= k < j. That's
+ * "j - i" packets lost.
+ */
+uint32_t getPacketsLost(uint32_t seqNumCur, PacketLossStats stats)
+{
+  uint32_t seqNumExpected = stats.nextSeqNumExpected;
+  uint32_t packetsLost = seqNumCur - seqNumExpected;
+
+  otLogNotePlat("Expected Packet %" PRIu32 ".", seqNumExpected);
+  otLogNotePlat("Got Packet %" PRIu32 ".", seqNumCur);
+  otLogNotePlat("Packets Lost: %" PRIu32 ".", packetsLost);
+  return packetsLost;
+}
+
 void packetLossRequestHandler(void* aContext,
                               otMessage *aMessage,
                               const otMessageInfo *aMessageInfo)
@@ -54,16 +70,22 @@ void packetLossRequestHandler(void* aContext,
     if (elapsedUs <= PACKET_LOSS_DURATION_US) {
       printPacketInfo(aMessage, aMessageInfo, sequenceNum, elapsedUs);
 
+      // No packet loss.
       if (sequenceNum == stats.nextSeqNumExpected) {
-        // We got the packet we expected - there is no packet loss.
         stats.packetsExpected += 1;
         stats.packetsReceived += 1;
         stats.nextSeqNumExpected = sequenceNum + 1;
       }
+
+      // Packet loss.
       else if (sequenceNum > stats.nextSeqNumExpected) {
-        // We lost a packet with sequence number "sequenceNum".
-        otLogNotePlat("Lost packet with sequence number %" PRIu32 ".", sequenceNum);
+        // Expected to receive the packets lost.
+        stats.packetsExpected += getPacketsLost(sequenceNum, stats);
+
+        // We expected AND received the current packet.
         stats.packetsExpected += 1;
+        stats.packetsReceived += 1;
+
         stats.nextSeqNumExpected = sequenceNum + 1;
       }
 
@@ -80,11 +102,7 @@ void packetLossRequestHandler(void* aContext,
   if (stats.state == DisplayedResults) {
     double packetLossRatio = ((double) stats.packetsReceived) /
                              ((double) stats.packetsExpected); 
-
-    otLogNotePlat("Expected packets: %" PRIu32 ".", stats.packetsExpected);
-    otLogNotePlat("Packets Received: %" PRIu32 ".", stats.packetsReceived);
-    otLogNotePlat("Packet loss ratio: %.5f.", packetLossRatio);
-
+    PrintPacketLossResults(stats, packetLossRatio);
     stats.state = Finished;
   }
 
