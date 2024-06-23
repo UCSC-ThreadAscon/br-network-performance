@@ -19,6 +19,8 @@ otError expServerStart(void* aContext, uint8_t argsLength, char* aArgs[])
   checkConnection(OT_INSTANCE);
   startCoapServer(OT_DEFAULT_COAP_PORT);
 
+  experimentRoute = calloc(1, sizeof(otCoapResource));
+
 #if NO_EXPERIMENT
   otLogNotePlat("No experiments to set up.");
   otLogNotePlat("Edit the EXPERIMENT flag in `idf.py menuconfig` to choose which");

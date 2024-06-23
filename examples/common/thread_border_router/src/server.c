@@ -55,7 +55,6 @@ otError createResource(otCoapResource *resource,
                        const char *resourceName,
                        otCoapRequestHandler requestHandler)
 {
-  resource = calloc(1, sizeof(otCoapResource));
   resource->mNext = NULL;
   resource->mContext = NULL;
   resource->mHandler = requestHandler;
