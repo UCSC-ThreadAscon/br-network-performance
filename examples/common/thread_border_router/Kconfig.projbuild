@@ -13,7 +13,7 @@ menu "UCSC Thread-Ascon Border Router Network Performance Experiments"
   menu "Network Performance Experiment Settings"
     config EXPERIMENT
       int 'The network performance experiment to run.'
-      range 0 5
+      range 0 4
       default 0
       help
         Set '0' to not run any experiment (primarily used for debugging purposes).
@@ -21,7 +21,6 @@ menu "UCSC Thread-Ascon Border Router Network Performance Experiments"
         Set '2' to enable the route for the Throughput Non-Confirmable experiment.
         Set '3' to enable the route for the Packet Loss Confirmable experiment.
         Set '4' to enable the route for the Packet Loss Non-Confirmable experiment.
-        Set '5' to enable the route for the Delay experiment.
   endmenu
 
   choice ESP_BR_BOARD_TYPE

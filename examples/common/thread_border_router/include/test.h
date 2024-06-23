@@ -13,8 +13,7 @@ typedef enum Test {
   ThroughputConfirmable,
   ThroughputNonConfirmable,
   PacketLossConfirmable,
-  PacketLossNonConfirmable,
-  Delay
+  PacketLossNonConfirmable
 } Test;
 
 #define THROUGHPUT_CONFIRMABLE_URI "throughput-confirmable"
