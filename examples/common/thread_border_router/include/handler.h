@@ -3,23 +3,7 @@
 #include "workload.h"
 #include "time_api.h"
 
-typedef enum PacketLossExpState
-{
-  NotStarted,
-  Counting,
-  DisplayedResults,
-  Finished
-} PacketLossExpState; 
-
-typedef struct PacketLossStats
-{
-  struct timeval start;
-  uint32_t nextSeqNumExpected;
-  uint32_t packetsReceived;
-  uint32_t packetsExpected;
-  PacketLossExpState state;
-}
-PacketLossStats;
+#define PACKET_LOSS_MAX_PACKETS 1000
 
 #define PrintDelimiter() otLogNotePlat("---------------------------");
 
