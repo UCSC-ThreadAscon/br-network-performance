@@ -84,7 +84,7 @@ otError createResource(otCoapResource *resource,
 
 void resourceDestructor(otCoapResource *resource)
 {
-  otLogNotePlat("Closing '%s'", resource->mUriPath);
+  otLogNotePlat("Closing '%s'.", resource->mUriPath);
   otCoapRemoveResource(OT_INSTANCE, resource);
   free(resource);
   return;
