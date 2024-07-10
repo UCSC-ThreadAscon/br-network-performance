@@ -67,25 +67,20 @@ menu "UCSC Thread-Ascon Border Router Network Performance Experiments"
           int "Pin to RCP SPI SCLK"
           default "12"
 
-    config OPENTHREAD_BR_AUTO_START
-        bool 'Enable the automatic start mode in Thread Border Router.'
-        default n
-        help
-            If enabled, The Thread Border Router will connect to Wi-Fi with pre-configured
-            SSID and PSK, and then form a Thread network automatically. Otherwise, user need
-            to configure Wi-Fi and Thread manually.
+      config PIN_TO_RCP_MISO
+          depends on OPENTHREAD_RADIO_SPINEL_SPI
+          int "Pin to RCP SPI MISO"
+          default "13"
 
-    config OPENTHREAD_BR_START_WEB
-        bool 'Enable the web server in Thread Border Router.'
-        select OPENTHREAD_COMMISSIONER
-        select OPENTHREAD_JOINER
-        default n
-        help
-            If enabled, a web server will be provided to configure and query Thread network via a Web GUI. 
+      config PIN_TO_RCP_MOSI
+          depends on OPENTHREAD_RADIO_SPINEL_SPI
+          int "Pin to RCP SPI MOSI"
+          default "11"
+  endmenu
 
   config OPENTHREAD_BR_AUTO_START
       bool 'Enable the automatic start mode in Thread Border Router.'
-      default False
+      default n
       help
           If enabled, The Thread Border Router will connect to Wi-Fi with pre-configured
           SSID and PSK, and then form a Thread network automatically. Otherwise, user need
@@ -95,7 +90,7 @@ menu "UCSC Thread-Ascon Border Router Network Performance Experiments"
       bool 'Enable the web server in Thread Border Router.'
       select OPENTHREAD_COMMISSIONER
       select OPENTHREAD_JOINER
-      default False
+      default n
       help
           If enabled, a web server will be provided to configure and query Thread network via a Web GUI. 
 
