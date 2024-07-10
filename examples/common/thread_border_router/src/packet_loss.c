@@ -7,9 +7,13 @@ void packetLossRequestHandler(void* aContext,
   static uint32_t received = 0;
   received += 1;
 
+  uint32_t packetsLost = PACKET_LOSS_MAX_PACKETS - received;
+  double packetLoss = ((double) packetsLost) / PACKET_LOSS_MAX_PACKETS;
+
   PrintDelimiter();
   printRequest(aMessage, aMessageInfo);
   otLogNotePlat("Received: %" PRIu32 " packets.", received);
+  otLogNotePlat("Packet Loss Ratio: %.3f", packetLoss);
   PrintDelimiter();
 
   /** Calling sendCoapResponse() will not affect the Non-Confirmable tests,
