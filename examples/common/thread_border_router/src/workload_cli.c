@@ -1,5 +1,6 @@
 #include "workload.h"
 #include "handler.h"
+#include "independent_variables.h"
 
 static otCoapResource *experimentRoute;
 
@@ -16,6 +17,7 @@ void startCoapServer(uint16_t port) {
 
 otError expServerStart(void* aContext, uint8_t argsLength, char* aArgs[]) 
 {
+  PrintDelimiter();
   checkConnection(OT_INSTANCE);
   startCoapServer(OT_DEFAULT_COAP_PORT);
 
@@ -38,6 +40,10 @@ otError expServerStart(void* aContext, uint8_t argsLength, char* aArgs[])
   createResource(experimentRoute, PacketLossNonConfirmable, "Packet Loss Non-Confirmable",
                  packetLossRequestHandler);
 #endif
+
+  printCipherSuite();
+  printTxPower();
+  PrintDelimiter();
   return OT_ERROR_NONE;
 }
 
