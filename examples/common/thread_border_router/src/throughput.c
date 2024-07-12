@@ -39,11 +39,10 @@ void throughputRequestHandler(void* aContext,
       double denominatorUs = timeDiffUs(startTime, endTime);
       double denominatorMs = US_TO_MS(denominatorUs);
       double denominatorSecs = US_TO_SECONDS(denominatorUs);
-      double numerator = totalBytes;
 
-      double throughputSecs = numerator / denominatorSecs;
-      double throughputMs = numerator / denominatorMs;
-      double throughputUs = numerator / denominatorUs;
+      double throughputSecs = totalBytes / denominatorSecs;
+      double throughputMs = totalBytes / denominatorMs;
+      double throughputUs = totalBytes / denominatorUs;
 
       PrintDelimiter();
       otLogNotePlat("The throughput is:");
