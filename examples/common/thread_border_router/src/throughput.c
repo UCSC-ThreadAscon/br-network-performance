@@ -17,7 +17,7 @@ void throughputRequestHandler(void* aContext,
       startTime = getTimevalNow();
     }
 
-#if EXPERIMENT_DEBUG
+#if CONFIG_EXPERIMENT_DEBUG
     otLogNotePlat("Received packet number %" PRIu32 ".", packetNum);
     printRequest(aMessage, aMessageInfo);
 #endif
