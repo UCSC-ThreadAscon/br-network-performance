@@ -24,7 +24,7 @@ otError getTxPower(int8_t *aPowerAddr)
       break;
 
     case OT_ERROR_NONE:
-      otLogNotePlat("Max TX Power is currently: %d.", (int) *aPowerAddr);
+      otLogNotePlat("Max TX Power is currently: %d dBm.", (int) *aPowerAddr);
       break;
 
     default:
