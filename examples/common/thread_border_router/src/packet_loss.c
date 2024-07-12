@@ -10,6 +10,10 @@ void packetLossRequestHandler(void* aContext,
   uint32_t packetsLost = PACKET_LOSS_MAX_PACKETS - received;
   double packetLoss = ((double) packetsLost) / PACKET_LOSS_MAX_PACKETS;
 
+  /** These print statements are not debugging statement, as these
+   *  print statement may be for the last packet. If so, these statements
+   *  report the packet loss for the experiment.
+   */
   PrintDelimiter();
   printRequest(aMessage, aMessageInfo);
   otLogNotePlat("Received: %" PRIu32 " packets.", received);

@@ -7,7 +7,7 @@
 #include "time_api.h"
 #include "assert.h"
 
-uint64_t toMicro(struct timeval time)
+uint64_t toUs(struct timeval time)
 {
   return (uint64_t)time.tv_sec * 1000000L + (uint64_t)time.tv_usec;
 }
@@ -42,9 +42,9 @@ uint64_t timeDiffMs(struct timeval tv1, struct timeval tv2)
   return (tv2.tv_sec - tv1.tv_sec) * 1000 + (tv2.tv_usec - tv1.tv_usec) / 1000;
 }
 
-uint64_t timeDiffMicro(struct timeval tv1, struct timeval tv2)
+uint64_t timeDiffUs(struct timeval tv1, struct timeval tv2)
 {
-  return toMicro(tv2) - toMicro(tv1);
+  return toUs(tv2) - toUs(tv1);
 }
 
 /**
@@ -53,7 +53,7 @@ uint64_t timeDiffMicro(struct timeval tv1, struct timeval tv2)
 */
 struct timeval randomTime(struct timeval tv1, struct timeval tv2)
 {
-  assert(toMicro(tv1) < toMicro(tv2));
+  assert(toUs(tv1) < toUs(tv2));
 
   struct timeval random;
   random.tv_sec = 0;
@@ -66,8 +66,8 @@ struct timeval randomTime(struct timeval tv1, struct timeval tv2)
       random.tv_sec = (esp_random() % durationSec) + secondAfterNow;
       random.tv_usec = 0;
   } 
-  while((toMicro(random) <= toMicro(tv1)) ||
-        (toMicro(random) >= toMicro(tv2)));
+  while((toUs(random) <= toUs(tv1)) ||
+        (toUs(random) >= toUs(tv2)));
 
   return random;
 }
@@ -79,8 +79,8 @@ int compareTimevals(const void* ptr1, const void* ptr2) {
   struct timeval timeval1 = *timevalPtr1;
   struct timeval timeval2 = *timevalPtr2;
 
-  uint64_t micro1 = toMicro(timeval1);
-  uint64_t micro2 = toMicro(timeval2);
+  uint64_t micro1 = toUs(timeval1);
+  uint64_t micro2 = toUs(timeval2);
 
   if (micro1 < micro2) {
     return -1;

@@ -1,4 +1,10 @@
 menu "UCSC Thread-Ascon Border Router Network Performance Experiments"
+  config EXPERIMENT_DEBUG
+    bool 'Toggle debugging print statements'
+    default n
+    help
+      Turns on the debugging print statements to print out information
+      about packets sent and received.
 
   menu "TX Power"
     config TX_POWER

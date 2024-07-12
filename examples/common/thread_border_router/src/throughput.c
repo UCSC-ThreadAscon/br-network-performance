@@ -17,8 +17,10 @@ void throughputRequestHandler(void* aContext,
       startTime = getTimevalNow();
     }
 
+#if EXPERIMENT_DEBUG
     otLogNotePlat("Received packet number %" PRIu32 ".", packetNum);
     printRequest(aMessage, aMessageInfo);
+#endif
 
     if (packetNum == SAMPLE_SIZE_PACKETS) {
       /** The throughput formula is:
@@ -30,7 +32,7 @@ void throughputRequestHandler(void* aContext,
        */
       endTime = getTimevalNow();
 
-      double denominatorUs = timeDiffMicro(startTime, endTime);
+      double denominatorUs = timeDiffUs(startTime, endTime);
       double denominatorMs = US_TO_MS(denominatorUs);
       double denominatorSecs = US_TO_SECONDS(denominatorUs);
       double numerator = SAMPLE_SIZE_PACKETS * PAYLOAD_SIZE_BYTES;
@@ -39,10 +41,13 @@ void throughputRequestHandler(void* aContext,
       double throughputMs = numerator / denominatorMs;
       double throughputUs = numerator / denominatorUs;
 
+      PrintDelimiter();
       otLogNotePlat("The throughput is:");
       otLogNotePlat("%.7f bytes/second, or", throughputSecs);
       otLogNotePlat("%.7f bytes/ms, or", throughputMs);
       otLogNotePlat("%.7f bytes/us.", throughputUs);
+      otLogNotePlat("Duration: %.7f seconds", denominatorSecs);
+      PrintDelimiter();
     }
 
     /** Calling sendCoapResponse() will not affect the Non-Confirmable tests,
