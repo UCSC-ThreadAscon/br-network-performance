@@ -1,5 +1,5 @@
 menu "UCSC Thread-Ascon Border Router Network Performance Experiments"
-  config CONFIG_EXPERIMENT_DEBUG
+  config EXPERIMENT_DEBUG
     bool 'Toggle debugging print statements'
     default n
     help

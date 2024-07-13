@@ -15,7 +15,9 @@ void packetLossRequestHandler(void* aContext,
    *  report the packet loss for the experiment.
    */
   PrintDelimiter();
+#if CONFIG_EXPERIMENT_DEBUG
   printRequest(aMessage, aMessageInfo);
+#endif
   otLogNotePlat("Received: %" PRIu32 " packets.", received);
   otLogNotePlat("Packet Loss Ratio: %.3f", packetLoss);
   PrintDelimiter();
