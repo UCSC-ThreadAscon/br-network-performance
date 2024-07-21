@@ -13,8 +13,13 @@ border_router_cipher_flag=$(get_cipher_flag $border_router_path)
 # Compare the encryption algorithm that is set in the sdkconfigs
 # of the RCP and Border Router. If they are different, throw an error.
 #
-if [[ "$rcp_cipher_flag" != "$border_router_cipher_flag" ]]
+if [[ "$rcp_cipher_flag" == "$border_router_cipher_flag" ]]
 then
+  cd $rcp_path && idf.py build
+  cd -
+  cd $border_router_path && idf.py build
+  cd -
+else
   echo "ERROR: RCP and Border Router having an encryption algorithm mismatch!"
   echo "RCP Encryption Flag:           ${rcp_cipher_flag}"
   echo "Border Router Encryption Flag: ${border_router_cipher_flag}"
