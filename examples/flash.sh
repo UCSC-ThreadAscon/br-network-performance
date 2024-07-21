@@ -23,17 +23,25 @@ do
   esac
 done
 
-echo "Border Router Port: $BORDER_ROUTER_PORT"
-echo "RCP Port: $RCP_PORT"
+function get_cipher_flag() {
+  cat $1/sdkconfig | grep CONFIG_THREAD_ASCON_CIPHER_SUITE | tail -c 2 | head -1
+}
+
+function flag_to_cipher_string () {
+  case $1 in
+    0) echo "AES" ;;
+    1) echo "No Encryption" ;;
+    2) echo "ASCON-128a (ESP32 Optimized)" ;;
+    3) echo "ASCON-128a (Reference)" ;;
+    4) echo "ASCON-128a (LibAscon)" ;;
+    5) echo "ASCON-128 (LibAscon)" ;;
+  esac
+}
 
 . $HOME/esp/esp-idf/export.sh > /dev/null
 
 rcp_path="$IDF_PATH/examples/openthread/ot_rcp"
 border_router_path="./basic_thread_border_router"
-
-function get_cipher_flag() {
-  cat $1/sdkconfig | grep CONFIG_THREAD_ASCON_CIPHER_SUITE | tail -c 2 | head -1
-}
 
 rcp_cipher_flag=$(get_cipher_flag $rcp_path)
 border_router_cipher_flag=$(get_cipher_flag $border_router_path)
@@ -49,7 +57,7 @@ then
   cd -
 else
   echo "ERROR: RCP and Border Router have an encryption algorithm mismatch!"
-  echo "RCP Encryption Flag:           ${rcp_cipher_flag}"
-  echo "Border Router Encryption Flag: ${border_router_cipher_flag}"
+  echo "RCP Encryption Flag:           $(flag_to_cipher_string $rcp_cipher_flag)"
+  echo "Border Router Encryption Flag: $(flag_to_cipher_string $border_router_cipher_flag)"
   exit 1
 fi
