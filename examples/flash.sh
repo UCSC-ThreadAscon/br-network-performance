@@ -38,6 +38,11 @@ function flag_to_cipher_string () {
   esac
 }
 
+function rcp_auto_update_flag() {
+  cat $1/sdkconfig | grep CONFIG_AUTO_UPDATE_RCP | tail -c 2 | head -1
+  
+}
+
 . $HOME/esp/esp-idf/export.sh > /dev/null
 
 rcp_path="$IDF_PATH/examples/openthread/ot_rcp"
@@ -45,6 +50,17 @@ border_router_path="$HOME/Desktop/Repositories/br_throughput/examples/basic_thre
 
 rcp_cipher_flag=$(get_cipher_flag $rcp_path)
 border_router_cipher_flag=$(get_cipher_flag $border_router_path)
+
+# Make sure RCP Auto Update is enabled on the Thread Border Router. If it is not,
+# then the built RCP will not be automatically flashed onto the Border Router.
+#
+rcp_auto_update_flag=$(cat $rcp_path/sdkconfig | grep CONFIG_AUTO_UPDATE_RCP | tail -c 2 | head -1)
+if [[ rcp_auto_update_flag != "y" ]]
+then
+  echo "ERROR: RCP Update is not enabled in the Thread Border Router."
+  echo "RCP Update Flag: $(cat $border_router_path/sdkconfig | grep CONFIG_AUTO_UPDATE_RCP)"
+  exit 1
+fi
 
 # Compare the encryption algorithm that is set in the sdkconfigs
 # of the RCP and Border Router. If they are different, throw an error.
