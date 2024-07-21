@@ -13,6 +13,37 @@
 #      specified in the command line arguments.
 #
 
+# The Bash script code that uses `getopt` to get the command line arguments all comes from:
+# https://dustymabe.com/2013/05/17/easy-getopt-for-a-bash-script/
+#
+options=$(getopt --long rcp_port: -- "$@" border_router_port: -- "$@")
+[ $? -eq 0 ] || { 
+    echo "Incorrect options provided"
+    exit 1
+}
+
+eval set -- "$options"
+while true; do
+  case "$1" in
+  --rcp_port)
+    shift
+    RCP_PORT=$1
+    ;;
+  --border_router_port)
+    shift
+    BORDER_ROUTER_PORT=$1
+    ;;
+  --)
+      shift
+      break
+      ;;
+  esac
+  shift
+done
+
+echo "Border Router Port: $BORDER_ROUTER_PORT"
+echo "RCP Port: $RCP_PORT"
+
 . $HOME/esp/esp-idf/export.sh > /dev/null
 
 rcp_path="$IDF_PATH/examples/openthread/ot_rcp"
@@ -32,7 +63,7 @@ if [[ "$rcp_cipher_flag" == "$border_router_cipher_flag" ]]
 then
   cd $rcp_path && idf.py build
   cd -
-  cd $border_router_path && idf.py build
+  cd $border_router_path && idf.py build flash monitor --port $BORDER_ROUTER_PORT
   cd -
 else
   echo "ERROR: RCP and Border Router having an encryption algorithm mismatch!"
