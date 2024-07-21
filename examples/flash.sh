@@ -48,7 +48,7 @@ then
   cd $border_router_path && idf.py build flash monitor --port $BORDER_ROUTER_PORT
   cd -
 else
-  echo "ERROR: RCP and Border Router having an encryption algorithm mismatch!"
+  echo "ERROR: RCP and Border Router have an encryption algorithm mismatch!"
   echo "RCP Encryption Flag:           ${rcp_cipher_flag}"
   echo "Border Router Encryption Flag: ${border_router_cipher_flag}"
   exit 1
