@@ -63,14 +63,8 @@ otError createResource(otCoapResource *resource,
     case ThroughputConfirmable:
       resource->mUriPath = THROUGHPUT_CONFIRMABLE_URI;
       break;
-    case ThroughputNonConfirmable:
-      resource->mUriPath = THROUGHPUT_NONCONFIRMABLE_URI;
-      break;
     case PacketLossConfirmable:
       resource->mUriPath = PACKET_LOSS_CONFIRMABLE_URI;
-      break;
-    case PacketLossNonConfirmable:
-      resource->mUriPath = PACKET_LOSS_NONCONFIRMABLE_URI;
       break;
     default:
       otLogCritPlat("Failed to create resource: test not defined.");

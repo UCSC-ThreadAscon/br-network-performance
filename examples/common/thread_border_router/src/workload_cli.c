@@ -30,14 +30,8 @@ otError expServerStart(void* aContext, uint8_t argsLength, char* aArgs[])
 #elif EXPERIMENT_THROUGHPUT_CONFIRMABLE
   createResource(experimentRoute, ThroughputConfirmable, "Throughput Confirmable",
                  throughputRequestHandler);
-#elif EXPERIMENT_THROUGHPUT_NONCONFIRMABLE
-  createResource(experimentRoute, ThroughputNonConfirmable, "Throughput Non-Confirmable",
-                 throughputRequestHandler);
 #elif EXPERIMENT_PACKET_LOSS_CONFIRMABLE
   createResource(experimentRoute, PacketLossConfirmable, "Packet Loss Confirmable",
-                 packetLossRequestHandler);
-#elif EXPERIMENT_PACKET_LOSS_NONCONFIRMABLE
-  createResource(experimentRoute, PacketLossNonConfirmable, "Packet Loss Non-Confirmable",
                  packetLossRequestHandler);
 #endif
 
