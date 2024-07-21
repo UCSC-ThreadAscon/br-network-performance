@@ -1,3 +1,18 @@
+# This Bash script does the following:
+#
+#   1. Sets BOTH the RCP and the Border Router to the encryption algorithm specified in
+#      the command line arguments.
+#
+#      Options are: AES, ASCON-128a, ASCON-128, No Encryption
+#
+#   2. Checks whether the RCP and Border Router are using the same encryption algorithm.
+#      If not, the script throws an error.
+#
+#   3. If both the RCP and Border Router are using the same encryption algorithm,
+#      the script will build and flash the program onto the border router to the USB Modem
+#      specified in the command line arguments.
+#
+
 . $HOME/esp/esp-idf/export.sh > /dev/null
 
 rcp_path="$IDF_PATH/examples/openthread/ot_rcp"
