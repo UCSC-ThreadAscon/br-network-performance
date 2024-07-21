@@ -13,32 +13,14 @@
 #      specified in the command line arguments.
 #
 
-# The Bash script code that uses `getopt` to get the command line arguments all comes from:
-# https://dustymabe.com/2013/05/17/easy-getopt-for-a-bash-script/
+# The Bash script code that uses `optarg` to get the command line arguments comes from:
+# https://www.baeldung.com/linux/use-command-line-arguments-in-bash-script#flags
 #
-options=$(getopt --long rcp_port: -- "$@" border_router_port: -- "$@")
-[ $? -eq 0 ] || { 
-    echo "Incorrect options provided"
-    exit 1
-}
-
-eval set -- "$options"
-while true; do
-  case "$1" in
-  --rcp_port)
-    shift
-    RCP_PORT=$1
-    ;;
-  --border_router_port)
-    shift
-    BORDER_ROUTER_PORT=$1
-    ;;
-  --)
-      shift
-      break
-      ;;
+while getopts b: arg
+do
+  case "${arg}" in
+    b) BORDER_ROUTER_PORT=${OPTARG};;
   esac
-  shift
 done
 
 echo "Border Router Port: $BORDER_ROUTER_PORT"
