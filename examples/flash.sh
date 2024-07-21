@@ -54,7 +54,7 @@ border_router_cipher_flag=$(get_cipher_flag $border_router_path)
 # Make sure RCP Auto Update is enabled on the Thread Border Router. If it is not,
 # then the built RCP will not be automatically flashed onto the Border Router.
 #
-rcp_auto_update_flag=$(cat $rcp_path/sdkconfig | grep CONFIG_AUTO_UPDATE_RCP | tail -c 2 | head -1)
+rcp_auto_update_flag=$(cat $border_router_path/sdkconfig | grep CONFIG_AUTO_UPDATE_RCP | tail -c 2 | head -1)
 if [[ rcp_auto_update_flag != "y" ]]
 then
   echo "ERROR: RCP Update is not enabled in the Thread Border Router."
