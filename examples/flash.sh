@@ -58,8 +58,9 @@ rcp_auto_update_flag=$(cat $border_router_path/sdkconfig | grep CONFIG_AUTO_UPDA
 if [[ "$rcp_auto_update_flag" != "y" ]]
 then
   echo "ERROR: $(cat $border_router_path/sdkconfig | grep CONFIG_AUTO_UPDATE_RCP)"
-  echo "RCP Update Flag: $rcp_auto_update_flag"
   exit 1
+else
+  echo "RCP Update Flag: $rcp_auto_update_flag"
 fi
 
 # Compare the encryption algorithm that is set in the sdkconfigs
