@@ -13,18 +13,6 @@ void handleError(otError error, char* desc)
   return;
 }
 
-void checkConnection(otInstance *aInstance) {
-  otDeviceRole currentRole;
-  do {
-    currentRole = otThreadGetDeviceRole(aInstance);
-    vTaskDelay(CONNECTION_WAIT_TIME_MS);
-  }
-  while(OT_DISCONNECTED(currentRole));
-
-  otLogNotePlat("OpenThread Connection has been established.");
-  return;
-}
-
 uint16_t getPayloadLength(const otMessage *aMessage) {
   return otMessageGetLength(aMessage) - otMessageGetOffset(aMessage);
 }

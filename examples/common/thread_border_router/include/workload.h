@@ -27,10 +27,8 @@
 #define MS_TO_TICKS(ms) ms / portTICK_PERIOD_MS
 #define MS_TO_MICRO(ms) ms * 1000
 
-#define CONNECTION_WAIT_TIME_MS MS_TO_TICKS(100)
 #define MAIN_WAIT_TIME MS_TO_TICKS(5000) // 5 seconds
 
-void checkConnection(otInstance *aInstance);
 void handleError(otError error, char* desc);
 
 #define HandleMessageError(desc, aMessage, error)       \
@@ -43,8 +41,7 @@ void handleError(otError error, char* desc);
 #define COAP_SOCK_PORT OT_DEFAULT_COAP_PORT
 
 /** ---- CoAP CLI API ---- */
-otError expServerStart(void* aContext, uint8_t argsLength, char* aArgs[]) ;
-otError expServerFree(void* aContext, uint8_t argsLength, char* aArgs[]);
+void expServerStartCallback(otChangedFlags changed_flags, void* ctx);
 
 /** ---- CoAP Common API ---- */
 uint16_t getPayloadLength(const otMessage *aMessage);
