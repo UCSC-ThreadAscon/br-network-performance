@@ -4,7 +4,7 @@
 
 static otCoapResource experimentRoute;
 
-inline bool connected(otDeviceRole role)
+static inline bool connected(otDeviceRole role)
 {
   return (role == OT_DEVICE_ROLE_CHILD)  ||
          (role == OT_DEVICE_ROLE_ROUTER) ||
