@@ -14,6 +14,8 @@ void throughputRequestHandler(void* aContext,
     totalBytes += getPayloadLength(aMessage);
 
     if (packetNum == 1) {
+      otLogNotePlat("Received the first packet! Starting throughput experiment trial.");
+
       EmptyMemory(&startTime, sizeof(struct timeval));
       EmptyMemory(&endTime, sizeof(struct timeval));
       startTime = getTimevalNow();
