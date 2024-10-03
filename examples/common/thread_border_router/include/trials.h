@@ -7,5 +7,4 @@
 #include <stdint.h>
 #include <inttypes.h>
 
-void startMain(void);
 void startNextTrial(void);

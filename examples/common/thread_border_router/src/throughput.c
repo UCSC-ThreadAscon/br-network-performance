@@ -1,4 +1,5 @@
 #include "handler.h"
+#include "trials.h"
 
 void throughputRequestHandler(void* aContext,
                               otMessage *aMessage,
@@ -14,7 +15,7 @@ void throughputRequestHandler(void* aContext,
     totalBytes += getPayloadLength(aMessage);
 
     if (packetNum == 1) {
-      otLogNotePlat("Received the first packet! Starting throughput experiment trial.");
+      otLogNotePlat("Received the first packet! Starting throughput experimental trial.");
 
       EmptyMemory(&startTime, sizeof(struct timeval));
       EmptyMemory(&endTime, sizeof(struct timeval));
@@ -54,11 +55,11 @@ void throughputRequestHandler(void* aContext,
       otLogNotePlat("Duration: %.7f seconds", denominatorSecs);
       otLogNotePlat("Total Received: %" PRIu32 " bytes", totalBytes);
       PrintDelimiter();
+
+      startNextTrial();
+      esp_restart();
     }
 
-    /** Calling sendCoapResponse() will not affect the Non-Confirmable tests,
-     *  since the function will only ACK if the request is a GET or Confirmable.
-     */
     sendCoapResponse(aMessage, aMessageInfo);
   }
   return;
