@@ -1,5 +1,4 @@
 #include "handler.h"
-#include "trials.h"
 
 void throughputRequestHandler(void* aContext,
                               otMessage *aMessage,
@@ -55,9 +54,6 @@ void throughputRequestHandler(void* aContext,
       otLogNotePlat("Duration: %.7f seconds", denominatorSecs);
       otLogNotePlat("Total Received: %" PRIu32 " bytes", totalBytes);
       PrintDelimiter();
-
-      startNextTrial();
-      esp_restart();
     }
 
     sendCoapResponse(aMessage, aMessageInfo);
