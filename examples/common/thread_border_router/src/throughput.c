@@ -1,14 +1,14 @@
 #include "handler.h"
 
+static uint32_t packetNum = 0;
+static uint32_t totalBytes = 0;
+static struct timeval startTime;
+static struct timeval endTime;
+
 void throughputRequestHandler(void* aContext,
                               otMessage *aMessage,
                               const otMessageInfo *aMessageInfo)
 {
-  static uint32_t packetNum = 0;
-  static uint32_t totalBytes = 0;
-  static struct timeval startTime;
-  static struct timeval endTime;
-
   if (packetNum < SAMPLE_SIZE_PACKETS) {
     packetNum += 1;
     totalBytes += getPayloadLength(aMessage);
