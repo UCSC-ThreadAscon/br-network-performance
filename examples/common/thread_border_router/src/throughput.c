@@ -23,7 +23,7 @@ void throughputRequestHandler(void* aContext,
 
 #if CONFIG_EXPERIMENT_DEBUG
     otLogNotePlat("Received packet number %" PRIu32 ".", packetNum);
-    otLogNotePlat("Recevied %" PRIu32 "bytes so far", totalBytes);
+    otLogNotePlat("Received %" PRIu32 "bytes so far", totalBytes);
     printRequest(aMessage, aMessageInfo);
 #endif
 
