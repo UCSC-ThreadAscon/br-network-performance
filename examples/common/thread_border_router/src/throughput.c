@@ -1,23 +1,30 @@
 #include "handler.h"
 
-static uint32_t packetNum = 0;
-static uint32_t totalBytes = 0;
+static uint32_t packetNum;
+static uint32_t totalBytes;
 static struct timeval startTime;
 static struct timeval endTime;
+
+static inline void resetStaticVariables()
+{
+  packetNum = 0;
+  totalBytes = 0;
+  EmptyMemory(&startTime, sizeof(struct timeval));
+  EmptyMemory(&endTime, sizeof(struct timeval));
+  return;
+}
 
 void throughputRequestHandler(void* aContext,
                               otMessage *aMessage,
                               const otMessageInfo *aMessageInfo)
 {
-  if (packetNum < SAMPLE_SIZE_PACKETS) {
+  if (packetNum < SAMPLE_SIZE_PACKETS)
+  {
     packetNum += 1;
     totalBytes += getPayloadLength(aMessage);
 
     if (packetNum == 1) {
-      otLogNotePlat("Received the first packet! Starting throughput experimental trial.");
-
-      EmptyMemory(&startTime, sizeof(struct timeval));
-      EmptyMemory(&endTime, sizeof(struct timeval));
+      otLogNotePlat("Received the first packet! Starting the Throughput Experimental Trial!");
       startTime = getTimevalNow();
     }
 
@@ -54,6 +61,8 @@ void throughputRequestHandler(void* aContext,
       otLogNotePlat("Duration: %.7f seconds", denominatorSecs);
       otLogNotePlat("Total Received: %" PRIu32 " bytes", totalBytes);
       PrintDelimiter();
+
+      resetStaticVariables();
     }
 
     sendCoapResponse(aMessage, aMessageInfo);
