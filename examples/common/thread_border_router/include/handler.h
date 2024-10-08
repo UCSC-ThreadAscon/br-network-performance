@@ -13,10 +13,6 @@
 #define PrintDelimiter() otLogNotePlat("<===========================================================>");
 #define PrintCritDelimiter() otLogCritPlat("<===========================================================>");
 
-void defaultRequestHandler(void* aContext,
-                           otMessage *aMessage,
-                           const otMessageInfo *aMessageInfo);
-
 void throughputRequestHandler(void* aContext,
                               otMessage *aMessage,
                               const otMessageInfo *aMessageInfo);
