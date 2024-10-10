@@ -18,7 +18,7 @@ void throughputRequestHandler(void* aContext,
                               otMessage *aMessage,
                               const otMessageInfo *aMessageInfo)
 {
-  if (packetNum < SAMPLE_SIZE_PACKETS)
+  if (packetNum < MAX_PACKETS)
   {
     packetNum += 1;
     totalBytes += getPayloadLength(aMessage);
@@ -34,11 +34,11 @@ void throughputRequestHandler(void* aContext,
     printRequest(aMessage, aMessageInfo);
 #endif
 
-    if (packetNum == SAMPLE_SIZE_PACKETS)
+    if (packetNum == MAX_PACKETS)
     {
       /** The throughput formula is:
        *
-       *      SAMPLE_SIZE_PACKETS * PAYLOAD_SIZE_BYTES
+       *      MAX_PACKETS * PAYLOAD_SIZE_BYTES
        *      -----------------------------------------   bytes/time
        *                    t_end - t_start
        * 
