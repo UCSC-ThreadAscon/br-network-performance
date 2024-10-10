@@ -46,6 +46,12 @@ otError expServerStart(void)
   return OT_ERROR_NONE;
 }
 
+
+/**
+ * The code for the Experimental Setup server  start callback function comes from
+ * the ESP-IDF OpenThread SED state change callback example function:
+ * https://github.com/UCSC-ThreadAscon/esp-idf/blob/master/examples/openthread/ot_sleepy_device/deep_sleep/main/esp_ot_sleepy_device.c#L73
+ */
 void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
 {
   OT_UNUSED_VARIABLE(ctx);

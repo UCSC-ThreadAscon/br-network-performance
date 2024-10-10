@@ -10,6 +10,8 @@
 */
 #include "handler.h"
 
+static otSockAddr socket;
+
 otMessage* createCoapMessage()
 {
   otMessage *newMessage = otCoapNewMessage(OT_INSTANCE, NULL);
@@ -134,5 +136,63 @@ void request(otSockAddr *socket,
 #if CONFIG_EXPERIMENT_DEBUG
   printMessageSent(socket, payloadSize, type);
 #endif
+  return;
+}
+
+void coapStart() {
+  otError error = otCoapStart(OT_INSTANCE, SOCK_PORT);
+
+  if (error != OT_ERROR_NONE) {
+    otLogCritPlat("Failed to start COAP socket.");
+  }
+  else {
+    otLogNotePlat("Started CoAP socket at port %d.", COAP_SERVER_PORT);
+  }
+  return;
+}
+
+otSockAddr createSocket(const char *recvAddrString)
+{
+  otSockAddr newSocket;
+  otIp6Address recvAddr;
+
+  EmptyMemory(&newSocket, sizeof(otSockAddr));
+  EmptyMemory(&recvAddr, sizeof(otIp6Address));
+
+  otIp6AddressFromString(recvAddrString, &recvAddr);
+
+  newSocket.mAddress = recvAddr;
+  newSocket.mPort = SOCK_PORT;
+
+  return newSocket;
+}
+
+static inline void InitSocket(otSockAddr *socketPtr, const char* serverAddr)
+{
+  EmptyMemory(socketPtr, sizeof(otSockAddr));
+  *socketPtr = createSocket(serverAddr);
+  return;
+}
+
+void tpConfirmableStartExperiment(otChangedFlags changed_flags, void* ctx)
+{
+  OT_UNUSED_VARIABLE(ctx);
+  static otDeviceRole s_previous_role = OT_DEVICE_ROLE_DISABLED;
+
+  otInstance* instance = esp_openthread_get_instance();
+  if (!instance)
+  {
+    return;
+  }
+
+  otDeviceRole role = otThreadGetDeviceRole(instance);
+  if ((connected(role) == true) && (connected(s_previous_role) == false))
+  {
+    /** Send a NON-Confirmable CoAP Request to the "/[experiment]-start"
+     *  route in the FTD to begin the Throughput or Packet Loss experiment.
+     */
+    coapStart();
+  }
+  s_previous_role = role;
   return;
 }
