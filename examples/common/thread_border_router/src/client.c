@@ -196,7 +196,7 @@ void tpConfirmableStartExperiment(otChangedFlags changed_flags, void* ctx)
      */
     coapStart();
     InitSocket(&socket, CONFIG_FTD_IP_ADDRESS);
-    request(socket, NULL, 0, THROUGHPUT_START_SERVER_URI,
+    request(&socket, NULL, 0, THROUGHPUT_START_SERVER_URI,
             NULL, OT_COAP_TYPE_NON_CONFIRMABLE);
   }
   s_previous_role = role;

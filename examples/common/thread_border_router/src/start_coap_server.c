@@ -4,13 +4,6 @@
 
 static otCoapResource experimentRoute;
 
-static inline bool connected(otDeviceRole role)
-{
-  return (role == OT_DEVICE_ROLE_CHILD)  ||
-         (role == OT_DEVICE_ROLE_ROUTER) ||
-         (role == OT_DEVICE_ROLE_LEADER);
-}
-
 void startCoapServer(uint16_t port)
 {
   otError error = otCoapStart(OT_INSTANCE, port);

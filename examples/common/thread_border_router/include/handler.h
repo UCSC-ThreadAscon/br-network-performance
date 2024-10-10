@@ -17,6 +17,13 @@
 #define PrintDelimiter() otLogNotePlat("<===========================================================>");
 #define PrintCritDelimiter() otLogCritPlat("<===========================================================>");
 
+static inline bool connected(otDeviceRole role)
+{
+  return (role == OT_DEVICE_ROLE_CHILD)  ||
+         (role == OT_DEVICE_ROLE_ROUTER) ||
+         (role == OT_DEVICE_ROLE_LEADER);
+}
+
 void throughputRequestHandler(void* aContext,
                               otMessage *aMessage,
                               const otMessageInfo *aMessageInfo);

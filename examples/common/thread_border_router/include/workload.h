@@ -22,8 +22,6 @@
 
 #define OT_INSTANCE esp_openthread_get_instance()
 
-#define OT_DISCONNECTED(role) (role == OT_DEVICE_ROLE_DISABLED) || (role == OT_DEVICE_ROLE_DETACHED)
-
 #define MS_TO_TICKS(ms) ms / portTICK_PERIOD_MS
 #define MS_TO_MICRO(ms) ms * 1000
 
