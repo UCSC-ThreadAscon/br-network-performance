@@ -7,8 +7,8 @@ void packetLossRequestHandler(void* aContext,
   static uint32_t received = 0;
   received += 1;
 
-  uint32_t packetsLost = PACKET_LOSS_MAX_PACKETS - received;
-  double packetLoss = ((double) packetsLost) / PACKET_LOSS_MAX_PACKETS;
+  uint32_t packetsLost = SAMPLE_SIZE_PACKETS - received;
+  double packetLoss = ((double) packetsLost) / SAMPLE_SIZE_PACKETS;
 
   /** These print statements are not debugging statement, as these
    *  print statement may be for the last packet. If so, these statements

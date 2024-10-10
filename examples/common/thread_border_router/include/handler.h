@@ -3,7 +3,7 @@
 #include "workload.h"
 #include "time_api.h"
 
-#define PACKET_LOSS_MAX_PACKETS 1000
+#define SAMPLE_SIZE_PACKETS 1000
 
 /**
  * I got the idea to use this specific print statement delimiter
