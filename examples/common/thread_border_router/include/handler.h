@@ -5,6 +5,10 @@
 
 #define MAX_PACKETS 1000
 
+#define THROUGHPUT_START_SERVER_URI "throughput-start"
+#define SOCK_PORT 5684
+#define START_SERVER_PORT 5684
+
 /**
  * I got the idea to use this specific print statement delimiter
  * from the ESP Thread Border Router SDK source code:
