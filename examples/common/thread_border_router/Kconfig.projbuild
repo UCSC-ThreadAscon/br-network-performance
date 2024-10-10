@@ -16,6 +16,11 @@ menu "UCSC Thread-Ascon Border Router Network Performance Experiments"
           The recommended TX power values are 20 dBm, 9 dBm, 0 dBm, and -25 dBm.
   endmenu
 
+  config FTD_IP_ADDRESS
+    string 'IP address of the FTD.'
+    help
+        Sets the IPv6 address of the FTD that will send CoAP requests to the border router.
+
   menu "Network Performance Experiment Settings"
     config EXPERIMENT
       int 'The network performance experiment to run.'
