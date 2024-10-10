@@ -146,7 +146,7 @@ void coapStart() {
     otLogCritPlat("Failed to start COAP socket.");
   }
   else {
-    otLogNotePlat("Started CoAP socket at port %d.", COAP_SERVER_PORT);
+    otLogNotePlat("Started CoAP socket at port %d.", SOCK_PORT);
   }
   return;
 }
@@ -190,8 +190,14 @@ void tpConfirmableStartExperiment(otChangedFlags changed_flags, void* ctx)
   {
     /** Send a NON-Confirmable CoAP Request to the "/[experiment]-start"
      *  route in the FTD to begin the Throughput or Packet Loss experiment.
+     *
+     *  The payload will be empty. The purpose of the request is to tell
+     *  the FTD to start sending the Throughput or Packet Loss experiment packets.
      */
     coapStart();
+    InitSocket(&socket, CONFIG_FTD_IP_ADDRESS);
+    request(socket, NULL, 0, THROUGHPUT_START_SERVER_URI,
+            NULL, OT_COAP_TYPE_NON_CONFIRMABLE);
   }
   s_previous_role = role;
   return;
