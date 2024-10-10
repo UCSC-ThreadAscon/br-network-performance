@@ -24,6 +24,9 @@ static inline bool connected(otDeviceRole role)
          (role == OT_DEVICE_ROLE_LEADER);
 }
 
+void expServerStartCallback(otChangedFlags changed_flags, void* ctx);
+void startExperimentCallback(otChangedFlags changed_flags, void* ctx);
+
 void throughputRequestHandler(void* aContext,
                               otMessage *aMessage,
                               const otMessageInfo *aMessageInfo);

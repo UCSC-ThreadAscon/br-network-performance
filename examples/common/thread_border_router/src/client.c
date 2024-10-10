@@ -174,7 +174,7 @@ static inline void InitSocket(otSockAddr *socketPtr, const char* serverAddr)
   return;
 }
 
-void tpConfirmableStartExperiment(otChangedFlags changed_flags, void* ctx)
+void startExperimentCallback(otChangedFlags changed_flags, void* ctx)
 {
   OT_UNUSED_VARIABLE(ctx);
   static otDeviceRole s_previous_role = OT_DEVICE_ROLE_DISABLED;
