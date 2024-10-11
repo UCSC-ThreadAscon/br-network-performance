@@ -193,12 +193,10 @@ static void ot_task_worker(void *ctx)
     setTxPower();
 
     /**
-     * Set up the callback for creating the CoAP servers, and starting
-     * the Throughput or Packet Loss experiment, the moment the border
-     * router attaches to the a Thread network.
+     * Set up the callback for starting the Throughput or Packet Loss experiment
+     * the moment the border router attaches to the a Thread network.
      */
     otSetStateChangedCallback(esp_openthread_get_instance(), expServerStartCallback, NULL);
-    otSetStateChangedCallback(esp_openthread_get_instance(), startExperimentCallback, NULL);
 
     // Run the main loop
     esp_openthread_launch_mainloop();
