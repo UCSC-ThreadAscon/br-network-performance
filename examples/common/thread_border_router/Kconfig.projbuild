@@ -25,11 +25,6 @@ menu "UCSC Thread-Ascon Border Router Network Performance Experiments"
         Set '0' to not run any experiment (primarily used for debugging purposes).
         Set '1' to enable the route for the Throughput Confirmable experiment.
         Set '2' to enable the route for the Packet Loss Confirmable experiment.
-
-    config FTD_IP_ADDRESS
-      string 'IP address of the FTD.'
-      help
-          Sets the IPv6 address of the FTD that will send CoAP requests to the border router.
   endmenu
 
   choice ESP_BR_BOARD_TYPE
