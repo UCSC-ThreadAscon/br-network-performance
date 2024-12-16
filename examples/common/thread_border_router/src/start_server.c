@@ -23,7 +23,6 @@ void expStartUdpServer(void)
 
 void expStartCoapServer(void) 
 {
-  PrintDelimiter();
   startCoapServer(OT_DEFAULT_COAP_PORT);
 
 #if EXPERIMENT_THROUGHPUT_CONFIRMABLE
@@ -33,10 +32,6 @@ void expStartCoapServer(void)
   createResource(&experimentRoute, PacketLossConfirmable, "Packet Loss Confirmable",
                  packetLossRequestHandler);
 #endif
-
-  printCipherSuite();
-  printTxPower();
-  PrintDelimiter();
   return;
 }
 
@@ -60,6 +55,8 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
   otDeviceRole role = otThreadGetDeviceRole(instance);
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
+    PrintDelimiter();
+
 #if NO_EXPERIMENT
   otLogNotePlat("No experiments to set up.");
   otLogNotePlat("Edit the EXPERIMENT flag in `idf.py menuconfig` to choose which");
@@ -68,6 +65,10 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
     expStartCoapServer();
 #elif EXPERIMENT_THROUGHPUT_UDP
 #endif
+
+  printCipherSuite();
+  printTxPower();
+  PrintDelimiter();
   }
   s_previous_role = role;
   return;
