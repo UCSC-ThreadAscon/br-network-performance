@@ -1,4 +1,4 @@
-#include "main.h"
+#include "border_router_launch.h"
 
 #define NVS_NAMESPACE "nvs_trials"
 #define NVS_TRIALS "trials"
