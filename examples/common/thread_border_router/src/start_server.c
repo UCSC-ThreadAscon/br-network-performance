@@ -18,7 +18,7 @@ void startCoapServer(uint16_t port)
 
 void expStartUdpServer(void)
 {
-  
+  return;
 }
 
 void expStartCoapServer(void) 

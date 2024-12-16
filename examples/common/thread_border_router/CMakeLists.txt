@@ -4,7 +4,7 @@ if(CONFIG_OPENTHREAD_CLI_OTA)
     list(APPEND requires esp_http_client esp_br_http_ota)
 endif()
 
-idf_component_register(SRC_DIRS "src"
+idf_component_register(SRC_DIRS "src" "src/coap"
                        INCLUDE_DIRS "include"
                        REQUIRES "${requires}"
 )
