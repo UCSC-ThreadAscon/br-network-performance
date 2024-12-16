@@ -51,7 +51,7 @@ void sendCoapResponse(otMessage *aRequest, const otMessageInfo *aRequestInfo)
 }
 
 otError createResource(otCoapResource *resource,
-                       Test test,
+                       Experiment experiment,
                        const char *resourceName,
                        otCoapRequestHandler requestHandler)
 {
@@ -59,7 +59,7 @@ otError createResource(otCoapResource *resource,
   resource->mContext = NULL;
   resource->mHandler = requestHandler;
 
-  switch (test) {
+  switch (experiment) {
     case ThroughputConfirmable:
       resource->mUriPath = THROUGHPUT_CONFIRMABLE_URI;
       break;
@@ -67,7 +67,7 @@ otError createResource(otCoapResource *resource,
       resource->mUriPath = PACKET_LOSS_CONFIRMABLE_URI;
       break;
     default:
-      otLogCritPlat("Failed to create resource: test not defined.");
+      otLogCritPlat("Failed to create CoAP resource: invalid experiment.");
       resource->mUriPath = "";
   }
 

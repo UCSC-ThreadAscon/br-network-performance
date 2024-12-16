@@ -31,6 +31,7 @@ otError expServerStart(void)
 #elif EXPERIMENT_PACKET_LOSS_CONFIRMABLE
   createResource(&experimentRoute, PacketLossConfirmable, "Packet Loss Confirmable",
                  packetLossRequestHandler);
+#elif EXPERIMENT_THROUGHPUT_UDP
 #endif
 
   printCipherSuite();
