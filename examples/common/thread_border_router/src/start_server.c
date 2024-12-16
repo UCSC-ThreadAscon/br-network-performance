@@ -16,28 +16,28 @@ void startCoapServer(uint16_t port)
   return;
 }
 
-otError expServerStart(void) 
+void expStartUdpServer(void)
+{
+  
+}
+
+void expStartCoapServer(void) 
 {
   PrintDelimiter();
   startCoapServer(OT_DEFAULT_COAP_PORT);
 
-#if NO_EXPERIMENT
-  otLogNotePlat("No experiments to set up.");
-  otLogNotePlat("Edit the EXPERIMENT flag in `idf.py menuconfig` to choose which");
-  otLogNotePlat("experiment the CoAP server will run.");
-#elif EXPERIMENT_THROUGHPUT_CONFIRMABLE
+#if EXPERIMENT_THROUGHPUT_CONFIRMABLE
   createResource(&experimentRoute, ThroughputConfirmable, "Throughput Confirmable",
                  throughputRequestHandler);
 #elif EXPERIMENT_PACKET_LOSS_CONFIRMABLE
   createResource(&experimentRoute, PacketLossConfirmable, "Packet Loss Confirmable",
                  packetLossRequestHandler);
-#elif EXPERIMENT_THROUGHPUT_UDP
 #endif
 
   printCipherSuite();
   printTxPower();
   PrintDelimiter();
-  return OT_ERROR_NONE;
+  return;
 }
 
 
@@ -60,9 +60,14 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
   otDeviceRole role = otThreadGetDeviceRole(instance);
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
-    /** Start the CoAP server for the Throughput or Packet Loss experiment.
-     */
-    expServerStart();
+#if NO_EXPERIMENT
+  otLogNotePlat("No experiments to set up.");
+  otLogNotePlat("Edit the EXPERIMENT flag in `idf.py menuconfig` to choose which");
+  otLogNotePlat("experiment the CoAP server will run.");
+#elif (EXPERIMENT_THROUGHPUT_CONFIRMABLE || EXPERIMENT_PACKET_LOSS_CONFIRMABLE)
+    expStartCoapServer();
+#elif EXPERIMENT_THROUGHPUT_UDP
+#endif
   }
   s_previous_role = role;
   return;
