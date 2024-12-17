@@ -56,3 +56,5 @@ otError createResource(otCoapResource *resource,
 void resourceDestructor(otCoapResource *resource);
 void sendCoapResponse(otMessage *aRequest, const otMessageInfo *aRequestInfo);
 void printRequest(otMessage *aMessage, const otMessageInfo *aMessageInfo);
+
+#define UDP_SOCK_PORT 12345

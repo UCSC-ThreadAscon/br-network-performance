@@ -3,7 +3,9 @@
 #include "independent_variables.h"
 
 static otCoapResource experimentRoute;
+
 static otUdpSocket udpSocket;
+static otSockAddr udpSockAddr;
 
 void startCoapServer(uint16_t port)
 {
@@ -21,7 +23,13 @@ void expStartUdpServer(void)
 {
   EmptyMemory(&udpSocket, sizeof(otUdpSocket));
   handleError(otUdpOpen(OT_INSTANCE, &udpSocket, NULL, NULL), "Failed to open UDP socket.");
+
+  udpSockAddr.mAddress = *otThreadGetMeshLocalEid(OT_INSTANCE);
+  udpSockAddr.mPort = UDP_SOCK_PORT;
+  handleError(otUdpBind(OT_INSTANCE, &udpSocket, &udpSockAddr, OT_NETIF_THREAD),
+              "Failed to set up UDP server.");
   
+  otLogNotePlat("Created UDP server at port %d.", UDP_SOCK_PORT);
   return;
 }
 
@@ -66,8 +74,9 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
   otLogNotePlat("Edit the EXPERIMENT flag in `idf.py menuconfig` to choose which");
   otLogNotePlat("experiment the CoAP server will run.");
 #elif (EXPERIMENT_THROUGHPUT_CONFIRMABLE || EXPERIMENT_PACKET_LOSS_CONFIRMABLE)
-    expStartCoapServer();
+  expStartCoapServer();
 #elif EXPERIMENT_THROUGHPUT_UDP
+  expStartUdpServer();  
 #endif
 
   printCipherSuite();
