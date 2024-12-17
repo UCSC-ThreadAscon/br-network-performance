@@ -22,7 +22,14 @@ void startCoapServer(uint16_t port)
 void expStartUdpServer(void)
 {
   EmptyMemory(&udpSocket, sizeof(otUdpSocket));
-  handleError(otUdpOpen(OT_INSTANCE, &udpSocket, NULL, NULL), "Failed to open UDP socket.");
+
+  otUdpReceive callback = NULL;
+#if EXPERIMENT_THROUGHPUT_UDP
+  callback = tpUdpRequestHandler;
+#endif
+
+  handleError(otUdpOpen(OT_INSTANCE, &udpSocket, callback, NULL),
+              "Failed to open UDP socket.");
 
   udpSockAddr.mAddress = *otThreadGetMeshLocalEid(OT_INSTANCE);
   udpSockAddr.mPort = UDP_SOCK_PORT;
