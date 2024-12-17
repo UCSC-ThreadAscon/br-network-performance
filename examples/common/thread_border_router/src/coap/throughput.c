@@ -1,7 +1,5 @@
 #include "handler.h"
 
-# define THROUGHPUT_EXP_PAYLOAD_SIZE 4
-
 void tpConRequestHandler(void* aContext,
                          otMessage *aMessage,
                          const otMessageInfo *aMessageInfo)
@@ -11,7 +9,7 @@ void tpConRequestHandler(void* aContext,
   /** Make sure that all packets that are sent in the throughput
    *  experiments have a payload of exactly 4 bytes.
    */
-  assert(payloadLength == THROUGHPUT_EXP_PAYLOAD_SIZE);
+  assert(payloadLength == PAYLOAD_SIZE_BYTES);
 
   sendCoapResponse(aMessage, aMessageInfo);
   return;

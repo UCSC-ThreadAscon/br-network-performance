@@ -1,4 +1,5 @@
-#include "border_router_launch.h"
+#include "workload.h"
+#include "nvs_flash.h"
 
 #define NVS_NAMESPACE "nvs_trials"
 #define NVS_TRIALS "trials"

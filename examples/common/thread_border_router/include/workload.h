@@ -41,6 +41,9 @@
     return;                                             \
   }                                                     \
 
+void resetTrials(void);
+void startNextTrial(void);
+
 #define COAP_SOCK_PORT OT_DEFAULT_COAP_PORT
 
 /** ---- CoAP Common API ---- */
