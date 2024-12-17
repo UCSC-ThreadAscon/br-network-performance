@@ -14,8 +14,8 @@ void tpUdpRequestHandler(void *aContext,
 {
   uint16_t payloadLength = getPayloadLength(aMessage);
   assert(payloadLength == PAYLOAD_SIZE_BYTES);
-#if EXPERIMENT_DEBUG
-  otLogNotePlat("Received UDP packet of %" PRIu16 " bytes.", payloadLength);
+#if CONFIG_EXPERIMENT_DEBUG
+  otLogNotePlat("Received a UDP packet with a length of %" PRIu16 " bytes.", payloadLength);
 #endif
 
   if (packetsRecv == 0)
