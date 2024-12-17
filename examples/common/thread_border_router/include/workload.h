@@ -14,7 +14,8 @@
 #include "openthread/instance.h"
 #include "openthread/logging.h"
 #include "openthread/tasklet.h"
-#include "openthread/coap_secure.h"
+#include "openthread/coap.h"
+#include "openthread/udp.h"
 
 #include <stdint.h>
 #include <inttypes.h>
@@ -27,7 +28,11 @@
 
 #define MAIN_WAIT_TIME MS_TO_TICKS(5000) // 5 seconds
 
-void handleError(otError error, char* desc);
+#define handleError(error, desc)                                        \
+  if (error != OT_ERROR_NONE) {                                         \
+    otLogCritPlat("%s error: %s", desc, otThreadErrorToString(error));  \
+    return;                                                             \
+  }                                                                     \
 
 #define HandleMessageError(desc, aMessage, error)       \
   if (error != OT_ERROR_NONE) {                         \

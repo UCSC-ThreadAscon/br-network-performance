@@ -3,6 +3,7 @@
 #include "independent_variables.h"
 
 static otCoapResource experimentRoute;
+static otUdpSocket udpSocket;
 
 void startCoapServer(uint16_t port)
 {
@@ -18,6 +19,9 @@ void startCoapServer(uint16_t port)
 
 void expStartUdpServer(void)
 {
+  EmptyMemory(&udpSocket, sizeof(otUdpSocket));
+  handleError(otUdpOpen(OT_INSTANCE, &udpSocket, NULL, NULL), "Failed to open UDP socket.");
+  
   return;
 }
 
