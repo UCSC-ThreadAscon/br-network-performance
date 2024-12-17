@@ -2,10 +2,12 @@
 #include "handler.h"
 #include "independent_variables.h"
 
+#if (EXPERIMENT_THROUGHPUT_CONFIRMABLE || EXPERIMENT_PACKET_LOSS_CONFIRMABLE)
 static otCoapResource experimentRoute;
-
+#elif EXPERIMENT_THROUGHPUT_UDP
 static otUdpSocket udpSocket;
 static otSockAddr udpSockAddr;
+#endif
 
 void startCoapServer(uint16_t port)
 {
