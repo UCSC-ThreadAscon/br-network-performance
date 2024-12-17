@@ -21,12 +21,11 @@ static inline bool connected(otDeviceRole role)
 }
 
 void expServerStartCallback(otChangedFlags changed_flags, void* ctx);
-void startExperimentCallback(otChangedFlags changed_flags, void* ctx);
 
-void throughputRequestHandler(void* aContext,
-                              otMessage *aMessage,
-                              const otMessageInfo *aMessageInfo);
+void tpConRequestHandler(void* aContext,
+                         otMessage *aMessage,
+                         const otMessageInfo *aMessageInfo);
 
-void packetLossRequestHandler(void* aContext,
-                              otMessage *aMessage,
-                              const otMessageInfo *aMessageInfo);
+void plConRequestHandler(void* aContext,
+                         otMessage *aMessage,
+                         const otMessageInfo *aMessageInfo);

@@ -1,6 +1,6 @@
 #include "handler.h"
 
-void packetLossRequestHandler(void* aContext,
+void plConRequestHandler(void* aContext,
                               otMessage *aMessage,
                               const otMessageInfo *aMessageInfo)
 {

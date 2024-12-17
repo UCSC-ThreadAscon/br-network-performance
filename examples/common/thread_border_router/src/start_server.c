@@ -39,10 +39,10 @@ void expStartCoapServer(void)
 
 #if EXPERIMENT_THROUGHPUT_CONFIRMABLE
   createResource(&experimentRoute, ThroughputConfirmable, "Throughput Confirmable",
-                 throughputRequestHandler);
+                 tpConRequestHandler);
 #elif EXPERIMENT_PACKET_LOSS_CONFIRMABLE
   createResource(&experimentRoute, PacketLossConfirmable, "Packet Loss Confirmable",
-                 packetLossRequestHandler);
+                 plConRequestHandler);
 #endif
   return;
 }
