@@ -21,14 +21,13 @@ void startCoapServer(uint16_t port)
   return;
 }
 
+#if EXPERIMENT_THROUGHPUT_UDP
 void expStartUdpServer(void)
 {
   EmptyMemory(&udpSocket, sizeof(otUdpSocket));
 
   otUdpReceive callback = NULL;
-#if EXPERIMENT_THROUGHPUT_UDP
   callback = tpUdpRequestHandler;
-#endif
 
   handleError(otUdpOpen(OT_INSTANCE, &udpSocket, callback, NULL),
               "Failed to open UDP socket.");
@@ -41,6 +40,7 @@ void expStartUdpServer(void)
   otLogNotePlat("Created UDP server at port %d.", UDP_SOCK_PORT);
   return;
 }
+#endif
 
 void expStartCoapServer(void) 
 {
