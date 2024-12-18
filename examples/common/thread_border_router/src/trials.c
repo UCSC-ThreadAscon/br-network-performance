@@ -21,7 +21,6 @@
 void resetTrials(void)
 {
   esp_reset_reason_t reason = esp_reset_reason();
-  otLogNotePlat("Reset Reason: %d", (int) reason);
 
   if (reason == ESP_RST_USB)
   {
