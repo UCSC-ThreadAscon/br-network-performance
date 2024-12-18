@@ -22,7 +22,7 @@ void resetTrials(void)
 {
   esp_reset_reason_t reason = esp_reset_reason();
 
-  if (reason == ESP_RST_USB)
+  if (reason != ESP_RST_SW)
   {
     otLogNotePlat("%s %s", "The device has just powered on by a USB peripheral.",
                   "Going to reset the number of experiment trials to 0.");
