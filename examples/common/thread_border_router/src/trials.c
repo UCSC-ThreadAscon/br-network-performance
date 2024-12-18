@@ -1,5 +1,4 @@
-#include "workload.h"
-#include "nvs_flash.h"
+#include "main.h"
 
 #define NVS_NAMESPACE "nvs_trials"
 #define NVS_TRIALS "trials"
@@ -21,10 +20,11 @@
 void resetTrials(void)
 {
   esp_reset_reason_t reason = esp_reset_reason();
+  otLogNotePlat("Reset Reason: %d", (int) reason);
 
-  if (reason != ESP_RST_SW)
+  if (reason == ESP_RST_USB)
   {
-    otLogNotePlat("%s %s", "The device has just powered on.",
+    otLogNotePlat("%s %s", "The device has just powered on by a USB peripheral.",
                   "Going to reset the number of experiment trials to 0.");
 
     nvs_handle_t handle = 0;
