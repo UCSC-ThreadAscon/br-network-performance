@@ -24,7 +24,7 @@ void resetTrials(void)
 
   if (reason != ESP_RST_SW)
   {
-    otLogNotePlat("%s %s", "The device has just powered on by a USB peripheral.",
+    otLogNotePlat("%s %s", "The device has just powered on.",
                   "Going to reset the number of experiment trials to 0.");
 
     nvs_handle_t handle = 0;
