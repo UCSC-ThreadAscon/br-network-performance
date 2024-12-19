@@ -24,32 +24,20 @@ void startCoapServer(uint16_t port)
 #if EXPERIMENT_THROUGHPUT_UDP
 void expStartUdpServer(otDeviceRole role)
 {
-  if (role != OT_DEVICE_ROLE_LEADER)
-  {
-    EmptyMemory(&udpSocket, sizeof(otUdpSocket));
+  EmptyMemory(&udpSocket, sizeof(otUdpSocket));
 
-    otUdpReceive callback = NULL;
-    callback = tpUdpRequestHandler;
+  otUdpReceive callback = NULL;
+  callback = tpUdpRequestHandler;
 
-    handleError(otUdpOpen(OT_INSTANCE, &udpSocket, callback, NULL),
-                "Failed to open UDP socket.");
+  handleError(otUdpOpen(OT_INSTANCE, &udpSocket, callback, NULL),
+              "Failed to open UDP socket.");
 
-    udpSockAddr.mAddress = *otThreadGetMeshLocalEid(OT_INSTANCE);
-    udpSockAddr.mPort = UDP_SOCK_PORT;
-    handleError(otUdpBind(OT_INSTANCE, &udpSocket, &udpSockAddr, OT_NETIF_THREAD),
-                "Failed to set up UDP server.");
-    
-    otLogNotePlat("Created UDP server at port %d.", UDP_SOCK_PORT);
-  }
-  else
-  {
-    PrintCritDelimiter();
-    otLogCritPlat("Border Router failed to attach to the Thread network lead by the FTD.");
-    otLogCritPlat("Going to restart the current experiment trial.");
-    PrintCritDelimiter();
-
-    esp_restart();
-  }
+  udpSockAddr.mAddress = *otThreadGetMeshLocalEid(OT_INSTANCE);
+  udpSockAddr.mPort = UDP_SOCK_PORT;
+  handleError(otUdpBind(OT_INSTANCE, &udpSocket, &udpSockAddr, OT_NETIF_THREAD),
+              "Failed to set up UDP server.");
+  
+  otLogNotePlat("Created UDP server at port %d.", UDP_SOCK_PORT);
   return;
 }
 #endif
