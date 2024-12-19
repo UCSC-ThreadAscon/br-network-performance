@@ -21,7 +21,7 @@ void startCoapServer(uint16_t port)
   return;
 }
 
-// #if EXPERIMENT_THROUGHPUT_UDP
+#if EXPERIMENT_THROUGHPUT_UDP
 void expStartUdpServer(otDeviceRole role)
 {
   if (role != OT_DEVICE_ROLE_LEADER)
@@ -52,7 +52,7 @@ void expStartUdpServer(otDeviceRole role)
   }
   return;
 }
-// #endif
+#endif
 
 void expStartCoapServer(void) 
 {
