@@ -47,8 +47,6 @@ void startNextTrial(void);
 #define COAP_SOCK_PORT OT_DEFAULT_COAP_PORT
 
 /** ---- CoAP Common API ---- */
-void coapStart();
-otSockAddr createSockAddr(const char *recvAddrString);
 uint16_t getPayloadLength(const otMessage *aMessage);
 void getPayload(const otMessage *aMessage, void* buffer);
 
@@ -62,20 +60,4 @@ void resourceDestructor(otCoapResource *resource);
 void sendCoapResponse(otMessage *aRequest, const otMessageInfo *aRequestInfo);
 void printRequest(otMessage *aMessage, const otMessageInfo *aMessageInfo);
 
-/* ---- CoAP Client API ---- */
-void request(otSockAddr *sockAddr,
-             void *payload,
-             size_t payloadSize,
-             const char *uri,
-             otCoapResponseHandler responseCallback,
-             otCoapType type);
-
-void addPayload(otMessage *aRequest, void *payload, size_t payloadSize);
-
-/* ---- UDP Experiments API ---- */
 #define UDP_SOCK_PORT 12345
-
-void tpUdpStartServer(void *aContext,
-                      otMessage *aMessage,
-                      const otMessageInfo *aMessageInfo,
-                      otError aResult);

@@ -1,35 +1,69 @@
 #include "workload.h"
 #include "handler.h"
 #include "independent_variables.h"
-#include "sockAddr.h"
 
+#if (EXPERIMENT_THROUGHPUT_CONFIRMABLE || EXPERIMENT_PACKET_LOSS_CONFIRMABLE)
 static otCoapResource experimentRoute;
-static otSockAddr udpStartSockAddr;
+#elif EXPERIMENT_THROUGHPUT_UDP
+static otUdpSocket udpSocket;
+static otSockAddr udpSockAddr;
+#endif
 
-void expStartUdpExperiment(otDeviceRole role)
+void startCoapServer(uint16_t port)
 {
-  InitSockAddr(&udpStartSockAddr, FTD_IP_ADDRESS);
-  bool udpSendFlag = true;
+  otError error = otCoapStart(OT_INSTANCE, port);
 
-  PrintDelimiter();
-  otLogNotePlat("Notifying FTD to start the Throughput UDP experiment trial.");
-  PrintDelimiter();
-
-  request(&udpStartSockAddr, &udpSendFlag, sizeof(bool), "throughput-udp",
-          tpUdpStartServer, OT_COAP_TYPE_CONFIRMABLE);
+  if (error != OT_ERROR_NONE) {
+    otLogCritPlat("Failed to start COAP server.");
+  } else {
+    otLogNotePlat("Started CoAP server at port %d.", port);
+  }
   return;
 }
 
+#if EXPERIMENT_THROUGHPUT_UDP
+void expStartUdpServer(otDeviceRole role)
+{
+  if (role != OT_DEVICE_ROLE_LEADER)
+  {
+    EmptyMemory(&udpSocket, sizeof(otUdpSocket));
+
+    otUdpReceive callback = NULL;
+    callback = tpUdpRequestHandler;
+
+    handleError(otUdpOpen(OT_INSTANCE, &udpSocket, callback, NULL),
+                "Failed to open UDP socket.");
+
+    udpSockAddr.mAddress = *otThreadGetMeshLocalEid(OT_INSTANCE);
+    udpSockAddr.mPort = UDP_SOCK_PORT;
+    handleError(otUdpBind(OT_INSTANCE, &udpSocket, &udpSockAddr, OT_NETIF_THREAD),
+                "Failed to set up UDP server.");
+    
+    otLogNotePlat("Created UDP server at port %d.", UDP_SOCK_PORT);
+  }
+  else
+  {
+    PrintCritDelimiter();
+    otLogCritPlat("Border Router failed to attach to the Thread network lead by the FTD.");
+    otLogCritPlat("Going to restart the current experiment trial.");
+    PrintCritDelimiter();
+
+    esp_restart();
+  }
+  return;
+}
+#endif
+
 void expStartCoapServer(void) 
 {
+  startCoapServer(OT_DEFAULT_COAP_PORT);
+
 #if EXPERIMENT_THROUGHPUT_CONFIRMABLE
   createResource(&experimentRoute, ThroughputConfirmable, "Throughput Confirmable",
                  tpConRequestHandler);
 #elif EXPERIMENT_PACKET_LOSS_CONFIRMABLE
   createResource(&experimentRoute, PacketLossConfirmable, "Packet Loss Confirmable",
                  plConRequestHandler);
-#else
-    OT_UNUSED_VARIABLE(experimentRoute);
 #endif
   return;
 }
@@ -54,7 +88,6 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
   otDeviceRole role = otThreadGetDeviceRole(instance);
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
-    coapStart();
     PrintDelimiter();
 
 #if NO_EXPERIMENT
@@ -64,7 +97,7 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
 #elif (EXPERIMENT_THROUGHPUT_CONFIRMABLE || EXPERIMENT_PACKET_LOSS_CONFIRMABLE)
   expStartCoapServer();
 #elif EXPERIMENT_THROUGHPUT_UDP
-  expStartUdpExperiment(role);  
+  expStartUdpServer(role);  
 #endif
 
   printCipherSuite();

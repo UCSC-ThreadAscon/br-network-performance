@@ -8,38 +8,6 @@ static uint32_t totalBytes;
 static struct timeval startTime;
 static struct timeval endTime;
 
-static otUdpSocket udpSocket;
-static otSockAddr udpSockAddr;
-
-void tpUdpStartServer(void *aContext,
-                      otMessage *aMessage,
-                      const otMessageInfo *aMessageInfo,
-                      otError aResult)
-{
-  if (aResult != OT_ERROR_NONE) {
-    EmptyMemory(&udpSocket, sizeof(otUdpSocket));
-
-    handleError(otUdpOpen(OT_INSTANCE, &udpSocket, tpUdpRequestHandler, NULL),
-                "Failed to open UDP socket.");
-
-    udpSockAddr.mAddress = *otThreadGetMeshLocalEid(OT_INSTANCE);
-    udpSockAddr.mPort = UDP_SOCK_PORT;
-    handleError(otUdpBind(OT_INSTANCE, &udpSocket, &udpSockAddr, OT_NETIF_THREAD),
-                "Failed to set up UDP server.");
-    
-    otLogNotePlat("Created UDP server at port %d.", UDP_SOCK_PORT);
-  }
-  else {
-    PrintCritDelimiter();
-    otLogCritPlat("Border Router failed to attach to the Thread network lead by the FTD.");
-    otLogCritPlat("Going to restart the current experiment trial.");
-    PrintCritDelimiter();
-
-    esp_restart();
-  }
-  return;
-}
-
 void tpUdpRequestHandler(void *aContext,
                         otMessage *aMessage,
                         const otMessageInfo *aMessageInfo)
