@@ -3,7 +3,6 @@
 #include "print_statement.h"
 #include "experiment.h"
 #include "utilities.h"
-#include "sockAddr.h"
 
 #include "esp_err.h"
 #include "esp_log.h"

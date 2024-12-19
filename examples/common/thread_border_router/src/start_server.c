@@ -1,13 +1,14 @@
 #include "workload.h"
 #include "handler.h"
 #include "independent_variables.h"
+#include "sockAddr.h"
 
 static otCoapResource experimentRoute;
 static otSockAddr udpStartSockAddr;
 
 void expStartUdpExperiment(otDeviceRole role)
 {
-  InitSockAddr(&udpStartSockAddr, CONFIG_FTD_IP_ADDRESS);
+  InitSockAddr(&udpStartSockAddr, FTD_IP_ADDRESS);
   bool udpSendFlag = true;
 
   PrintDelimiter();

@@ -19,7 +19,7 @@ void tpUdpStartServer(void *aContext,
   if (aResult != OT_ERROR_NONE) {
     EmptyMemory(&udpSocket, sizeof(otUdpSocket));
 
-    handleError(otUdpOpen(OT_INSTANCE, &udpSocket, callback, tpUdpRequestHandler),
+    handleError(otUdpOpen(OT_INSTANCE, &udpSocket, tpUdpRequestHandler, NULL),
                 "Failed to open UDP socket.");
 
     udpSockAddr.mAddress = *otThreadGetMeshLocalEid(OT_INSTANCE);
