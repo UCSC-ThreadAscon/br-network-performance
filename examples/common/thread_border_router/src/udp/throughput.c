@@ -8,6 +8,27 @@ static uint32_t totalBytes;
 static struct timeval startTime;
 static struct timeval endTime;
 
+static otUdpSocket udpSocket;
+static otSockAddr udpSockAddr;
+
+void tpUdpStartServer() {
+  EmptyMemory(&udpSocket, sizeof(otUdpSocket));
+
+  otUdpReceive callback = NULL;
+  callback = tpUdpRequestHandler;
+
+  handleError(otUdpOpen(OT_INSTANCE, &udpSocket, callback, NULL),
+              "Failed to open UDP socket.");
+
+  udpSockAddr.mAddress = *otThreadGetMeshLocalEid(OT_INSTANCE);
+  udpSockAddr.mPort = UDP_SOCK_PORT;
+  handleError(otUdpBind(OT_INSTANCE, &udpSocket, &udpSockAddr, OT_NETIF_THREAD),
+              "Failed to set up UDP server.");
+  
+  otLogNotePlat("Created UDP server at port %d.", UDP_SOCK_PORT);
+  return;
+}
+
 void tpUdpRequestHandler(void *aContext,
                         otMessage *aMessage,
                         const otMessageInfo *aMessageInfo)

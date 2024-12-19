@@ -26,6 +26,11 @@ menu "UCSC Thread-Ascon Border Router Network Performance Experiments"
         Set '1' to enable the route for the Throughput Confirmable experiment.
         Set '2' to enable the route for the Packet Loss Confirmable experiment.
         Set '3' to enable the router for the Throughput UDP experiment.
+    
+    config FTD_IP_ADDRESS
+      string 'IP address of the Full Thread Device.'
+      help
+          Sets the IPv6 address of the Full Thread Device that the Border Router will talk to.
   endmenu
 
   choice ESP_BR_BOARD_TYPE

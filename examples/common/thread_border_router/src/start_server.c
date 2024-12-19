@@ -5,8 +5,7 @@
 #if (EXPERIMENT_THROUGHPUT_CONFIRMABLE || EXPERIMENT_PACKET_LOSS_CONFIRMABLE)
 static otCoapResource experimentRoute;
 #elif EXPERIMENT_THROUGHPUT_UDP
-static otUdpSocket udpSocket;
-static otSockAddr udpSockAddr;
+static otSockAddr udpStartSockAddr;
 #endif
 
 // #if EXPERIMENT_THROUGHPUT_UDP
@@ -14,23 +13,15 @@ void expStartUdpExperiment(otDeviceRole role)
 {
   if (role != OT_DEVICE_ROLE_LEADER)
   {
-    InitSockAddr(&sockAddr, SERVER_IP);
-    bool startSending = true;
+    InitSockAddr(&udpStartSockAddr, CONFIG_FTD_IP_ADDRESS);
+    bool udpSendFlag = true;
 
-    // EmptyMemory(&udpSocket, sizeof(otUdpSocket));
+    PrintDelimiter();
+    otLogNotePlat("Notifying FTD to start the Throughput UDP experiment trial.");
+    PrintDelimiter();
 
-    // otUdpReceive callback = NULL;
-    // callback = tpUdpRequestHandler;
-
-    // handleError(otUdpOpen(OT_INSTANCE, &udpSocket, callback, NULL),
-    //             "Failed to open UDP socket.");
-
-    // udpSockAddr.mAddress = *otThreadGetMeshLocalEid(OT_INSTANCE);
-    // udpSockAddr.mPort = UDP_SOCK_PORT;
-    // handleError(otUdpBind(OT_INSTANCE, &udpSocket, &udpSockAddr, OT_NETIF_THREAD),
-    //             "Failed to set up UDP server.");
-    
-    // otLogNotePlat("Created UDP server at port %d.", UDP_SOCK_PORT);
+    request(&udpStartSockAddr, &udpSendFlag, sizeof(bool), "throughput-udp",
+            NULL, OT_COAP_TYPE_CONFIRMABLE);
   }
   else
   {
