@@ -60,4 +60,14 @@ void resourceDestructor(otCoapResource *resource);
 void sendCoapResponse(otMessage *aRequest, const otMessageInfo *aRequestInfo);
 void printRequest(otMessage *aMessage, const otMessageInfo *aMessageInfo);
 
+/* ---- CoAP Client API ---- */
+void request(otSockAddr *sockAddr,
+             void *payload,
+             size_t payloadSize,
+             const char *uri,
+             otCoapResponseHandler responseCallback,
+             otCoapType type);
+
+void addPayload(otMessage *aRequest, void *payload, size_t payloadSize);
+
 #define UDP_SOCK_PORT 12345
