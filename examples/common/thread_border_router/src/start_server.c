@@ -9,25 +9,28 @@ static otUdpSocket udpSocket;
 static otSockAddr udpSockAddr;
 #endif
 
-#if EXPERIMENT_THROUGHPUT_UDP
-void expStartUdpServer(otDeviceRole role)
+// #if EXPERIMENT_THROUGHPUT_UDP
+void expStartUdpExperiment(otDeviceRole role)
 {
   if (role != OT_DEVICE_ROLE_LEADER)
   {
-    EmptyMemory(&udpSocket, sizeof(otUdpSocket));
+    InitSockAddr(&sockAddr, SERVER_IP);
+    bool startSending = true;
 
-    otUdpReceive callback = NULL;
-    callback = tpUdpRequestHandler;
+    // EmptyMemory(&udpSocket, sizeof(otUdpSocket));
 
-    handleError(otUdpOpen(OT_INSTANCE, &udpSocket, callback, NULL),
-                "Failed to open UDP socket.");
+    // otUdpReceive callback = NULL;
+    // callback = tpUdpRequestHandler;
 
-    udpSockAddr.mAddress = *otThreadGetMeshLocalEid(OT_INSTANCE);
-    udpSockAddr.mPort = UDP_SOCK_PORT;
-    handleError(otUdpBind(OT_INSTANCE, &udpSocket, &udpSockAddr, OT_NETIF_THREAD),
-                "Failed to set up UDP server.");
+    // handleError(otUdpOpen(OT_INSTANCE, &udpSocket, callback, NULL),
+    //             "Failed to open UDP socket.");
+
+    // udpSockAddr.mAddress = *otThreadGetMeshLocalEid(OT_INSTANCE);
+    // udpSockAddr.mPort = UDP_SOCK_PORT;
+    // handleError(otUdpBind(OT_INSTANCE, &udpSocket, &udpSockAddr, OT_NETIF_THREAD),
+    //             "Failed to set up UDP server.");
     
-    otLogNotePlat("Created UDP server at port %d.", UDP_SOCK_PORT);
+    // otLogNotePlat("Created UDP server at port %d.", UDP_SOCK_PORT);
   }
   else
   {
@@ -40,12 +43,10 @@ void expStartUdpServer(otDeviceRole role)
   }
   return;
 }
-#endif
+// #endif
 
 void expStartCoapServer(void) 
 {
-  coapStart(OT_DEFAULT_COAP_PORT);
-
 #if EXPERIMENT_THROUGHPUT_CONFIRMABLE
   createResource(&experimentRoute, ThroughputConfirmable, "Throughput Confirmable",
                  tpConRequestHandler);
@@ -76,6 +77,7 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
   otDeviceRole role = otThreadGetDeviceRole(instance);
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
+    coapStart();
     PrintDelimiter();
 
 #if NO_EXPERIMENT
@@ -85,7 +87,7 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
 #elif (EXPERIMENT_THROUGHPUT_CONFIRMABLE || EXPERIMENT_PACKET_LOSS_CONFIRMABLE)
   expStartCoapServer();
 #elif EXPERIMENT_THROUGHPUT_UDP
-  expStartUdpServer(role);  
+  expStartUdpExperiment(role);  
 #endif
 
   printCipherSuite();
