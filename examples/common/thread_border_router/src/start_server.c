@@ -2,39 +2,22 @@
 #include "handler.h"
 #include "independent_variables.h"
 
-#if (EXPERIMENT_THROUGHPUT_CONFIRMABLE || EXPERIMENT_PACKET_LOSS_CONFIRMABLE)
 static otCoapResource experimentRoute;
-#elif EXPERIMENT_THROUGHPUT_UDP
 static otSockAddr udpStartSockAddr;
-#endif
 
-// #if EXPERIMENT_THROUGHPUT_UDP
 void expStartUdpExperiment(otDeviceRole role)
 {
-  if (role != OT_DEVICE_ROLE_LEADER)
-  {
-    InitSockAddr(&udpStartSockAddr, CONFIG_FTD_IP_ADDRESS);
-    bool udpSendFlag = true;
+  InitSockAddr(&udpStartSockAddr, CONFIG_FTD_IP_ADDRESS);
+  bool udpSendFlag = true;
 
-    PrintDelimiter();
-    otLogNotePlat("Notifying FTD to start the Throughput UDP experiment trial.");
-    PrintDelimiter();
+  PrintDelimiter();
+  otLogNotePlat("Notifying FTD to start the Throughput UDP experiment trial.");
+  PrintDelimiter();
 
-    request(&udpStartSockAddr, &udpSendFlag, sizeof(bool), "throughput-udp",
-            NULL, OT_COAP_TYPE_CONFIRMABLE);
-  }
-  else
-  {
-    PrintCritDelimiter();
-    otLogCritPlat("Border Router failed to attach to the Thread network lead by the FTD.");
-    otLogCritPlat("Going to restart the current experiment trial.");
-    PrintCritDelimiter();
-
-    esp_restart();
-  }
+  request(&udpStartSockAddr, &udpSendFlag, sizeof(bool), "throughput-udp",
+          tpUdpStartServer, OT_COAP_TYPE_CONFIRMABLE);
   return;
 }
-// #endif
 
 void expStartCoapServer(void) 
 {
@@ -44,6 +27,8 @@ void expStartCoapServer(void)
 #elif EXPERIMENT_PACKET_LOSS_CONFIRMABLE
   createResource(&experimentRoute, PacketLossConfirmable, "Packet Loss Confirmable",
                  plConRequestHandler);
+#else
+    OT_UNUSED_VARIABLE(experimentRoute);
 #endif
   return;
 }

@@ -11,21 +11,32 @@ static struct timeval endTime;
 static otUdpSocket udpSocket;
 static otSockAddr udpSockAddr;
 
-void tpUdpStartServer() {
-  EmptyMemory(&udpSocket, sizeof(otUdpSocket));
+void tpUdpStartServer(void *aContext,
+                      otMessage *aMessage,
+                      const otMessageInfo *aMessageInfo,
+                      otError aResult)
+{
+  if (aResult != OT_ERROR_NONE) {
+    EmptyMemory(&udpSocket, sizeof(otUdpSocket));
 
-  otUdpReceive callback = NULL;
-  callback = tpUdpRequestHandler;
+    handleError(otUdpOpen(OT_INSTANCE, &udpSocket, callback, tpUdpRequestHandler),
+                "Failed to open UDP socket.");
 
-  handleError(otUdpOpen(OT_INSTANCE, &udpSocket, callback, NULL),
-              "Failed to open UDP socket.");
+    udpSockAddr.mAddress = *otThreadGetMeshLocalEid(OT_INSTANCE);
+    udpSockAddr.mPort = UDP_SOCK_PORT;
+    handleError(otUdpBind(OT_INSTANCE, &udpSocket, &udpSockAddr, OT_NETIF_THREAD),
+                "Failed to set up UDP server.");
+    
+    otLogNotePlat("Created UDP server at port %d.", UDP_SOCK_PORT);
+  }
+  else {
+    PrintCritDelimiter();
+    otLogCritPlat("Border Router failed to attach to the Thread network lead by the FTD.");
+    otLogCritPlat("Going to restart the current experiment trial.");
+    PrintCritDelimiter();
 
-  udpSockAddr.mAddress = *otThreadGetMeshLocalEid(OT_INSTANCE);
-  udpSockAddr.mPort = UDP_SOCK_PORT;
-  handleError(otUdpBind(OT_INSTANCE, &udpSocket, &udpSockAddr, OT_NETIF_THREAD),
-              "Failed to set up UDP server.");
-  
-  otLogNotePlat("Created UDP server at port %d.", UDP_SOCK_PORT);
+    esp_restart();
+  }
   return;
 }
 

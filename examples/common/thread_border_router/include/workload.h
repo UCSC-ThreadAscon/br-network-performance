@@ -73,4 +73,10 @@ void request(otSockAddr *sockAddr,
 
 void addPayload(otMessage *aRequest, void *payload, size_t payloadSize);
 
+/* ---- UDP Experiments API ---- */
 #define UDP_SOCK_PORT 12345
+
+void tpUdpStartServer(void *aContext,
+                      otMessage *aMessage,
+                      const otMessageInfo *aMessageInfo,
+                      otError aResult);
