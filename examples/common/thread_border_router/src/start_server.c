@@ -9,18 +9,6 @@ static otUdpSocket udpSocket;
 static otSockAddr udpSockAddr;
 #endif
 
-void startCoapServer(uint16_t port)
-{
-  otError error = otCoapStart(OT_INSTANCE, port);
-
-  if (error != OT_ERROR_NONE) {
-    otLogCritPlat("Failed to start COAP server.");
-  } else {
-    otLogNotePlat("Started CoAP server at port %d.", port);
-  }
-  return;
-}
-
 #if EXPERIMENT_THROUGHPUT_UDP
 void expStartUdpServer(otDeviceRole role)
 {
@@ -56,7 +44,7 @@ void expStartUdpServer(otDeviceRole role)
 
 void expStartCoapServer(void) 
 {
-  startCoapServer(OT_DEFAULT_COAP_PORT);
+  coapStart(OT_DEFAULT_COAP_PORT);
 
 #if EXPERIMENT_THROUGHPUT_CONFIRMABLE
   createResource(&experimentRoute, ThroughputConfirmable, "Throughput Confirmable",

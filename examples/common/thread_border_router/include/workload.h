@@ -47,6 +47,8 @@ void startNextTrial(void);
 #define COAP_SOCK_PORT OT_DEFAULT_COAP_PORT
 
 /** ---- CoAP Common API ---- */
+void coapStart();
+otSockAddr createSockAddr(const char *recvAddrString);
 uint16_t getPayloadLength(const otMessage *aMessage);
 void getPayload(const otMessage *aMessage, void* buffer);
 
