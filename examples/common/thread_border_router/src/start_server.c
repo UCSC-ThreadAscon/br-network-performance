@@ -2,12 +2,10 @@
 #include "handler.h"
 #include "independent_variables.h"
 
-#if (EXPERIMENT_THROUGHPUT_CONFIRMABLE || EXPERIMENT_PACKET_LOSS_CONFIRMABLE)
 static otCoapResource experimentRoute;
-#elif EXPERIMENT_THROUGHPUT_UDP
+
 static otUdpSocket udpSocket;
 static otSockAddr udpSockAddr;
-#endif
 
 void startCoapServer(uint16_t port)
 {
@@ -21,15 +19,10 @@ void startCoapServer(uint16_t port)
   return;
 }
 
-#if EXPERIMENT_THROUGHPUT_UDP
 void expStartUdpServer(otDeviceRole role)
 {
   EmptyMemory(&udpSocket, sizeof(otUdpSocket));
-
-  otUdpReceive callback = NULL;
-  callback = tpUdpRequestHandler;
-
-  handleError(otUdpOpen(OT_INSTANCE, &udpSocket, callback, NULL),
+  handleError(otUdpOpen(OT_INSTANCE, &udpSocket, tpUdpRequestHandler, NULL),
               "Failed to open UDP socket.");
 
   udpSockAddr.mAddress = *otThreadGetMeshLocalEid(OT_INSTANCE);
@@ -40,7 +33,6 @@ void expStartUdpServer(otDeviceRole role)
   otLogNotePlat("Created UDP server at port %d.", UDP_SOCK_PORT);
   return;
 }
-#endif
 
 void expStartCoapServer(void) 
 {
@@ -52,6 +44,8 @@ void expStartCoapServer(void)
 #elif EXPERIMENT_PACKET_LOSS_CONFIRMABLE
   createResource(&experimentRoute, PacketLossConfirmable, "Packet Loss Confirmable",
                  plConRequestHandler);
+#else
+  OT_UNUSED_VARIABLE(experimentRoute);
 #endif
   return;
 }
