@@ -24,7 +24,7 @@ void tpUdpRequestHandler(void *aContext,
     resetTrials();
 
     PrintDelimiter();
-    otLogNotePlat("Starting the Throughput Confirmable experiment trial!");
+    otLogNotePlat("Starting the Throughput UDP experiment trial!");
     PrintDelimiter();
 
     startTime = getTimevalNow();
