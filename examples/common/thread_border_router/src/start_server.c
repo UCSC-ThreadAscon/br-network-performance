@@ -70,21 +70,33 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
   otDeviceRole role = otThreadGetDeviceRole(instance);
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
-    PrintDelimiter();
+    if (role != OT_DEVICE_ROLE_LEADER)
+    {
+      PrintDelimiter();
 
 #if NO_EXPERIMENT
-  otLogNotePlat("No experiments to set up.");
-  otLogNotePlat("Edit the EXPERIMENT flag in `idf.py menuconfig` to choose which");
-  otLogNotePlat("experiment the CoAP server will run.");
+    otLogNotePlat("No experiments to set up.");
+    otLogNotePlat("Edit the EXPERIMENT flag in `idf.py menuconfig` to choose which");
+    otLogNotePlat("experiment the CoAP server will run.");
 #elif (EXPERIMENT_THROUGHPUT_CONFIRMABLE || EXPERIMENT_PACKET_LOSS_CONFIRMABLE)
-  expStartCoapServer();
+    expStartCoapServer();
 #elif EXPERIMENT_THROUGHPUT_UDP
-  expStartUdpServer(role);  
+    expStartUdpServer(role);  
 #endif
 
-  printCipherSuite();
-  printTxPower();
-  PrintDelimiter();
+    printCipherSuite();
+    printTxPower();
+    PrintDelimiter();
+    }
+    else
+    {
+      PrintCritDelimiter();
+      otLogCritPlat("Border Router failed to attach to the Thread network lead by the FTD.");
+      otLogCritPlat("Going to restart the current experiment trial.");
+      PrintCritDelimiter();
+
+      esp_restart();
+    }
   }
   s_previous_role = role;
   return;
