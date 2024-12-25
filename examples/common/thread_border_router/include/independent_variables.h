@@ -31,3 +31,4 @@
 
 void printCipherSuite();
 void printTxPower();
+void printNetworkKey();

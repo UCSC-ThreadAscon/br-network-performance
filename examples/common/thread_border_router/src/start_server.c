@@ -85,6 +85,8 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
   printCipherSuite();
   printTxPower();
   PrintDelimiter();
+
+  printNetworkKey();
   }
   s_previous_role = role;
   return;
