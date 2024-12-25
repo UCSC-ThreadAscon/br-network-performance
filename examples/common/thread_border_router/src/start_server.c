@@ -2,6 +2,8 @@
 #include "handler.h"
 #include "independent_variables.h"
 
+#include <openthread/thread_ftd.h>
+
 static otCoapResource experimentRoute;
 
 static otUdpSocket udpSocket;
@@ -61,32 +63,37 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
   OT_UNUSED_VARIABLE(ctx);
   static otDeviceRole s_previous_role = OT_DEVICE_ROLE_DISABLED;
 
-  otInstance* instance = esp_openthread_get_instance();
-  if (!instance)
-  {
-    return;
-  }
+  if (!OT_INSTANCE) { return; }
 
   otDeviceRole role = otThreadGetDeviceRole(instance);
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
+    if (role != OT_DEVICE_ROLE_LEADER) {
+      otError error = otThreadBecomeLeader(OT_INSTANCE);
+      if (error != OT_ERROR_NONE) {
+        PrintCritDelimiter();
+        otLogCritPlat("Failed to become the Leader of the Thread Network.");
+        otLogCritPlat("Going to restart.");
+        PrintCritDelimiter();
+
+        esp_restart();
+      }
+    }
+
     PrintDelimiter();
-
 #if NO_EXPERIMENT
-  otLogNotePlat("No experiments to set up.");
-  otLogNotePlat("Edit the EXPERIMENT flag in `idf.py menuconfig` to choose which");
-  otLogNotePlat("experiment the CoAP server will run.");
+    otLogNotePlat("No experiments to set up.");
+    otLogNotePlat("Edit the EXPERIMENT flag in `idf.py menuconfig` to choose which");
+    otLogNotePlat("experiment the CoAP server will run.");
 #elif (EXPERIMENT_THROUGHPUT_CONFIRMABLE || EXPERIMENT_PACKET_LOSS_CONFIRMABLE)
-  expStartCoapServer();
+    expStartCoapServer();
 #elif EXPERIMENT_THROUGHPUT_UDP
-  expStartUdpServer(role);  
+    expStartUdpServer(role);  
 #endif
-
-  printCipherSuite();
-  printTxPower();
-  PrintDelimiter();
-
-  printNetworkKey();
+    printCipherSuite();
+    printTxPower();
+    PrintDelimiter();
+    printNetworkKey();
   }
   s_previous_role = role;
   return;
