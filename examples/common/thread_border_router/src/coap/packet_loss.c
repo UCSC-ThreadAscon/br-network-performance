@@ -1,30 +1,16 @@
 #include "handler.h"
 
 void plConRequestHandler(void* aContext,
-                              otMessage *aMessage,
-                              const otMessageInfo *aMessageInfo)
+                         otMessage *aMessage,
+                         const otMessageInfo *aMessageInfo)
 {
-  static uint32_t received = 0;
-  received += 1;
+  uint16_t payloadLength = getPayloadLength(aMessage);
 
-  uint32_t packetsLost = MAX_PACKETS - received;
-  double packetLoss = ((double) packetsLost) / MAX_PACKETS;
-
-  /** These print statements are not debugging statement, as these
-   *  print statement may be for the last packet. If so, these statements
-   *  report the packet loss for the experiment.
+  /** Make sure that all packets that are sent in the packet loss
+   *  experiments have a payload of exactly 4 bytes.
    */
-  PrintDelimiter();
-#if CONFIG_EXPERIMENT_DEBUG
-  printRequest(aMessage, aMessageInfo);
-#endif
-  otLogNotePlat("Received: %" PRIu32 " packets.", received);
-  otLogNotePlat("Packet Loss Ratio: %.3f", packetLoss);
-  PrintDelimiter();
+  assert(payloadLength == PAYLOAD_SIZE_BYTES);
 
-  /** Calling sendCoapResponse() will not affect the Non-Confirmable tests,
-   *  since the function will only ACK if the request is a GET or Confirmable.
-   */
   sendCoapResponse(aMessage, aMessageInfo);
   return;
 }
