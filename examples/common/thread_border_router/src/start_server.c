@@ -64,8 +64,8 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
   static otDeviceRole s_previous_role = OT_DEVICE_ROLE_DISABLED;
 
   if (!OT_INSTANCE) { return; }
+  otDeviceRole role = otThreadGetDeviceRole(OT_INSTANCE);
 
-  otDeviceRole role = otThreadGetDeviceRole(instance);
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
     otError error = otThreadBecomeLeader(OT_INSTANCE);
