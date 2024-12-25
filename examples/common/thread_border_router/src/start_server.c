@@ -68,16 +68,14 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
   otDeviceRole role = otThreadGetDeviceRole(instance);
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
-    if (role != OT_DEVICE_ROLE_LEADER) {
-      otError error = otThreadBecomeLeader(OT_INSTANCE);
-      if (error != OT_ERROR_NONE) {
-        PrintCritDelimiter();
-        otLogCritPlat("Failed to become the Leader of the Thread Network.");
-        otLogCritPlat("Going to restart.");
-        PrintCritDelimiter();
+    otError error = otThreadBecomeLeader(OT_INSTANCE);
+    if (error != OT_ERROR_NONE) {
+      PrintCritDelimiter();
+      otLogCritPlat("Failed to become the Leader of the Thread Network.");
+      otLogCritPlat("Going to restart.");
+      PrintCritDelimiter();
 
-        esp_restart();
-      }
+      esp_restart();
     }
 
     PrintDelimiter();
