@@ -69,9 +69,13 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
 #if !EXPERIMENT_THROUGHPUT_UDP
-    otLogNotePlat("Becomine the leader!");
     otError error = otThreadBecomeLeader(OT_INSTANCE);
-    if (error != OT_ERROR_NONE) {
+    if (error == OT_ERROR_NONE)
+    {
+      otLogNotePlat("Successfully attached to the Thread Network as the leader.");
+    }
+    else
+    {
       PrintCritDelimiter();
       otLogCritPlat("Failed to become the Leader of the Thread Network.");
       otLogCritPlat("Going to restart.");
