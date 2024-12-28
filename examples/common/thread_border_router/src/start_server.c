@@ -84,7 +84,7 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
       esp_restart();
     }
 #else
-    if (role != OT_DEVICE_ROLE_LEADER)
+    if (role == OT_DEVICE_ROLE_LEADER)
     {
       PrintCritDelimiter();
       otLogCritPlat("Border Router failed to attach to the Thread network lead by the FTD.");
