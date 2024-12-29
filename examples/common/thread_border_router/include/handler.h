@@ -3,8 +3,6 @@
 #include "workload.h"
 #include "time_api.h"
 
-#define MAX_PACKETS 1000
-
 /**
  * I got the idea to use this specific print statement delimiter
  * from the ESP Thread Border Router SDK source code:

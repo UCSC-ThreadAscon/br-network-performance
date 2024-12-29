@@ -1,8 +1,6 @@
 #include "workload.h"
 #include "handler.h"
 
-#define EXPECTED_TOTAL_BYTES 4000
-
 static uint32_t packetsRecv;
 static uint32_t totalBytes;
 static struct timeval startTime;
