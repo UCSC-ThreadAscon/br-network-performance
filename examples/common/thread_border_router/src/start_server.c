@@ -68,6 +68,7 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
 
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
+    printNetworkKey();
 #if !EXPERIMENT_THROUGHPUT_UDP
     otError error = otThreadBecomeLeader(OT_INSTANCE);
     if (error == OT_ERROR_NONE)
@@ -108,7 +109,6 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
     printCipherSuite();
     printTxPower();
     PrintDelimiter();
-    printNetworkKey();
   }
   s_previous_role = role;
   return;
