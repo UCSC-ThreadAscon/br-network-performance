@@ -27,7 +27,6 @@ void expStartUdpServer(otDeviceRole role)
 
   otUdpReceive handler = NULL;
 #if EXPERIMENT_THROUGHPUT_UDP
-  otLogNotePlat("Creating the server for the Throughput UDP experiment.");
   handler = tpUdpRequestHandler;
 #elif EXPERIMENT_PACKET_LOSS_UDP
   otLogNotePlat("Creating the server for the Packet Loss UDP experiment.");
