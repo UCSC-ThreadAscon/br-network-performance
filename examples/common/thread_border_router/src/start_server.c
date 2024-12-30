@@ -24,7 +24,16 @@ void startCoapServer(uint16_t port)
 void expStartUdpServer(otDeviceRole role)
 {
   EmptyMemory(&udpSocket, sizeof(otUdpSocket));
-  handleError(otUdpOpen(OT_INSTANCE, &udpSocket, tpUdpRequestHandler, NULL),
+
+  otUdpReceive handler = NULL;
+#if EXPERIMENT_THROUGHPUT_UDP
+  handler = tpUdpRequestHandler;
+#elif EXPERIMENT_PACKET_LOSS_UDP
+  handler = plUdpRequestHandler;
+#endif
+  assert(handler != NULL);
+
+  handleError(otUdpOpen(OT_INSTANCE, &udpSocket, handler, NULL),
               "Failed to open UDP socket.");
 
   udpSockAddr.mAddress = *otThreadGetMeshLocalEid(OT_INSTANCE);
@@ -103,7 +112,7 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
     otLogNotePlat("experiment the CoAP server will run.");
 #elif (EXPERIMENT_THROUGHPUT_CONFIRMABLE || EXPERIMENT_PACKET_LOSS_CONFIRMABLE)
     expStartCoapServer();
-#elif EXPERIMENT_THROUGHPUT_UDP
+#elif (EXPERIMENT_THROUGHPUT_UDP || EXPERIMENT_PACKET_LOSS_UDP)
     expStartUdpServer(role);  
 #endif
     printCipherSuite();

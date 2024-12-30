@@ -11,7 +11,7 @@ void printPacketLoss()
   double packetLoss = ((double) numPacketsLost) / EXPECTED_MAX_PACKETS;
 
   PrintDelimiter();
-  otLogNotePlat("Received: %" PRIu32 " packets", numAcked);
+  otLogNotePlat("Received: %" PRIu32 " packets", numReceived);
   otLogNotePlat("Packets Lost: %" PRIu32 " packets", numPacketsLost);
   otLogNotePlat("Expected: %d packets", EXPECTED_MAX_PACKETS);
   otLogNotePlat("Packet Loss Ratio: %.15f", packetLoss);
