@@ -31,3 +31,7 @@ void plConRequestHandler(void* aContext,
 void tpUdpRequestHandler(void *aContext,
                          otMessage *aMessage,
                          const otMessageInfo *aMessageInfo);
+
+void plUdpRequestHandler(void *aContext,
+                         otMessage *aMessage,
+                         const otMessageInfo *aMessageInfo);

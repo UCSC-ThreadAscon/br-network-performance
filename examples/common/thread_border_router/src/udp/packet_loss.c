@@ -1,7 +1,7 @@
 #include "workload.h"
 #include "handler.h"
 
-#define EXPECTED_MAX_PACKETS 1000 * 1000
+#define EXPECTED_MAX_PACKETS 1000000  // "1000 * 1000" packets
 
 static uint32_t numReceived;
 
