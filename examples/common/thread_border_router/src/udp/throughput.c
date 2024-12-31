@@ -6,7 +6,7 @@ static uint32_t totalBytes;
 static struct timeval startTime;
 static struct timeval endTime;
 
-#define EXPECTED_TOTAL_BYTES (UDP_MAX_PACKETS * PAYLOAD_SIZE_BYTES)
+#define EXPECTED_TOTAL_BYTES (MAX_PACKETS * PAYLOAD_SIZE_BYTES)
 
 void tpUdpRequestHandler(void *aContext,
                         otMessage *aMessage,
@@ -30,18 +30,18 @@ void tpUdpRequestHandler(void *aContext,
     startTime = getTimevalNow();
   }
 
-  if (packetsRecv < UDP_MAX_PACKETS)
+  if (packetsRecv < MAX_PACKETS)
   {
     packetsRecv += 1;
     totalBytes += payloadLength;
 
-    if (packetsRecv == UDP_MAX_PACKETS)
+    if (packetsRecv == MAX_PACKETS)
     {
       assert(totalBytes == EXPECTED_TOTAL_BYTES);
 
       /** The throughput formula is:
        *
-       *        UDP_MAX_PACKETS * PAYLOAD_SIZE_BYTES
+       *        MAX_PACKETS * PAYLOAD_SIZE_BYTES
        *      -----------------------------------------   bytes/time
        *                    t_end - t_start
        * 
@@ -83,7 +83,7 @@ void tpUdpRequestHandler(void *aContext,
       otLogNotePlat("Number of packets received: %" PRIu32 "", packetsRecv);
       PrintDelimiter();
 
-      otLogNotePlat("Finished running the Throughput UDP experiment.");
+      startNextTrial();
       return;
     }
   }
