@@ -22,7 +22,7 @@ void tpUdpRequestHandler(void *aContext,
     resetTrials();
 
     PrintDelimiter();
-    otLogNotePlat("Starting the Throughput UDP experiment trial!");
+    otLogNotePlat("Starting the Throughput UDP experiment!");
     PrintDelimiter();
 
     startTime = getTimevalNow();
@@ -81,7 +81,7 @@ void tpUdpRequestHandler(void *aContext,
       otLogNotePlat("Number of packets received: %" PRIu32 "", packetsRecv);
       PrintDelimiter();
 
-      startNextTrial();
+      otLogNotePlat("Finished running the Throughput UDP experiment.");
       return;
     }
   }

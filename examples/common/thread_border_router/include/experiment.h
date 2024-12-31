@@ -11,6 +11,8 @@
 
 #define EXPECTED_TOTAL_BYTES 4000
 
+#define UDP_MAX_PACKETS 1000000  // "1000 * 1000" packets
+
 typedef enum Experiment
 {
   ThroughputConfirmable,
