@@ -79,17 +79,7 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
     printNetworkKey();
-#if EXPERIMENT_THROUGHPUT_UDP
-    if (role == OT_DEVICE_ROLE_LEADER)
-    {
-      PrintCritDelimiter();
-      otLogCritPlat("Border Router failed to attach to the Thread network lead by the FTD.");
-      otLogCritPlat("Going to restart the current experiment trial.");
-      PrintCritDelimiter();
 
-      esp_restart();
-    }
-#else
     otError error = otThreadBecomeLeader(OT_INSTANCE);
     if (error == OT_ERROR_NONE)
     {
@@ -104,7 +94,6 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
 
       esp_restart();
     }
-#endif
 
     PrintDelimiter();
 #if NO_EXPERIMENT
