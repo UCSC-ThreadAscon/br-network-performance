@@ -5,15 +5,15 @@ static uint32_t numReceived;
 
 void printPacketLoss()
 {
-  assert(numReceived <= MAX_PACKETS);
+  assert(numReceived <= UDP_MAX_PACKETS);
 
-  uint32_t numPacketsLost = MAX_PACKETS - numReceived;
-  double packetLoss = ((double) numPacketsLost) / MAX_PACKETS;
+  uint32_t numPacketsLost = UDP_MAX_PACKETS - numReceived;
+  double packetLoss = ((double) numPacketsLost) / UDP_MAX_PACKETS;
 
   PrintDelimiter();
   otLogNotePlat("Received: %" PRIu32 " packets", numReceived);
   otLogNotePlat("Packets Lost: %" PRIu32 " packets", numPacketsLost);
-  otLogNotePlat("Expected: %d packets", MAX_PACKETS);
+  otLogNotePlat("Expected: %d packets", UDP_MAX_PACKETS);
   otLogNotePlat("Packet Loss Ratio: %.15f", packetLoss);
   PrintDelimiter();
   return;

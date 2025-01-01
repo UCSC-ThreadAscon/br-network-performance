@@ -9,6 +9,8 @@
 #define MAX_PACKETS 1000
 #define PAYLOAD_SIZE_BYTES 4
 
+#define UDP_MAX_PACKETS 1000000  // "1000 * 1000" packets
+
 typedef enum Experiment
 {
   ThroughputConfirmable,
