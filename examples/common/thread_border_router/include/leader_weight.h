@@ -4,14 +4,20 @@
 /**
  * Sets the Leader Weight to be the maximum on the server.
  */
-#define SET_MAX_LEADER_WEIGHT()                             \
-  otThreadSetLocalLeaderWeight(OT_INSTANCE, UINT8_MAX);     \
-  otLogNotePlat("Set leader weight to %d.", UINT8_MAX);     \
+static inline void SetMaxLeaderWeight()
+{
+  otThreadSetLocalLeaderWeight(OT_INSTANCE, UINT8_MAX);
+  otLogNotePlat("Set leader weight to %d.", UINT8_MAX);
+  return;
+}
 
 /**
  * Sets the Leader Weight to be the minimum on the client that the Border Router or
  * Delay server will always be the leader.
  */
-#define SET_MIN_LEADER_WEIGHT()                     \
-  otThreadSetLocalLeaderWeight(OT_INSTANCE, 0);     \
-  otLogNotePlat("Set leader weight to %d.", 0);     \
+static inline void SetMinLeaderWeight()
+{
+  otThreadSetLocalLeaderWeight(OT_INSTANCE, 0);
+  otLogNotePlat("Set leader weight to %d.", 0);
+  return;
+}

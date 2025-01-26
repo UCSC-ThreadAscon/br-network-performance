@@ -53,7 +53,7 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
     printNetworkKey();
-    SET_MAX_LEADER_WEIGHT();
+    SetMaxLeaderWeight();
 
     otError error = otThreadBecomeLeader(OT_INSTANCE);
     if (error == OT_ERROR_NONE)
