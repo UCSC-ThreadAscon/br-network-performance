@@ -3,6 +3,7 @@
 #include "print_statement.h"
 #include "experiment.h"
 #include "utilities.h"
+#include "leader_weight.h"
 
 #include "esp_err.h"
 #include "esp_log.h"
@@ -43,13 +44,6 @@
 
 void resetTrials(void);
 void startNextTrial(void);
-
-/**
- * Sets the Leader Weight to be the maximum on the server.
- */
-#define SET_MAX_LEADER_WEIGHT()                             \
-  otThreadSetLocalLeaderWeight(OT_INSTANCE, UINT8_MAX);     \
-  otLogNotePlat("Set leader weight to %d.", UINT8_MAX);     \
 
 #define COAP_SOCK_PORT OT_DEFAULT_COAP_PORT
 
