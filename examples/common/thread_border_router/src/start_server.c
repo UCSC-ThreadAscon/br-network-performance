@@ -25,11 +25,11 @@ void expStartCoapServer(void)
 #if EXPERIMENT_THROUGHPUT_CONFIRMABLE
   createResource(&experimentRoute, ThroughputConfirmable, "Throughput Confirmable",
                  tpConRequestHandler);
-#elif EXPERIMENT_PACKET_LOSS_CONFIRMABLE
+#elif EXPERIMENT_PACKET_LOSS_OBSERVE
   createResource(&experimentRoute, PacketLossConfirmable, "Packet Loss Confirmable",
                  plConRequestHandler);
-#elif EXPERIMENT_THROUGHPUT_NON_CONFIRMABLE
-  otLogNotePlat("TO-DO: Work on Throughput Non-Confirmable Experiment.");
+#elif EXPERIMENT_THROUGHPUT_OBSERVE
+  otLogNotePlat("TO-DO: Create the implementation for the Throughput Observe experiments.")
 #else
   OT_UNUSED_VARIABLE(experimentRoute);
 #endif
