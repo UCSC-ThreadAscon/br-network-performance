@@ -53,6 +53,8 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
     printNetworkKey();
+
+#if (EXPERIMENT_THROUGHPUT_CONFIRMABLE || EXPERIMENT_PACKET_LOSS_CONFIRMABLE)
     SetMaxLeaderWeight();
 
     otError error = otThreadBecomeLeader(OT_INSTANCE);
@@ -70,6 +72,9 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
 
       esp_restart();
     }
+#else
+    SetMinLeaderWeight();
+#endif
 
     PrintDelimiter();
 #if NO_EXPERIMENT
