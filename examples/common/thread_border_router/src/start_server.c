@@ -36,7 +36,6 @@ void expStartCoapServer(void)
   return;
 }
 
-
 /**
  * The code for the Experimental Setup server  start callback function comes from
  * the ESP-IDF OpenThread SED state change callback example function:
