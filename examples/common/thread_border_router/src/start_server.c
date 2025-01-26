@@ -6,9 +6,6 @@
 
 static otCoapResource experimentRoute;
 
-static otUdpSocket udpSocket;
-static otSockAddr udpSockAddr;
-
 void startCoapServer(uint16_t port)
 {
   otError error = otCoapStart(OT_INSTANCE, port);
