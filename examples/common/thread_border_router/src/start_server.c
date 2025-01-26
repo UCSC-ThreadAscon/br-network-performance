@@ -38,7 +38,7 @@ void expStartCoapServer(void)
 
 
 /**
- * The code for the Experimental Setup server  start callback function comes from
+ * The code for the Experimental Setup server start callback function comes from
  * the ESP-IDF OpenThread SED state change callback example function:
  * https://github.com/UCSC-ThreadAscon/esp-idf/blob/master/examples/openthread/ot_sleepy_device/deep_sleep/main/esp_ot_sleepy_device.c#L73
  */
@@ -50,11 +50,10 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
   if (!OT_INSTANCE) { return; }
   otDeviceRole role = otThreadGetDeviceRole(OT_INSTANCE);
 
-  SET_MAX_LEADER_WEIGHT();
-
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
     printNetworkKey();
+    SET_MAX_LEADER_WEIGHT();
 
     otError error = otThreadBecomeLeader(OT_INSTANCE);
     if (error == OT_ERROR_NONE)
