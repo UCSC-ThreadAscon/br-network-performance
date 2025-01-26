@@ -63,6 +63,7 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
     {
       PrintCritDelimiter();
       otLogCritPlat("Failed to become the Leader of the Thread Network.");
+      otLogCritPlat("Reason: %s", otThreadErrorToString(error));
       otLogCritPlat("Going to restart.");
       PrintCritDelimiter();
 
