@@ -21,31 +21,6 @@ void startCoapServer(uint16_t port)
   return;
 }
 
-void expStartUdpServer(otDeviceRole role)
-{
-  EmptyMemory(&udpSocket, sizeof(otUdpSocket));
-
-  otUdpReceive handler = NULL;
-#if EXPERIMENT_THROUGHPUT_UDP
-  handler = tpUdpRequestHandler;
-#elif EXPERIMENT_PACKET_LOSS_UDP
-  otLogNotePlat("Creating the server for the Packet Loss UDP experiment.");
-  handler = plUdpRequestHandler;
-#endif
-  assert(handler != NULL);
-
-  handleError(otUdpOpen(OT_INSTANCE, &udpSocket, handler, NULL),
-              "Failed to open UDP socket.");
-
-  udpSockAddr.mAddress = *otThreadGetMeshLocalEid(OT_INSTANCE);
-  udpSockAddr.mPort = UDP_SOCK_PORT;
-  handleError(otUdpBind(OT_INSTANCE, &udpSocket, &udpSockAddr, OT_NETIF_THREAD),
-              "Failed to set up UDP server.");
-  
-  otLogNotePlat("Created UDP server at port %d.", UDP_SOCK_PORT);
-  return;
-}
-
 void expStartCoapServer(void) 
 {
   startCoapServer(OT_DEFAULT_COAP_PORT);
@@ -56,6 +31,8 @@ void expStartCoapServer(void)
 #elif EXPERIMENT_PACKET_LOSS_CONFIRMABLE
   createResource(&experimentRoute, PacketLossConfirmable, "Packet Loss Confirmable",
                  plConRequestHandler);
+#elif EXPERIMENT_THROUGHPUT_NON_CONFIRMABLE
+  otLogNotePlat("TO-DO: Work on Throughput Non-Confirmable Experiment.");
 #else
   OT_UNUSED_VARIABLE(experimentRoute);
 #endif
@@ -100,10 +77,8 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
     otLogNotePlat("No experiments to set up.");
     otLogNotePlat("Edit the EXPERIMENT flag in `idf.py menuconfig` to choose which");
     otLogNotePlat("experiment the CoAP server will run.");
-#elif (EXPERIMENT_THROUGHPUT_CONFIRMABLE || EXPERIMENT_PACKET_LOSS_CONFIRMABLE)
+#else
     expStartCoapServer();
-#elif (EXPERIMENT_THROUGHPUT_UDP || EXPERIMENT_PACKET_LOSS_UDP)
-    expStartUdpServer(role);  
 #endif
     printCipherSuite();
     printTxPower();
