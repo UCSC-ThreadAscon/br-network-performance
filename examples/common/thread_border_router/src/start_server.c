@@ -38,7 +38,7 @@ void expStartCoapServer(void)
 
 
 /**
- * The code for the Experimental Setup server start callback function comes from
+ * The code for the Experimental Setup server  start callback function comes from
  * the ESP-IDF OpenThread SED state change callback example function:
  * https://github.com/UCSC-ThreadAscon/esp-idf/blob/master/examples/openthread/ot_sleepy_device/deep_sleep/main/esp_ot_sleepy_device.c#L73
  */
@@ -54,8 +54,9 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
   {
     printNetworkKey();
 
-#if (EXPERIMENT_THROUGHPUT_CONFIRMABLE || EXPERIMENT_PACKET_LOSS_CONFIRMABLE)
-    SetMaxLeaderWeight();
+    // Set leader weight to max to guarantee that device will be leader.
+    otThreadSetLocalLeaderWeight(OT_INSTANCE, UINT8_MAX);
+    otLogNotePlat("Set leader weight to %d to guarantee Leader status.", UINT8_MAX);
 
     otError error = otThreadBecomeLeader(OT_INSTANCE);
     if (error == OT_ERROR_NONE)
@@ -72,9 +73,6 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
 
       esp_restart();
     }
-#else
-    SetMinLeaderWeight();
-#endif
 
     PrintDelimiter();
 #if NO_EXPERIMENT
