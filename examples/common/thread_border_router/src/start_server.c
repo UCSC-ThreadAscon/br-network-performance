@@ -51,12 +51,16 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
 
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
-    printNetworkKey();
-
+#if NO_EXPERIMENT
+    otLogNotePlat("No experiments to set up.");
+    otLogNotePlat("Edit the EXPERIMENT flag in `idf.py menuconfig` to choose which");
+    otLogNotePlat("experiment the CoAP server will run.");
+#else
     otError error = otThreadBecomeLeader(OT_INSTANCE);
     if (error == OT_ERROR_NONE)
     {
       otLogNotePlat("Successfully attached to the Thread Network as the leader.");
+      expStartCoapServer();
     }
     else
     {
@@ -68,15 +72,11 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
 
       esp_restart();
     }
+#endif
+
+    printNetworkKey();
 
     PrintDelimiter();
-#if NO_EXPERIMENT
-    otLogNotePlat("No experiments to set up.");
-    otLogNotePlat("Edit the EXPERIMENT flag in `idf.py menuconfig` to choose which");
-    otLogNotePlat("experiment the CoAP server will run.");
-#else
-    expStartCoapServer();
-#endif
     printCipherSuite();
     printTxPower();
     PrintDelimiter();
