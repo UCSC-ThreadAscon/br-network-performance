@@ -52,9 +52,11 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
 #if NO_EXPERIMENT
+    PrintDelimiter();
     otLogNotePlat("No experiments to set up.");
     otLogNotePlat("Edit the EXPERIMENT flag in `idf.py menuconfig` to choose which");
     otLogNotePlat("experiment the CoAP server will run.");
+    PrintDelimiter();
 #else
     otError error = otThreadBecomeLeader(OT_INSTANCE);
     if (error == OT_ERROR_NONE)
