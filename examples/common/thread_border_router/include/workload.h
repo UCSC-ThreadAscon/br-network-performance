@@ -23,11 +23,6 @@
 
 #define OT_INSTANCE esp_openthread_get_instance()
 
-#define MS_TO_TICKS(ms) ms / portTICK_PERIOD_MS
-#define MS_TO_MICRO(ms) ms * 1000
-
-#define MAIN_WAIT_TIME MS_TO_TICKS(5000) // 5 seconds
-
 #define handleError(error, desc)                                        \
   if (error != OT_ERROR_NONE) {                                         \
     otLogCritPlat("%s error: %s", desc, otThreadErrorToString(error));  \

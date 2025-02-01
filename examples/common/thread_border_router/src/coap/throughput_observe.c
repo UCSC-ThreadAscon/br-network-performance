@@ -1,11 +1,20 @@
 #include "workload.h"
 #include "experiment_common.h"
+#include "time_api.h"
+
+#define TOTAL_PACKETS_TO_RECEIVE 10
+#define PAYLOAD_SIZE sizeof(Fahrenheit)
+#define EXPECTED_TOTAL_BYTES (TOTAL_PACKETS_TO_RECEIVE * PAYLOAD_SIZE)
 
 static Subscription subscription;
 
+static uint32_t totalBytes;
+static struct timeval startTime;
+static struct timeval endTime;
+
 /**
  * TODO: Get the Border Router to unsubscribe and calculate the throughput after
- *       receiving 1000 Non-Confirmable packets.
+ *       receiving 10 Non-Confirmable packets.
  */
 void tpObserveResponseCallback(void *aContext,
                                otMessage *aMessage,
@@ -14,6 +23,21 @@ void tpObserveResponseCallback(void *aContext,
 {
   assertNotification(aMessage, &subscription);
   printObserveNotification(aMessage);
+
+  totalBytes += getPayloadLength(aMessage);
+  assert(totalBytes <= EXPECTED_TOTAL_BYTES);
+
+  if (totalBytes == EXPECTED_TOTAL_BYTES)
+  {
+    /** The throughput formula is:
+     *
+     *       TOTAL PACKETS TO RECEIVE * PAYLOAD SIZE
+     *      ----------------------------------------- bytes/time
+     *                   t_end - t_start
+     */
+    otLogNotePlat("Received a total of %" PRIu32 " bytes.", totalBytes);
+  }
+
   return;
 }
 
