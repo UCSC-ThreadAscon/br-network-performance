@@ -211,6 +211,12 @@ static void ot_task_worker(void *ctx)
     PrintDelimiter();
 #endif
 
+    printNetworkKey();
+    PrintDelimiter();
+    printCipherSuite();
+    printTxPower();
+    PrintDelimiter();
+
     // Run the main loop
     esp_openthread_launch_mainloop();
 
