@@ -99,7 +99,7 @@ void assertNotification(otMessage *aMessage, Subscription *subscription)
   Fahrenheit temperature = 0;
   getPayload(aMessage, &temperature);
 
-  otLogNotePlat("%llx says that the temperature is currently %" PRIu8 "° Fahrenheit.",
+  otLogNotePlat("From Subscription 0x%llx: the temperature is currently %" PRIu8 "° Fahrenheit.",
                 token, temperature);
   return;
 }
