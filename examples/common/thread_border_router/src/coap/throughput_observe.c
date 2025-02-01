@@ -2,6 +2,11 @@
 
 static otSockAddr sockAddr;
 
+void subscribe()
+{
+  return;
+}
+
 /**
  * TODO: Follow the `ProcessRequest()` example to figure out how to SET UP
  *       a CoAP observe subscription:
