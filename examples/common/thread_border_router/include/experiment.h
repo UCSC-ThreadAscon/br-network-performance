@@ -22,3 +22,5 @@ Experiment;
 
 #define THROUGHPUT_CONFIRMABLE_URI "throughput-confirmable"
 #define PACKET_LOSS_CONFIRMABLE_URI "packet-loss-confirmable"
+
+#define OBSERVE_SERVER_URI "temperature"
