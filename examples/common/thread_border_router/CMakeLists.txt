@@ -6,5 +6,4 @@ endif()
 
 idf_component_register(SRC_DIRS "src" "src/coap"
                        INCLUDE_DIRS "include"
-                       REQUIRES "${requires}"
-)
+                       REQUIRES "${requires}")
