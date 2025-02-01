@@ -27,6 +27,13 @@ menu "UCSC Thread-Ascon Border Router Network Performance Experiments"
         Set '2' to enable the route for the Packet Loss Confirmable experiment.
         Set '3' to enable the server for the Throughput Observe (Non-Confirmable) experiment.
         Set '4' to enable the server for the Packet Loss Observe (Non-Confirmable) experiment.
+    
+    config COAP_OBSERVE_SERVER_IP
+      string 'IP address of the CoAP Observe server.'
+      help
+        Sets the IP address of the FTD running the CoAP Observe server.
+        The Border Router will connect to the FTD during the CoAP Observe (Non-Confirmable)
+        Throughput and Packet Loss experiments.
   endmenu
 
   choice ESP_BR_BOARD_TYPE
