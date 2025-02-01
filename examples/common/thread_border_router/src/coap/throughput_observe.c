@@ -2,6 +2,17 @@
 
 static otSockAddr sockAddr;
 
+/**
+ * TODO: Follow the `ProcessRequest()` example to figure out how to SET UP
+ *       a CoAP observe subscription:
+ *       https://github.com/openthread/openthread/blob/main/src/cli/cli_coap.cpp#L571
+ *
+ * TODO: Try out the OpenThread default request handler to see if you can capture
+ *       CoAP observe notifications.
+ *
+ * TODO: Get the Border Router to unsubscribe and calculate the throughput after
+ *       receiving 1000 Non-Confirmable packets.
+ */
 void tpObserveMain()
 {
   resetTrials();
