@@ -37,26 +37,11 @@ void createHeaders(otMessage *aRequest,
 {
   otError error = OT_ERROR_NONE;
 
-  otCoapMessageInit(aRequest, type, OT_COAP_CODE_POST);
+  otCoapMessageInit(aRequest, type, OT_COAP_CODE_GET);
   otCoapMessageGenerateToken(aRequest, OT_COAP_DEFAULT_TOKEN_LENGTH);
 
   error = otCoapMessageAppendUriPathOptions(aRequest, uri);
   HandleMessageError("append uri options", aRequest, error);
-
-  return;
-}
-
-void addPayload(otMessage *aRequest,
-                void *payload,
-                size_t payloadSize)
-{
-  otError error = OT_ERROR_NONE;
-
-  error = otCoapMessageSetPayloadMarker(aRequest);
-  HandleMessageError("set payload marker", aRequest, error);
-
-  error = otMessageAppend(aRequest, payload, payloadSize);
-  HandleMessageError("message append", aRequest, error);
 
   return;
 }
@@ -86,8 +71,6 @@ void send(otMessage *aRequest,
 }
 
 void observeRequest(Subscription *subscription,
-                    void *payload,
-                    size_t payloadSize,
                     const char *uri,
                     otCoapResponseHandler responseCallback,
                     otCoapType type)
@@ -104,7 +87,6 @@ void observeRequest(Subscription *subscription,
   saveSubscriptionToken(aRequest, subscription);
   makeObserveRequest(aRequest);
 
-  addPayload(aRequest, payload, payloadSize);
   send(aRequest, &aMessageInfo, responseCallback);
   return;
 }

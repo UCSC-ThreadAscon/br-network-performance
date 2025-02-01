@@ -73,3 +73,8 @@ typedef struct Subscription
   uint8_t tokenLength;
 }
 Subscription;
+
+void observeRequest(Subscription *subscription,
+                    const char *uri,
+                    otCoapResponseHandler responseCallback,
+                    otCoapType type);

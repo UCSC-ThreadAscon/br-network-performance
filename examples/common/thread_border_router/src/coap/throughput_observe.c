@@ -1,6 +1,16 @@
+#include "workload.h"
 #include "experiment_common.h"
 
 static Subscription subscription;
+
+void tpObserveResponseCallback(void *aContext,
+                               otMessage *aMessage,
+                               const otMessageInfo *aMessageInfo,
+                               otError aResult)
+{
+  printMessage(aMessage, aMessageInfo);
+  return;
+}
 
 /**
  * TODO: Follow the `ProcessRequest()` example to figure out how to SET UP
@@ -23,6 +33,8 @@ void tpObserveMain()
   otLogNotePlat("Starting the Throughput Observe experiment trial!");
   PrintDelimiter();
 
+  observeRequest(&subscription, OBSERVE_SERVER_URI, tpObserveResponseCallback,
+                 OT_COAP_TYPE_CONFIRMABLE);
   return;
 }
 
