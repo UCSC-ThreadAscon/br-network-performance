@@ -2,6 +2,18 @@
 
 static otSockAddr sockAddr;
 
+void tpObserveMain()
+{
+  resetTrials();
+  coapStart();
+  InitSockAddr(&sockAddr, OBSERVE_SERVER_IP_ADDRESS);
+
+  PrintDelimiter();
+  otLogNotePlat("Starting the Throughput Observe experiment trial!");
+  PrintDelimiter();
+
+  return;
+}
 
 /**
  * The code for the Throughput Observe Server start callback function comes 
@@ -19,7 +31,7 @@ void tpObserveStartCallback(otChangedFlags changed_flags, void* ctx)
   otDeviceRole role = otThreadGetDeviceRole(instance);
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
-    otLogNotePlat("TO-DO: Create the implementation for the Throughput Observe experiments.");
+    tpObserveMain();
   }
   s_previous_role = role;
   return;

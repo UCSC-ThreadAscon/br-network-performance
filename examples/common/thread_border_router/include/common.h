@@ -19,6 +19,15 @@ static inline bool connected(otDeviceRole role)
          (role == OT_DEVICE_ROLE_LEADER);
 }
 
+otSockAddr createSockAddr(const char *recvAddrString);
+
+static inline void InitSockAddr(otSockAddr *sockAddr, const char* serverAddr)
+{
+  EmptyMemory(sockAddr, sizeof(otSockAddr));
+  *sockAddr = createSockAddr(serverAddr);
+  return;
+}
+
 void expServerStartCallback(otChangedFlags changed_flags, void* ctx);
 
 void tpConRequestHandler(void* aContext,
@@ -29,4 +38,5 @@ void plConRequestHandler(void* aContext,
                          otMessage *aMessage,
                          const otMessageInfo *aMessageInfo);
 
+void coapStart();
 void tpObserveStartCallback(otChangedFlags changed_flags, void* ctx);
