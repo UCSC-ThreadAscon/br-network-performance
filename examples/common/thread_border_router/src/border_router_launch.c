@@ -9,6 +9,7 @@
 
 #include "workload.h"
 #include "handler.h"
+#include "independent_variables.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -193,10 +194,22 @@ static void ot_task_worker(void *ctx)
     setTxPower();
 
     /**
-     * Set up the callback for starting the Throughput or Packet Loss experiment
-     * the moment the border router attaches to the a Thread network.
+     * Set up the callbacks for starting an experiment the moment the border router
+     * attaches to a Thread network.
      */
+#if (EXPERIMENT_THROUGHPUT_CONFIRMABLE || EXPERIMENT_PACKET_LOSS_CONFIRMABLE)
     otSetStateChangedCallback(esp_openthread_get_instance(), expServerStartCallback, NULL);
+#elif (EXPERIMENT_THROUGHPUT_OBSERVE || EXPERIMENT_PACKET_LOSS_OBSERVE)
+    PrintDelimiter();
+    otLogNotePlat("TO-DO: Implement the CoAP Observe experiments.");
+    PrintDelimiter();
+#else
+    PrintDelimiter();
+    otLogNotePlat("No experiments to set up.");
+    otLogNotePlat("Edit the EXPERIMENT flag in `idf.py menuconfig` to choose which");
+    otLogNotePlat("experiment the CoAP server will run.");
+    PrintDelimiter();
+#endif
 
     // Run the main loop
     esp_openthread_launch_mainloop();
@@ -221,4 +234,5 @@ void launch_openthread_border_router(const esp_openthread_platform_config_t *pla
 #endif
 
     xTaskCreate(ot_task_worker, "ot_br_main", 8192, xTaskGetCurrentTaskHandle(), 5, NULL);
+    return;
 }
