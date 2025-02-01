@@ -8,7 +8,7 @@
 #include "border_router_launch.h"
 
 #include "workload.h"
-#include "common.h"
+#include "coap_common.h"
 #include "independent_variables.h"
 
 #include <assert.h>
@@ -48,7 +48,7 @@
 #if CONFIG_OPENTHREAD_BR_AUTO_START
 #include "esp_wifi.h"
 #include "example_common_private.h"
-#include "protocol_examples_common.h"
+#include "protocol_examples_coap_common.h"
 #endif
 
 #define TAG "esp_ot_br"

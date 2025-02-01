@@ -5,7 +5,7 @@
  * https://github.com/UCSC-ThreadAscon/openthread/tree/main/src/cli
 */
 #include "workload.h"
-#include "common.h"
+#include "coap_common.h"
 
 #include <stdio.h>
 #include <string.h>
