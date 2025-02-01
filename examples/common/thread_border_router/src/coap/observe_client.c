@@ -91,13 +91,6 @@ void observeRequest(Subscription *subscription,
 
 void assertNotification(otMessage *aMessage, Subscription *subscription)
 {
-  otCoapType type = otCoapMessageGetType(aMessage);
-  if (type == OT_COAP_TYPE_ACKNOWLEDGMENT)
-  {
-    otLogNotePlat("Received an ACK with payload length %" PRIu16 ".",
-                  getPayloadLength(aMessage));
-  }
-
   uint64_t token = 0;
   memcpy(&token, otCoapMessageGetToken(aMessage), otCoapMessageGetTokenLength(aMessage)); 
   assert(token == subscription->token);
