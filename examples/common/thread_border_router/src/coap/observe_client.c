@@ -34,14 +34,15 @@ void createMessageInfo(otSockAddr *aSockAddr, otMessageInfo *aMessageInfo)
 void createHeaders(otMessage *aRequest,
                    otMessageInfo *aMessageInfo,
                    const char *uri,
-                   otCoapType type)
+                   otCoapType type,
+                   uint32_t observeOption)
 {
   otError error = OT_ERROR_NONE;
 
   otCoapMessageInit(aRequest, type, OT_COAP_CODE_GET);
   otCoapMessageGenerateToken(aRequest, OT_COAP_DEFAULT_TOKEN_LENGTH);
 
-  error = otCoapMessageAppendObserveOption(aRequest, OBSERVE_SUBSCRIBE);
+  error = otCoapMessageAppendObserveOption(aRequest, observeOption);
   HandleMessageError("append observe option", aRequest, error);
 
   error = otCoapMessageAppendUriPathOptions(aRequest, uri);
@@ -70,7 +71,8 @@ void send(otMessage *aRequest,
 void observeRequest(Subscription *subscription,
                     const char *uri,
                     otCoapResponseHandler responseCallback,
-                    otCoapType type)
+                    otCoapType type,
+                    uint32_t observeOption)
 {
   otMessageInfo aMessageInfo;
   otMessage *aRequest;
@@ -80,7 +82,7 @@ void observeRequest(Subscription *subscription,
 
   aRequest = createCoapMessage();
 
-  createHeaders(aRequest, &aMessageInfo, uri, type);
+  createHeaders(aRequest, &aMessageInfo, uri, type, observeOption);
   saveSubscriptionToken(aRequest, subscription);
 
   send(aRequest, &aMessageInfo, responseCallback);

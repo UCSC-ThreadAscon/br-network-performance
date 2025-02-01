@@ -72,7 +72,8 @@ Subscription;
 void observeRequest(Subscription *subscription,
                     const char *uri,
                     otCoapResponseHandler responseCallback,
-                    otCoapType type);
+                    otCoapType type,
+                    uint32_t observeOption);
 
 void assertNotification(otMessage *message, Subscription *subscription);
-void printObserveNotification(otMessage *aMessage);
+void printObserveNotification(otMessage *aMessage, Subscription *subscription);

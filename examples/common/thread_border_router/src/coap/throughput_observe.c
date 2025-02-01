@@ -9,8 +9,20 @@
 static Subscription subscription;
 
 static uint32_t totalBytes;
-static struct timeval startTime;
-static struct timeval endTime;
+
+void tpObserveCancelCallback(void *aContext,
+                             otMessage *aMessage,
+                             const otMessageInfo *aMessageInfo,
+                             otError aResult)
+{
+  uint64_t token = 0;
+  memcpy(&token, otCoapMessageGetToken(aMessage), otCoapMessageGetTokenLength(aMessage)); 
+  assert(token == subscription.token);
+
+  otLogNotePlat("Cancelled subscription 0x%llx.", subscription.token);
+  EmptyMemory(&subscription, sizeof(Subscription));
+  return;
+}
 
 /**
  * TODO: Get the Border Router to unsubscribe and calculate the throughput after
@@ -22,7 +34,7 @@ void tpObserveResponseCallback(void *aContext,
                                otError aResult)
 {
   assertNotification(aMessage, &subscription);
-  printObserveNotification(aMessage);
+  printObserveNotification(aMessage, &subscription);
 
   totalBytes += getPayloadLength(aMessage);
   assert(totalBytes <= EXPECTED_TOTAL_BYTES);
@@ -36,6 +48,9 @@ void tpObserveResponseCallback(void *aContext,
      *                   t_end - t_start
      */
     otLogNotePlat("Received a total of %" PRIu32 " bytes.", totalBytes);
+
+    observeRequest(&subscription, OBSERVE_SERVER_URI, tpObserveCancelCallback,
+                  OT_COAP_TYPE_CONFIRMABLE, OBSERVE_CANCEL);
   }
 
   return;
@@ -52,7 +67,7 @@ void tpObserveMain()
   PrintDelimiter();
 
   observeRequest(&subscription, OBSERVE_SERVER_URI, tpObserveResponseCallback,
-                 OT_COAP_TYPE_CONFIRMABLE);
+                 OT_COAP_TYPE_CONFIRMABLE, OBSERVE_SUBSCRIBE);
   return;
 }
 
