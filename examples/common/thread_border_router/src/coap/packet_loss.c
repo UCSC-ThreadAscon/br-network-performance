@@ -1,4 +1,4 @@
-#include "coap_common.h"
+#include "experiment_common.h"
 
 void plConRequestHandler(void* aContext,
                          otMessage *aMessage,

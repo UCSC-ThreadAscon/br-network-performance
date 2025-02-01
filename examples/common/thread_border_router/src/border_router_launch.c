@@ -8,7 +8,7 @@
 #include "border_router_launch.h"
 
 #include "workload.h"
-#include "coap_common.h"
+#include "experiment_common.h"
 #include "independent_variables.h"
 
 #include <assert.h>

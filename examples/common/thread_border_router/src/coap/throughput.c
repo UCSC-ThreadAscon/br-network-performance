@@ -1,4 +1,4 @@
-#include "coap_common.h"
+#include "experiment_common.h"
 
 void tpConRequestHandler(void* aContext,
                          otMessage *aMessage,

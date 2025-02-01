@@ -1,5 +1,5 @@
 #include "workload.h"
-#include "coap_common.h"
+#include "experiment_common.h"
 
 #define CONFIRMABLE_STRING "Confirmable"
 #define NONCONFIRMABLE_STRING "Non-Confirmable"

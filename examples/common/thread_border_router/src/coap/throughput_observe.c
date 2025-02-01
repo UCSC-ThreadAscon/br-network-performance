@@ -1,11 +1,7 @@
-#include "coap_common.h"
+#include "experiment_common.h"
 
 static otSockAddr sockAddr;
 
-void subscribe()
-{
-  return;
-}
 
 /**
  * TODO: Follow the `ProcessRequest()` example to figure out how to SET UP
