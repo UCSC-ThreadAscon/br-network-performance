@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+
 #define OBSERVE_SERVER_IP_ADDRESS CONFIG_COAP_OBSERVE_SERVER_IP
 
 #define NO_EXPERIMENT (CONFIG_EXPERIMENT == 0)
@@ -24,3 +26,14 @@ Experiment;
 #define PACKET_LOSS_CONFIRMABLE_URI "packet-loss-confirmable"
 
 #define OBSERVE_SERVER_URI "temperature"
+
+/**
+ * CoAP Observe payloads simulate sensor data from a thermometer.
+ *
+ * According to the World Meteorological Organization:
+ * https://wmo.asu.edu/content/world-highest-temperature
+ * 
+ * The highest temperature recorded was 134° Fahrenheit. As a result,
+ * the temperature will be stored as an unsigned 8 bit integer.
+ */
+typedef uint8_t Fahrenheit;

@@ -5,6 +5,7 @@
  * https://github.com/UCSC-ThreadAscon/openthread/tree/main/src/cli
 */
 #include "workload.h"
+#include "experiment.h"
 
 #include <string.h>
 
@@ -83,5 +84,22 @@ void observeRequest(Subscription *subscription,
   saveSubscriptionToken(aRequest, subscription);
 
   send(aRequest, &aMessageInfo, responseCallback);
+  return;
+}
+
+void assertNotification(otMessage *aMessage, Subscription *subscription)
+{
+  uint64_t token = 0;
+  memcpy(&token, otCoapMessageGetToken(aMessage), otCoapMessageGetTokenLength(aMessage)); 
+  assert(token == subscription->token);
+
+  uint16_t payloadLength = getPayloadLength(aMessage);
+  assert(payloadLength == sizeof(Fahrenheit));
+
+  Fahrenheit temperature = 0;
+  getPayload(aMessage, &temperature);
+
+  otLogNotePlat("%" PRIu64 " says that temperature is currently %" PRIu8 "° Fahrenheit.",
+                token, temperature);
   return;
 }
