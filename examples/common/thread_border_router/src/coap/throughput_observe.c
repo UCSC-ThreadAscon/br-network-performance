@@ -31,10 +31,6 @@ void tpObserveCancelCallback(void *aContext,
   return;
 }
 
-/**
- * TODO: Get the Border Router to unsubscribe and calculate the throughput after
- *       receiving 10 Non-Confirmable packets.
- */
 void tpObserveResponseCallback(void *aContext,
                                otMessage *aMessage,
                                const otMessageInfo *aMessageInfo,
