@@ -1,4 +1,12 @@
+/**
+ * All of the code in this file is based upon the both CoAP and CoAP secure
+ * source code, used as a part of the OpenThread codebase. The CoAP and
+ * CoAP secure source files can be found at:
+ * https://github.com/UCSC-ThreadAscon/openthread/tree/main/src/cli
+*/
 #include "workload.h"
+
+#include <string.h>
 
 otMessage* createCoapMessage()
 {
@@ -53,6 +61,20 @@ void addPayload(otMessage *aRequest,
   return;
 }
 
+void saveSubscriptionToken(otMessage *aRequest, Subscription *subscription)
+{
+  subscription->tokenLength = otCoapMessageGetTokenLength(aRequest);
+  memcpy(&(subscription->token), otCoapMessageGetToken(aRequest), subscription->tokenLength);
+  return;
+}
+
+void makeObserveRequest(otMessage *aRequest)
+{
+  otError error = otCoapMessageAppendObserveOption(aRequest, OBSERVE_SUBSCRIBE);
+  HandleMessageError("append observe option", aRequest, error);
+  return;
+}
+
 void send(otMessage *aRequest,
           otMessageInfo *aMessageInfo,
           otCoapResponseHandler responseCallback)
@@ -63,7 +85,7 @@ void send(otMessage *aRequest,
   return;
 }
 
-void observeRequest(otSockAddr *sockAddr,
+void observeRequest(Subscription *subscription,
                     void *payload,
                     size_t payloadSize,
                     const char *uri,
@@ -74,11 +96,14 @@ void observeRequest(otSockAddr *sockAddr,
   otMessage *aRequest;
 
   EmptyMemory(&aMessageInfo, sizeof(otMessageInfo));
-  createMessageInfo(sockAddr, &aMessageInfo);
+  createMessageInfo(&(subscription->sockAddr), &aMessageInfo);
 
   aRequest = createCoapMessage();
-
   createHeaders(aRequest, &aMessageInfo, uri, type);
+
+  saveSubscriptionToken(aRequest, subscription);
+  makeObserveRequest(aRequest);
+
   addPayload(aRequest, payload, payloadSize);
   send(aRequest, &aMessageInfo, responseCallback);
   return;

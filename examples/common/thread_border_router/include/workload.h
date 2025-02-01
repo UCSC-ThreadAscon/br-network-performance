@@ -62,4 +62,14 @@ void sendCoapResponse(otMessage *aRequest, const otMessageInfo *aRequestInfo);
 
 /* ---- CoAP Observe Client API ---- */
 
-#define UDP_SOCK_PORT 12345
+// https://datatracker.ietf.org/doc/html/rfc7641#section-2
+#define OBSERVE_SUBSCRIBE 0
+#define OBSERVE_CANCEL 1
+
+typedef struct Subscription
+{
+  otSockAddr sockAddr;
+  uint64_t token;
+  uint8_t tokenLength;
+}
+Subscription;

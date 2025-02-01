@@ -1,6 +1,6 @@
 #include "experiment_common.h"
 
-static otSockAddr sockAddr;
+static Subscription subscription;
 
 /**
  * TODO: Follow the `ProcessRequest()` example to figure out how to SET UP
@@ -17,7 +17,7 @@ void tpObserveMain()
 {
   resetTrials();
   coapStart();
-  InitSockAddr(&sockAddr, OBSERVE_SERVER_IP_ADDRESS);
+  InitSockAddr(&(subscription.sockAddr), OBSERVE_SERVER_IP_ADDRESS);
 
   PrintDelimiter();
   otLogNotePlat("Starting the Throughput Observe experiment trial!");
