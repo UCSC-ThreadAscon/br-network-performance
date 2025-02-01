@@ -1,8 +1,9 @@
 #include "workload.h"
 #include "experiment_common.h"
 #include "time_api.h"
+#include "independent_variables.h"
 
-#define TOTAL_PACKETS_TO_RECEIVE 10
+#define TOTAL_PACKETS_TO_RECEIVE 100
 #define PAYLOAD_SIZE sizeof(Fahrenheit)
 #define EXPECTED_TOTAL_BYTES (TOTAL_PACKETS_TO_RECEIVE * PAYLOAD_SIZE)
 
@@ -142,6 +143,12 @@ void tpObserveStartCallback(otChangedFlags changed_flags, void* ctx)
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
     tpObserveMain();
+
+    printNetworkKey();
+    PrintDelimiter();
+    printCipherSuite();
+    printTxPower();
+    PrintDelimiter();
   }
   s_previous_role = role;
   return;
