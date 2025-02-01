@@ -49,6 +49,7 @@ void startNextTrial(void);
 /** ---- CoAP Common API ---- */
 uint16_t getPayloadLength(const otMessage *aMessage);
 void getPayload(const otMessage *aMessage, void* buffer);
+void printMessage(otMessage *aMessage, const otMessageInfo *aMessageInfo);
 
 /* ---- CoAP Server API ---- */
 otError createResource(otCoapResource *resource,
@@ -58,6 +59,7 @@ otError createResource(otCoapResource *resource,
 
 void resourceDestructor(otCoapResource *resource);
 void sendCoapResponse(otMessage *aRequest, const otMessageInfo *aRequestInfo);
-void printRequest(otMessage *aMessage, const otMessageInfo *aMessageInfo);
+
+/* ---- CoAP Observe Client API ---- */
 
 #define UDP_SOCK_PORT 12345

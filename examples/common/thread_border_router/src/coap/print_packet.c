@@ -16,7 +16,7 @@ void getPeerAddrString(const otMessageInfo *aMessageInfo, char *ipString) {
   return;
 }
 
-void printRequest(otMessage *aMessage, const otMessageInfo *aMessageInfo)
+void printMessage(otMessage *aMessage, const otMessageInfo *aMessageInfo)
 {
   uint32_t length = getPayloadLength(aMessage);
 
