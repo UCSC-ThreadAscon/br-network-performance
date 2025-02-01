@@ -95,11 +95,5 @@ void assertNotification(otMessage *aMessage, Subscription *subscription)
 
   uint16_t payloadLength = getPayloadLength(aMessage);
   assert(payloadLength == sizeof(Fahrenheit));
-
-  Fahrenheit temperature = 0;
-  getPayload(aMessage, &temperature);
-
-  otLogNotePlat("From Subscription 0x%llx: the temperature is currently %" PRIu8 "° Fahrenheit.",
-                token, temperature);
   return;
 }

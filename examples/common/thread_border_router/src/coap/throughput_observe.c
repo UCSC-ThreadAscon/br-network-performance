@@ -3,19 +3,20 @@
 
 static Subscription subscription;
 
+/**
+ * TODO: Get the Border Router to unsubscribe and calculate the throughput after
+ *       receiving 1000 Non-Confirmable packets.
+ */
 void tpObserveResponseCallback(void *aContext,
                                otMessage *aMessage,
                                const otMessageInfo *aMessageInfo,
                                otError aResult)
 {
   assertNotification(aMessage, &subscription);
+  printObserveNotification(aMessage);
   return;
 }
 
-/**
- * TODO: Get the Border Router to unsubscribe and calculate the throughput after
- *       receiving 1000 Non-Confirmable packets.
- */
 void tpObserveMain()
 {
   resetTrials();

@@ -43,3 +43,12 @@ void printMessage(otMessage *aMessage, const otMessageInfo *aMessageInfo)
   }
   return;
 }
+
+void printObserveNotification(otMessage *aMessage)
+{
+  Fahrenheit temperature = 0;
+  getPayload(aMessage, &temperature);
+  otLogNotePlat("From Subscription 0x%llx: the temperature is currently %" PRIu8 "° Fahrenheit.",
+                token, temperature);
+  return;
+}

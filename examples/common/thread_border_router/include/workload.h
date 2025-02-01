@@ -80,3 +80,4 @@ void observeRequest(Subscription *subscription,
                     otCoapType type);
 
 void assertNotification(otMessage *message, Subscription *subscription);
+void printObserveNotification(otMessage *aMessage);
