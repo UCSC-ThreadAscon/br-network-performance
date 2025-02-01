@@ -26,6 +26,8 @@ void tpObserveCancelCallback(void *aContext,
 
   otLogNotePlat("Cancelled subscription 0x%llx.", subscription.token);
   EmptyMemory(&subscription, sizeof(Subscription));
+
+  startNextTrial();
   return;
 }
 
