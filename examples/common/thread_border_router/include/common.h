@@ -2,6 +2,7 @@
 
 #include "workload.h"
 #include "time_api.h"
+#include "experiment.h"
 
 /**
  * I got the idea to use this specific print statement delimiter
@@ -28,10 +29,4 @@ void plConRequestHandler(void* aContext,
                          otMessage *aMessage,
                          const otMessageInfo *aMessageInfo);
 
-void tpUdpRequestHandler(void *aContext,
-                         otMessage *aMessage,
-                         const otMessageInfo *aMessageInfo);
-
-void plUdpRequestHandler(void *aContext,
-                         otMessage *aMessage,
-                         const otMessageInfo *aMessageInfo);
+void tpObserveStartCallback(otChangedFlags changed_flags, void* ctx);

@@ -199,9 +199,11 @@ static void ot_task_worker(void *ctx)
      */
 #if (EXPERIMENT_THROUGHPUT_CONFIRMABLE || EXPERIMENT_PACKET_LOSS_CONFIRMABLE)
     otSetStateChangedCallback(esp_openthread_get_instance(), expServerStartCallback, NULL);
-#elif (EXPERIMENT_THROUGHPUT_OBSERVE || EXPERIMENT_PACKET_LOSS_OBSERVE)
+#elif EXPERIMENT_THROUGHPUT_OBSERVE
+    otSetStateChangedCallback(esp_openthread_get_instance(), tpObserveStartCallback, NULL);
+#elif EXPERIMENT_PACKET_LOSS_OBSERVE
     PrintDelimiter();
-    otLogNotePlat("TO-DO: Implement the CoAP Observe experiments.");
+    otLogNotePlat("TO-DO: Implement the CoAP Observe Packet Loss experiment.");
     PrintDelimiter();
 #else
     PrintDelimiter();

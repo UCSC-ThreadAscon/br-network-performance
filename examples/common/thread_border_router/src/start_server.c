@@ -28,8 +28,6 @@ void expStartCoapServer(void)
 #elif EXPERIMENT_PACKET_LOSS_OBSERVE
   createResource(&experimentRoute, PacketLossConfirmable, "Packet Loss Confirmable",
                  plConRequestHandler);
-#elif EXPERIMENT_THROUGHPUT_OBSERVE
-  otLogNotePlat("TO-DO: Create the implementation for the Throughput Observe experiments.");
 #else
   OT_UNUSED_VARIABLE(experimentRoute);
 #endif
