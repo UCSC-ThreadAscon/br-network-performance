@@ -1,5 +1,5 @@
 #include "workload.h"
-#include "handler.h"
+#include "common.h"
 
 #define CONFIRMABLE_STRING "Confirmable"
 #define NONCONFIRMABLE_STRING "Non-Confirmable"

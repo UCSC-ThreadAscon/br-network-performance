@@ -1,4 +1,4 @@
-#include "handler.h"
+#include "common.h"
 
 void plConRequestHandler(void* aContext,
                          otMessage *aMessage,

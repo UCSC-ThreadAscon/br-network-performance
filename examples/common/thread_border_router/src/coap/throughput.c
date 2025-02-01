@@ -1,4 +1,4 @@
-#include "handler.h"
+#include "common.h"
 
 void tpConRequestHandler(void* aContext,
                          otMessage *aMessage,

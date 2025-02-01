@@ -1,5 +1,5 @@
 #include "workload.h"
-#include "handler.h"
+#include "common.h"
 #include "independent_variables.h"
 
 #include <openthread/thread_ftd.h>
