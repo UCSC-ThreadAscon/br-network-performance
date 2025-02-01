@@ -9,6 +9,10 @@
 static Subscription subscription;
 
 static uint32_t totalBytes;
+static uint32_t packetsReceived;
+
+static struct timeval startTime;
+static struct timeval endTime;
 
 void tpObserveCancelCallback(void *aContext,
                              otMessage *aMessage,
@@ -33,24 +37,73 @@ void tpObserveResponseCallback(void *aContext,
                                const otMessageInfo *aMessageInfo,
                                otError aResult)
 {
-  assertNotification(aMessage, &subscription);
-  printObserveNotification(aMessage, &subscription);
-
-  totalBytes += getPayloadLength(aMessage);
-  assert(totalBytes <= EXPECTED_TOTAL_BYTES);
-
-  if (totalBytes == EXPECTED_TOTAL_BYTES)
+  if (aResult != OT_ERROR_NONE)
   {
-    /** The throughput formula is:
-     *
-     *       TOTAL PACKETS TO RECEIVE * PAYLOAD SIZE
-     *      ----------------------------------------- bytes/time
-     *                   t_end - t_start
-     */
-    otLogNotePlat("Received a total of %" PRIu32 " bytes.", totalBytes);
+    PrintCritDelimiter();
+    otLogCritPlat("CoAP Observe Throughput has failed. Reason: %s",
+                  otThreadErrorToString(aResult));
+    otLogCritPlat("Going to restart the current experiment trial.");
+    PrintCritDelimiter();
 
-    observeRequest(&subscription, OBSERVE_SERVER_URI, tpObserveCancelCallback,
-                  OT_COAP_TYPE_CONFIRMABLE, OBSERVE_CANCEL);
+    esp_restart();
+  }
+  else
+  {
+    assertNotification(aMessage, &subscription);
+    printObserveNotification(aMessage, &subscription);
+
+    packetsReceived += 1;
+    totalBytes += getPayloadLength(aMessage);
+    assert(totalBytes <= EXPECTED_TOTAL_BYTES);
+
+    if (totalBytes == EXPECTED_TOTAL_BYTES)
+    {
+      /** The throughput formula is:
+       *
+       *       TOTAL PACKETS TO RECEIVE * PAYLOAD SIZE
+       *      ----------------------------------------- bytes/time
+       *                   t_end - t_start
+       */
+      endTime = getTimevalNow();
+
+      uint64_t usElapsed = timeDiffUs(startTime, endTime);
+
+      double denominatorUs = (double) usElapsed;
+      double denominatorMs = US_TO_MS((double) denominatorUs);
+      double denominatorSecs = US_TO_SECONDS((double) denominatorUs);
+
+      double throughputSecs = (double) totalBytes / denominatorSecs;
+      double throughputMs = (double) totalBytes / denominatorMs;
+      double throughputUs = (double) totalBytes / denominatorUs;
+
+      /**
+       * I found that doubles have 15 digits of precision from:
+       * https://stackoverflow.com/a/2386882/6621292
+       */
+      PrintDelimiter();
+      otLogNotePlat("The throughput is:");
+      otLogNotePlat("%.15f bytes/second, or", throughputSecs);
+      otLogNotePlat("%.15f bytes/ms, or", throughputMs);
+      otLogNotePlat("%.15f bytes/us.", throughputUs);
+      PrintDelimiter();
+
+      PrintDelimiter();
+      otLogNotePlat("Time Elapsed:");
+      otLogNotePlat("%.15f seconds.", denominatorSecs);
+      otLogNotePlat("%.15f ms, or", denominatorMs);
+      otLogNotePlat("%" PRIu64 " us.", usElapsed);
+      otLogNotePlat("Start Timestamp: %" PRIu64 "", toUs(startTime));
+      otLogNotePlat("End Timestamp: %" PRIu64 "", toUs(endTime));
+      PrintDelimiter();
+
+      PrintDelimiter();
+      otLogNotePlat("Total Received: %" PRIu32 " bytes", totalBytes);
+      otLogNotePlat("Number of packets received: %" PRIu32 "", packetsReceived);
+      PrintDelimiter();
+
+      observeRequest(&subscription, OBSERVE_SERVER_URI, tpObserveCancelCallback,
+                    OT_COAP_TYPE_CONFIRMABLE, OBSERVE_CANCEL);
+    }
   }
 
   return;
@@ -66,6 +119,7 @@ void tpObserveMain()
   otLogNotePlat("Starting the Throughput Observe experiment trial!");
   PrintDelimiter();
 
+  startTime = getTimevalNow();
   observeRequest(&subscription, OBSERVE_SERVER_URI, tpObserveResponseCallback,
                  OT_COAP_TYPE_CONFIRMABLE, OBSERVE_SUBSCRIBE);
   return;
