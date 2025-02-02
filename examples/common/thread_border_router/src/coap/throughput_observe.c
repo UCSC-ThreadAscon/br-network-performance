@@ -18,10 +18,7 @@ void tpObserveCancelCallback(void *aContext,
                              const otMessageInfo *aMessageInfo,
                              otError aResult)
 {
-  uint64_t token = 0;
-  memcpy(&token, otCoapMessageGetToken(aMessage), otCoapMessageGetTokenLength(aMessage)); 
-  assert(token == subscription.token);
-
+  assert(getToken(aMessage) == subscription.token);
   otLogNotePlat("Cancelled subscription 0x%llx.", subscription.token);
   EmptyMemory(&subscription, sizeof(Subscription));
 
