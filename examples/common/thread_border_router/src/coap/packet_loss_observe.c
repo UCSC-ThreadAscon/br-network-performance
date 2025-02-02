@@ -24,6 +24,26 @@ void printPacketLoss()
   return;
 }
 
+void plObserveFinishTrial(void *aContext,
+                               otMessage *aMessage,
+                               const otMessageInfo *aMessageInfo,
+                               otError aResult)
+{
+  if (aResult == OT_ERROR_NONE)
+  {
+    otLogNotePlat("Cancelled subscription 0x%llx.", subscription.token);
+  }
+  else
+  {
+    otLogNotePlat("Failed to cancel subscription 0x%llx. Reason: %s.",
+                  subscription.token, otThreadErrorToString(aResult));
+  }
+
+  EmptyMemory(&subscription, sizeof(Subscription));
+  startNextTrial();
+  return;
+}
+
 /**
  * TODO:
  *  1. You need to keep counting packets until you receive the CON request
@@ -59,7 +79,8 @@ void plObserveResponseCallback(void *aContext,
       else if (type == OT_COAP_TYPE_CONFIRMABLE)
       {
         printPacketLoss();
-        startNextTrial();
+        observeRequest(&subscription, OBSERVE_SERVER_URI, plObserveFinishTrial,
+                      OT_COAP_TYPE_CONFIRMABLE, OBSERVE_CANCEL);
       }
     }
   }
