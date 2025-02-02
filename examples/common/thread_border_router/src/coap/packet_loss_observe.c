@@ -31,7 +31,6 @@ void plObserveFinishTrial(void *aContext,
 {
   if (aResult == OT_ERROR_NONE)
   {
-    assert(getToken(aMessage) == subscription.token);
     otLogNotePlat("Cancelled subscription 0x%llx.", subscription.token);
   }
   else

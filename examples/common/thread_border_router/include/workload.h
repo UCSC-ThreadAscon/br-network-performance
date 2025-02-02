@@ -76,5 +76,4 @@ void observeRequest(Subscription *subscription,
                     uint32_t observeOption);
 
 void assertNotification(otMessage *message, Subscription *subscription);
-uint64_t getToken(otMessage *aMessage);
 void printObserveNotification(otMessage *aMessage, Subscription *subscription);

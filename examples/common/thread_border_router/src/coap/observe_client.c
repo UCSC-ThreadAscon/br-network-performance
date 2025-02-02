@@ -35,32 +35,19 @@ void createHeaders(otMessage *aRequest,
                    otMessageInfo *aMessageInfo,
                    const char *uri,
                    otCoapType type,
-                   Subscription *subscription,
                    uint32_t observeOption)
 {
   otError error = OT_ERROR_NONE;
 
   otCoapMessageInit(aRequest, type, OT_COAP_CODE_GET);
-
-  if (observeOption == OBSERVE_SUBSCRIBE)
-  {
-    otCoapMessageGenerateToken(aRequest, OT_COAP_DEFAULT_TOKEN_LENGTH);
-  }
-  else
-  {
-    otLogNotePlat("The token is 0x%llx.", subscription->token);
-    otLogNotePlat("The token length is %" PRIu8 " bytes.", subscription->tokenLength);
-
-    error = otCoapMessageSetToken(aRequest, (const uint8_t *) &(subscription->token),
-                                  subscription->tokenLength);
-    HandleMessageError("set observe token", aRequest, error);
-  }
+  otCoapMessageGenerateToken(aRequest, OT_COAP_DEFAULT_TOKEN_LENGTH);
 
   error = otCoapMessageAppendObserveOption(aRequest, observeOption);
   HandleMessageError("append observe option", aRequest, error);
 
   error = otCoapMessageAppendUriPathOptions(aRequest, uri);
   HandleMessageError("append uri options", aRequest, error);
+
   return;
 }
 
@@ -95,26 +82,20 @@ void observeRequest(Subscription *subscription,
 
   aRequest = createCoapMessage();
 
-  createHeaders(aRequest, &aMessageInfo, uri, type, subscription, observeOption);
-  if (observeOption == OBSERVE_SUBSCRIBE)
-  {
-    saveSubscriptionToken(aRequest, subscription);
-  }
+  createHeaders(aRequest, &aMessageInfo, uri, type, observeOption);
+  saveSubscriptionToken(aRequest, subscription);
 
   send(aRequest, &aMessageInfo, responseCallback);
   return;
 }
 
-uint64_t getToken(otMessage *aMessage)
+void assertNotification(otMessage *aMessage, Subscription *subscription)
 {
   uint64_t token = 0;
-  memcpy(&token, otCoapMessageGetToken(aMessage), otCoapMessageGetTokenLength(aMessage));
-  return token;
-}
+  memcpy(&token, otCoapMessageGetToken(aMessage), otCoapMessageGetTokenLength(aMessage)); 
+  assert(token == subscription->token);
 
-void assertNotification(otMessage *aMessage, Subscription *subscription)
-{ 
-  assert(getToken(aMessage) == subscription->token);
-  assert(getPayloadLength(aMessage) == sizeof(Fahrenheit));
+  uint16_t payloadLength = getPayloadLength(aMessage);
+  assert(payloadLength == sizeof(Fahrenheit));
   return;
 }
