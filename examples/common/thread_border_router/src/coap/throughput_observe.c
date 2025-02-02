@@ -37,8 +37,7 @@ void tpObserveResponseCallback(void *aContext,
   if (aResult != OT_ERROR_NONE)
   {
     PrintCritDelimiter();
-    otLogCritPlat("CoAP Observe Throughput has failed. Reason: %s",
-                  otThreadErrorToString(aResult));
+    otLogCritPlat("CoAP Observe Throughput has failed. Reason: %s", otThreadErrorToString(aResult));
     otLogCritPlat("Going to restart the current experiment trial.");
     PrintCritDelimiter();
 
@@ -102,7 +101,6 @@ void tpObserveResponseCallback(void *aContext,
                     OT_COAP_TYPE_CONFIRMABLE, OBSERVE_CANCEL);
     }
   }
-
   return;
 }
 

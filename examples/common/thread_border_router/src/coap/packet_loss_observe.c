@@ -18,12 +18,20 @@ void printPacketLoss()
   PrintDelimiter();
   otLogNotePlat("Received: %" PRIu32 " packets", numReceived);
   otLogNotePlat("Packets Lost: %" PRIu32 " packets", numPacketsLost);
-  otLogNotePlat("Expected: %d packets", OBSERVE_MAX_PACKETS;
+  otLogNotePlat("Expected: %d packets", OBSERVE_MAX_PACKETS);
   otLogNotePlat("Packet Loss Ratio: %.15f", packetLoss);
   PrintDelimiter();
   return;
 }
 
+/**
+ * TODO:
+ *  1. You need to keep counting packets until you receive the CON request
+ *     from the Border Router.
+ *
+ *  2. If you receive the CON request from the border router, you need to
+ *     unsubscribe and start the next experiment trial.
+ */
 void plObserveResponseCallback(void *aContext,
                                otMessage *aMessage,
                                const otMessageInfo *aMessageInfo,
@@ -31,28 +39,38 @@ void plObserveResponseCallback(void *aContext,
 {
   if (aResult == OT_ERROR_NONE)
   {
-    if (getPayloadLength(aMessage) == sizeof(Fahrenheit))
-    {
-      printObserveNotification(aMessage, &subscription); 
-    }
+    otCoapType type = otCoapMessageGetType(aMessage);
 
-    numReceived += 1;
-    if (numReceived == OBSERVE_MAX_PACKETS)
+    if (type == OT_COAP_TYPE_NON_CONFIRMABLE)
     {
-      // No packet loss.
-      printPacketLoss();
-      startNextTrial();
+      assert(getPayloadLength(aMessage) == sizeof(Fahrenheit));
+
+      numReceived += 1;
+      printObserveNotification(aMessage, &subscription);
     }
-    else
+    else // Either is initial ACK or final CON packet.
     {
-      assert(numReceived < OBSERVE_MAX_PACKETS);
+      if (type == OT_COAP_TYPE_ACKNOWLEDGMENT)
+      {
+        PrintDelimiter();
+        otLogNotePlat("Starting the Packet Loss Observe experiment trial!");
+        PrintDelimiter();
+      }
+      else if (type == OT_COAP_TYPE_CONFIRMABLE)
+      {
+        printPacketLoss();
+        startNextTrial();
+      }
     }
   }
   else
   {
-    // Packet loss has occured.
-    printPacketLoss();
-    startNextTrial();
+    PrintCritDelimiter();
+    otLogCritPlat("CoAP Observe Packet Loss has failed. Reason: %s", otThreadErrorToString(aResult));
+    otLogCritPlat("Going to restart the current experiment trial.");
+    PrintCritDelimiter();
+
+    esp_restart();
   }
   return;
 }
@@ -62,11 +80,6 @@ void plObserveMain()
   resetTrials();
   coapStart();
   InitSockAddr(&(subscription.sockAddr), OBSERVE_SERVER_IP_ADDRESS);
-
-  PrintDelimiter();
-  otLogNotePlat("Starting the Packet Loss Observe experiment trial!");
-  PrintDelimiter();
-
   observeRequest(&subscription, OBSERVE_SERVER_URI, plObserveResponseCallback,
                  OT_COAP_TYPE_CONFIRMABLE, OBSERVE_SUBSCRIBE);
   return;
