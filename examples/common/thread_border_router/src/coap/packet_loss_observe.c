@@ -44,14 +44,6 @@ void plObserveFinishTrial(void *aContext,
   return;
 }
 
-/**
- * TODO:
- *  1. You need to keep counting packets until you receive the CON request
- *     from the Border Router.
- *
- *  2. If you receive the CON request from the border router, you need to
- *     unsubscribe and start the next experiment trial.
- */
 void plObserveResponseCallback(void *aContext,
                                otMessage *aMessage,
                                const otMessageInfo *aMessageInfo,
