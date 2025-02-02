@@ -13,8 +13,6 @@
 #define MAX_PACKETS 1000
 #define PAYLOAD_SIZE_BYTES 4
 
-#define UDP_MAX_PACKETS 4000000
-
 typedef enum Experiment
 {
   ThroughputConfirmable,
@@ -37,3 +35,6 @@ Experiment;
  * the temperature will be stored as an unsigned 8 bit integer.
  */
 typedef uint8_t Fahrenheit;
+
+#define OBSERVE_MAX_PACKETS 100
+#define OBSERVE_PAYLOAD_SIZE_BYTES sizeof(Fahrenheit)

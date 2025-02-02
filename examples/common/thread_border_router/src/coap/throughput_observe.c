@@ -3,9 +3,7 @@
 #include "time_api.h"
 #include "independent_variables.h"
 
-#define TOTAL_PACKETS_TO_RECEIVE 100
-#define PAYLOAD_SIZE sizeof(Fahrenheit)
-#define EXPECTED_TOTAL_BYTES (TOTAL_PACKETS_TO_RECEIVE * PAYLOAD_SIZE)
+#define EXPECTED_TOTAL_BYTES (OBSERVE_MAX_PACKETS * OBSERVE_PAYLOAD_SIZE_BYTES)
 
 static Subscription subscription;
 
@@ -76,7 +74,7 @@ void tpObserveResponseCallback(void *aContext,
       double throughputUs = (double) totalBytes / denominatorUs;
 
       /**
-       * I found that doubles have 15 digits of precision from:
+       * I learned that doubles have 15 digits of precision from:
        * https://stackoverflow.com/a/2386882/6621292
        */
       PrintDelimiter();

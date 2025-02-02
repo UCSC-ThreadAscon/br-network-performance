@@ -40,3 +40,4 @@ void plConRequestHandler(void* aContext,
 
 void coapStart();
 void tpObserveStartCallback(otChangedFlags changed_flags, void* ctx);
+void plObserveStartCallback(otChangedFlags changed_flags, void* ctx);

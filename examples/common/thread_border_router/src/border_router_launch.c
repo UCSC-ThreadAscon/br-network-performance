@@ -202,9 +202,7 @@ static void ot_task_worker(void *ctx)
 #elif EXPERIMENT_THROUGHPUT_OBSERVE
     otSetStateChangedCallback(esp_openthread_get_instance(), tpObserveStartCallback, NULL);
 #elif EXPERIMENT_PACKET_LOSS_OBSERVE
-    PrintDelimiter();
-    otLogNotePlat("TO-DO: Implement the CoAP Observe Packet Loss experiment.");
-    PrintDelimiter();
+    otSetStateChangedCallback(esp_openthread_get_instance(), plObserveStartCallback, NULL);
 #else
     PrintDelimiter();
     otLogNotePlat("No experiments to set up.");
