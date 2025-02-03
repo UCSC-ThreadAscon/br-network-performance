@@ -6,6 +6,8 @@
 Subscription subscription;
 static uint32_t numReceived;
 
+static bool trialFinished;
+
 /**
  * I learned that doubles have 15 digits of precision from:
  * https://stackoverflow.com/a/2386882/6621292
@@ -51,6 +53,8 @@ void plObserveResponseCallback(void *aContext,
 {
   if (aResult == OT_ERROR_NONE)
   {
+    if (trialFinished) { trialFinishedHandler(aMessage, aMessageInfo); return; }
+
     otCoapType type = otCoapMessageGetType(aMessage);
 
     if (type == OT_COAP_TYPE_NON_CONFIRMABLE)
@@ -71,6 +75,7 @@ void plObserveResponseCallback(void *aContext,
       else if (type == OT_COAP_TYPE_CONFIRMABLE)
       {
         printPacketLoss();
+        trialFinished = true;
         observeRequest(&subscription, OBSERVE_SERVER_URI, plObserveFinishTrial,
                       OT_COAP_TYPE_CONFIRMABLE, OBSERVE_CANCEL);
       }
