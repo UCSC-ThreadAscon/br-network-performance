@@ -31,30 +31,43 @@ void createMessageInfo(otSockAddr *aSockAddr, otMessageInfo *aMessageInfo)
   return;
 }
 
+void saveSubscriptionToken(otMessage *aRequest, Subscription *subscription)
+{
+  subscription->tokenLength = otCoapMessageGetTokenLength(aRequest);
+  memcpy(&(subscription->token), otCoapMessageGetToken(aRequest), subscription->tokenLength);
+  return;
+}
+
 void createHeaders(otMessage *aRequest,
                    otMessageInfo *aMessageInfo,
                    const char *uri,
                    otCoapType type,
-                   uint32_t observeOption)
+                   uint32_t observeOption,
+                   Subscription *subscription)
 {
   otError error = OT_ERROR_NONE;
 
   otCoapMessageInit(aRequest, type, OT_COAP_CODE_GET);
-  otCoapMessageGenerateToken(aRequest, OT_COAP_DEFAULT_TOKEN_LENGTH);
+
+  if (observeOption == OBSERVE_SUBSCRIBE)
+  {
+    otCoapMessageGenerateToken(aRequest, OT_COAP_DEFAULT_TOKEN_LENGTH);
+    saveSubscriptionToken(aRequest, subscription);
+  }
+  else
+  {
+    assert(observeOption == OBSERVE_CANCEL);
+    uint64_t token = subscription->token;
+ 
+    error = otCoapMessageSetToken(aRequest, (const uint8_t *) &token, OT_COAP_DEFAULT_TOKEN_LENGTH);
+    HandleMessageError("setting token in coap observe notification", aRequest, error);
+  }
 
   error = otCoapMessageAppendObserveOption(aRequest, observeOption);
   HandleMessageError("append observe option", aRequest, error);
 
   error = otCoapMessageAppendUriPathOptions(aRequest, uri);
   HandleMessageError("append uri options", aRequest, error);
-
-  return;
-}
-
-void saveSubscriptionToken(otMessage *aRequest, Subscription *subscription)
-{
-  subscription->tokenLength = otCoapMessageGetTokenLength(aRequest);
-  memcpy(&(subscription->token), otCoapMessageGetToken(aRequest), subscription->tokenLength);
   return;
 }
 
@@ -81,9 +94,7 @@ void observeRequest(Subscription *subscription,
   createMessageInfo(&(subscription->sockAddr), &aMessageInfo);
 
   aRequest = createCoapMessage();
-
-  createHeaders(aRequest, &aMessageInfo, uri, type, observeOption);
-  saveSubscriptionToken(aRequest, subscription);
+  createHeaders(aRequest, &aMessageInfo, uri, type, observeOption, subscription);
 
   send(aRequest, &aMessageInfo, responseCallback);
   return;
