@@ -39,7 +39,6 @@ void saveSubscriptionToken(otMessage *aRequest, Subscription *subscription)
 }
 
 void createHeaders(otMessage *aRequest,
-                   otMessageInfo *aMessageInfo,
                    const char *uri,
                    otCoapType type,
                    uint32_t observeOption,
@@ -94,7 +93,7 @@ void observeRequest(Subscription *subscription,
   createMessageInfo(&(subscription->sockAddr), &aMessageInfo);
 
   aRequest = createCoapMessage();
-  createHeaders(aRequest, &aMessageInfo, uri, type, observeOption, subscription);
+  createHeaders(aRequest, uri, type, observeOption, subscription);
 
   send(aRequest, &aMessageInfo, responseCallback);
   return;
