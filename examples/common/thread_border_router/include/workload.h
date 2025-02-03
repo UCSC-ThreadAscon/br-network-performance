@@ -78,4 +78,4 @@ void observeRequest(Subscription *subscription,
 void assertNotification(otMessage *message, Subscription *subscription);
 void printObserveNotification(otMessage *aMessage, Subscription *subscription);
 
-void trialFinishedHandler(otMessage *aMessage, otMessageInfo *aMessageInfo);
+void trialFinishedHandler(otMessage *aMessage, const otMessageInfo *aMessageInfo);

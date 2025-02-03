@@ -111,16 +111,16 @@ void assertNotification(otMessage *aMessage, Subscription *subscription)
   return;
 }
 
-void trialFinishedHandler(otMessage *aMessage, otMessageInfo *aMessageInfo)
+void trialFinishedHandler(otMessage *aMessage, const otMessageInfo *aMessageInfo)
 {
   if (aMessage == NULL)
   {
-    otLogWarnPlat("Response handler is attempting to proccess an empty CoAP observe request.");
+    otLogWarnPlat("Stopped response handler from attempting to proccess an empty CoAP observe request.");
   }
 
   if (aMessageInfo == NULL)
   {
-    otLogWarnPlat("Response handler attempting to process an empty Message Info object.")
+    otLogWarnPlat("Stopped response handler from attempting to process an empty Message Info object.");
   }
   return;
 }

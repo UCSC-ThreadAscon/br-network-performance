@@ -47,7 +47,7 @@ void tpObserveResponseCallback(void *aContext,
   }
   else
   {
-    if (trialFinished) { trialFinishedHandler(); return; }
+    if (trialFinished) { trialFinishedHandler(aMessage, aMessageInfo); return; }
 
     assertNotification(aMessage, &subscription);
     printObserveNotification(aMessage, &subscription);
