@@ -49,28 +49,13 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
 
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
-    otError error = otThreadBecomeLeader(OT_INSTANCE);
-    if (error == OT_ERROR_NONE)
-    {
-      otLogNotePlat("Successfully attached to the Thread Network as the leader.");
-      expStartCoapServer();
-    }
-    else
-    {
-      PrintCritDelimiter();
-      otLogCritPlat("Failed to become the Leader of the Thread Network.");
-      otLogCritPlat("Reason: %s", otThreadErrorToString(error));
-      otLogCritPlat("Going to restart.");
-      PrintCritDelimiter();
-
-      esp_restart();
-    }
-
     printNetworkKey();
     PrintDelimiter();
     printCipherSuite();
     printTxPower();
     PrintDelimiter();
+
+    expStartCoapServer();
   }
   s_previous_role = role;
   return;
