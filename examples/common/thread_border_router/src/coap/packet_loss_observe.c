@@ -125,6 +125,7 @@ void plObserveStartCallback(otChangedFlags changed_flags, void* ctx)
     PrintDelimiter();
     printCipherSuite();
     printTxPower();
+    printNetPerfTest();
     PrintDelimiter();
   }
   s_previous_role = role;
