@@ -13,7 +13,7 @@ static uint32_t packetsReceived;
 static struct timeval startTime;
 static struct timeval endTime;
 
-static bool canary;
+static bool trialFinished;
 
 void tpObserveCancelCallback(void *aContext,
                              otMessage *aMessage,
@@ -47,15 +47,8 @@ void tpObserveResponseCallback(void *aContext,
   }
   else
   {
-    if (canary)
-    {
-      otLogNotePlat("I'm processing a request after sending CON packet to cancel.");
-      if (aMessage == NULL)
-      {
-        otLogNotePlat("There is not message.");
-      }
-      return;
-    }
+    if (trialFinished) { trialFinishedHandler(); return; }
+
     assertNotification(aMessage, &subscription);
     printObserveNotification(aMessage, &subscription);
 
@@ -108,11 +101,9 @@ void tpObserveResponseCallback(void *aContext,
       otLogNotePlat("Number of packets received: %" PRIu32 "", packetsReceived);
       PrintDelimiter();
 
-      otLogNotePlat("Hello!");
-      canary = true;
+      trialFinished = true;
       observeRequest(&subscription, OBSERVE_SERVER_URI, tpObserveCancelCallback,
                     OT_COAP_TYPE_CONFIRMABLE, OBSERVE_CANCEL);
-      otLogNotePlat("Hello again!");
     }
   }
   return;

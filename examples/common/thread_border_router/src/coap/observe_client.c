@@ -110,3 +110,17 @@ void assertNotification(otMessage *aMessage, Subscription *subscription)
   assert(payloadLength == sizeof(Fahrenheit));
   return;
 }
+
+void trialFinishedHandler(otMessage *aMessage, otMessageInfo *aMessageInfo)
+{
+  if (aMessage == NULL)
+  {
+    otLogWarnPlat("Response handler is attempting to proccess an empty CoAP observe request.");
+  }
+
+  if (aMessageInfo == NULL)
+  {
+    otLogWarnPlat("Response handler attempting to process an empty Message Info object.")
+  }
+  return;
+}
