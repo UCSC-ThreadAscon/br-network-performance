@@ -36,5 +36,5 @@ Experiment;
  */
 typedef uint8_t Fahrenheit;
 
-#define OBSERVE_MAX_PACKETS 10
+#define OBSERVE_MAX_PACKETS 1000
 #define OBSERVE_PAYLOAD_SIZE_BYTES sizeof(Fahrenheit)
