@@ -3,7 +3,12 @@
 
 #define NVS_NAMESPACE "nvs_trials"
 #define NVS_TRIALS "trials"
-#define MAX_TRIALS 1000
+
+/**
+ * For the Throughput and Packet Loss Observe experiments,
+ * we will only run 100 trials.
+ */
+#define MAX_TRIALS 100
 
 /**
  * This function should run BEFORE the experiment trial begins.
