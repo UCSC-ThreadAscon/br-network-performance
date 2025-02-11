@@ -48,7 +48,28 @@ void printObserveNotification(otMessage *aMessage, Subscription *subscription)
 {
   Fahrenheit temperature = 0;
   getPayload(aMessage, &temperature);
-  otLogNotePlat("From Subscription 0x%llx: the temperature is currently %" PRIu8 "° Fahrenheit.",
-                subscription->token, temperature);
+
+  switch (otCoapMessageGetType(aMessage))
+  {
+    case OT_COAP_TYPE_CONFIRMABLE:
+      otLogNotePlat("Subscription: 0x%llx, Temperature:%" PRIu8 "°F, Type: %s",
+                    subscription->token, temperature, "CON");
+      break;
+    case OT_COAP_TYPE_NON_CONFIRMABLE:
+      otLogNotePlat("Subscription: 0x%llx, Temperature:%" PRIu8 "°F, Type: %s",
+        subscription->token, temperature, "NON");
+      break;
+    case OT_COAP_TYPE_ACKNOWLEDGMENT:
+      otLogNotePlat("Subscription: 0x%llx, Temperature:%" PRIu8 "°F, Type: %s",
+        subscription->token, temperature, "ACK");
+      break;
+    case OT_COAP_TYPE_RESET:
+      otLogNotePlat("Subscription: 0x%llx, Temperature:%" PRIu8 "°F, Type: %s",
+        subscription->token, temperature, "RST");
+      break;
+    default:
+      otLogNotePlat("Subscription: 0x%llx, Temperature:%" PRIu8 "°F, Type: %s",
+        subscription->token, temperature, "N/A");
+  }
   return;
 }
