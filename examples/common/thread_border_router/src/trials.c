@@ -5,8 +5,7 @@
 #define NVS_TRIALS "trials"
 
 /**
- * For the Throughput and Packet Loss Observe experiments,
- * we will only run 100 trials.
+ * For the Observe experiments, we will only run 100 trials, rather than 1000 trials.
  */
 #define MAX_TRIALS 100
 
