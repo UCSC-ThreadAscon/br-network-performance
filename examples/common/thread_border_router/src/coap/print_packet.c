@@ -54,34 +54,24 @@ void printObserveNotification(otMessage *aMessage,
   switch (otCoapMessageGetType(aMessage))
   {
     case OT_COAP_TYPE_CONFIRMABLE:
-      otLogNotePlat(
-        "Subscription: 0x%llx, Temperature:%" PRIu8 "°F, Type: %s, Packet Num: "%PRIu32 "",
-        subscription->token, temperature, "CON", packetsReceived
-      );
+      otLogNotePlat("Subscription: 0x%llx, Temperature: %" PRIu8 "°F, Type: %s, Packet Number: %" PRIu32 "",
+                    subscription->token, temperature, "CON", packetsReceived);
       break;
     case OT_COAP_TYPE_NON_CONFIRMABLE:
-      otLogNotePlat(
-        "Subscription: 0x%llx, Temperature:%" PRIu8 "°F, Type: %s, Packet Num: "%PRIu32 "",
-        subscription->token, temperature, "NON", packetsReceived
-      );
+      otLogNotePlat("Subscription: 0x%llx, Temperature: %" PRIu8 "°F, Type: %s, Packet Number: %" PRIu32 "",
+                    subscription->token, temperature, "NON", packetsReceived);
       break;
     case OT_COAP_TYPE_ACKNOWLEDGMENT:
-      otLogNotePlat(
-        "Subscription: 0x%llx, Temperature:%" PRIu8 "°F, Type: %s, Packet Num: "%PRIu32 "",
-        subscription->token, temperature, "ACK", packetsReceived
-      );
+      otLogNotePlat("Subscription: 0x%llx, Temperature: %" PRIu8 "°F, Type: %s, Packet Number: %" PRIu32 "",
+                    subscription->token, temperature, "ACK", packetsReceived);
       break;
     case OT_COAP_TYPE_RESET:
-      otLogNotePlat(
-        "Subscription: 0x%llx, Temperature:%" PRIu8 "°F, Type: %s, Packet Num: "%PRIu32 "",
-        subscription->token, temperature, "RST", packetsReceived
-      );
+      otLogNotePlat("Subscription: 0x%llx, Temperature: %" PRIu8 "°F, Type: %s, Packet Number: %" PRIu32 "",
+                    subscription->token, temperature, "RST", packetsReceived);
       break;
     default:
-      otLogNotePlat(
-        "Subscription: 0x%llx, Temperature:%" PRIu8 "°F, Type: %s, Packet Num: "%PRIu32 "",
-        subscription->token, temperature, "N/A", packetsReceived
-      );
+      otLogNotePlat("Subscription: 0x%llx, Temperature: %" PRIu8 "°F, Type: %s, Packet Number: %" PRIu32 "",
+                    subscription->token, temperature, "N/A", packetsReceived);
   }
   return;
 }
