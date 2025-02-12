@@ -84,7 +84,7 @@ void plObserveResponseCallback(void *aContext,
   else
   {
     PrintCritDelimiter();
-    otLogCritPlat("CoAP Observe Packet Loss has failed. Reason: %s", otThreadErrorToString(aResult));
+    otLogCritPlat("CoAP Observe Packet Loss experiment has failed. Reason: %s", otThreadErrorToString(aResult));
     otLogCritPlat("Going to restart the current experiment trial.");
     PrintCritDelimiter();
 
