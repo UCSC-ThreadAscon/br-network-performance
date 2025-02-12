@@ -57,19 +57,19 @@ void printObserveNotification(otMessage *aMessage, Subscription *subscription)
       break;
     case OT_COAP_TYPE_NON_CONFIRMABLE:
       otLogNotePlat("Subscription: 0x%llx, Temperature:%" PRIu8 "°F, Type: %s",
-        subscription->token, temperature, "NON");
+                    subscription->token, temperature, "NON");
       break;
     case OT_COAP_TYPE_ACKNOWLEDGMENT:
       otLogNotePlat("Subscription: 0x%llx, Temperature:%" PRIu8 "°F, Type: %s",
-        subscription->token, temperature, "ACK");
+                    subscription->token, temperature, "ACK");
       break;
     case OT_COAP_TYPE_RESET:
       otLogNotePlat("Subscription: 0x%llx, Temperature:%" PRIu8 "°F, Type: %s",
-        subscription->token, temperature, "RST");
+                    subscription->token, temperature, "RST");
       break;
     default:
       otLogNotePlat("Subscription: 0x%llx, Temperature:%" PRIu8 "°F, Type: %s",
-        subscription->token, temperature, "N/A");
+                    subscription->token, temperature, "N/A");
   }
   return;
 }
