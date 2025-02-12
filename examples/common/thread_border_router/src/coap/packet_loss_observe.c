@@ -62,7 +62,7 @@ void plObserveResponseCallback(void *aContext,
       assert(getPayloadLength(aMessage) == sizeof(Fahrenheit));
 
       numReceived += 1;
-      printObserveNotification(aMessage, &subscription);
+      printObserveNotification(aMessage, &subscription, numReceived);
     }
     else // Either is initial ACK or final CON packet.
     {

@@ -8,7 +8,7 @@
 static Subscription subscription;
 
 static uint32_t totalBytes;
-static uint32_t packetsReceived;
+static uint32_t numReceived;
 
 static struct timeval startTime;
 static struct timeval endTime;
@@ -50,11 +50,12 @@ void tpObserveResponseCallback(void *aContext,
     if (trialFinished) { trialFinishedHandler(aMessage, aMessageInfo); return; }
 
     assertNotification(aMessage, &subscription);
-    printObserveNotification(aMessage, &subscription);
 
-    packetsReceived += 1;
+    numReceived += 1;
     totalBytes += getPayloadLength(aMessage);
     assert(totalBytes <= EXPECTED_TOTAL_BYTES);
+
+    printObserveNotification(aMessage, &subscription, numReceived);
 
     if (totalBytes == EXPECTED_TOTAL_BYTES)
     {
@@ -98,7 +99,7 @@ void tpObserveResponseCallback(void *aContext,
 
       PrintDelimiter();
       otLogNotePlat("Total Received: %" PRIu32 " bytes", totalBytes);
-      otLogNotePlat("Number of packets received: %" PRIu32 "", packetsReceived);
+      otLogNotePlat("Number of packets received: %" PRIu32 "", numReceived);
       PrintDelimiter();
 
       trialFinished = true;

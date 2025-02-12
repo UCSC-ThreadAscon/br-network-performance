@@ -76,6 +76,8 @@ void observeRequest(Subscription *subscription,
                     uint32_t observeOption);
 
 void assertNotification(otMessage *message, Subscription *subscription);
-void printObserveNotification(otMessage *aMessage, Subscription *subscription);
+void printObserveNotification(otMessage *aMessage,
+                              Subscription *subscription,
+                              uint32_t packetsReceived);
 
 void trialFinishedHandler(otMessage *aMessage, const otMessageInfo *aMessageInfo);
