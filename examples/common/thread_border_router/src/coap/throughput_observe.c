@@ -142,6 +142,7 @@ void tpObserveStartCallback(otChangedFlags changed_flags, void* ctx)
   otDeviceRole role = otThreadGetDeviceRole(instance);
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
+    setTxPower();
     tpObserveMain();
 
     printNetworkKey();

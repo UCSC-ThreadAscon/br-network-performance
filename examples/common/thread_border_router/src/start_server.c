@@ -49,6 +49,8 @@ void expServerStartCallback(otChangedFlags changed_flags, void* ctx)
 
   if ((connected(role) == true) && (connected(s_previous_role) == false))
   {
+    setTxPower();
+
     printNetworkKey();
     PrintDelimiter();
     printCipherSuite();

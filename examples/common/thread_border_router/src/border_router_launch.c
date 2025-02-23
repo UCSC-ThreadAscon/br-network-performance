@@ -189,11 +189,6 @@ static void ot_task_worker(void *ctx)
     xTaskCreate(ot_br_init, "ot_br_init", 6144, NULL, 4, NULL);
 
     /**
-     * TX power must be set before starting the OpenThread CLI.
-     */
-    setTxPower();
-
-    /**
      * Set up the callbacks for starting an experiment the moment the border router
      * attaches to a Thread network.
      */
