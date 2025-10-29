@@ -1,4 +1,5 @@
-menu "UCSC Thread-Ascon Border Router Network Performance Experiments"
+menu "ESP Thread Border Router Example"
+
   config EXPERIMENT_DEBUG
     bool 'Toggle debugging print statements'
     default n
@@ -35,6 +36,17 @@ menu "UCSC Thread-Ascon Border Router Network Performance Experiments"
         The Border Router will connect to the FTD during the CoAP Observe (Non-Confirmable)
         Throughput and Packet Loss experiments.
   endmenu
+
+    choice ESP_BR_BOARD_TYPE
+        prompt "Border router board type"
+        default ESP_BR_BOARD_STANDALONE
+        help
+            The board running the border router.
+
+        config ESP_BR_BOARD_STANDALONE
+            bool "Standalone dev kits"
+            help
+                Standalone ESP Wi-Fi dev kit manually connected to the RCP
 
         config ESP_BR_BOARD_DEV_KIT
             bool "Border router dev kit"
@@ -131,19 +143,22 @@ menu "UCSC Thread-Ascon Border Router Network Performance Experiments"
             SSID and PSK, and then form a Thread network automatically. Otherwise, user need
             to configure Wi-Fi and Thread manually.
 
-      config PIN_TO_RCP_MOSI
-          depends on OPENTHREAD_RADIO_SPINEL_SPI
-          int "Pin to RCP SPI MOSI"
-          default "11"
-  endmenu
+    config OPENTHREAD_BR_START_WEB
+        bool 'Enable the web server in Thread Border Router.'
+        select OPENTHREAD_COMMISSIONER
+        select OPENTHREAD_JOINER
+        default n
+        help
+            If enabled, a web server will be provided to configure and query Thread network via a Web GUI. 
 
-  config OPENTHREAD_BR_AUTO_START
-      bool 'Enable the automatic start mode in Thread Border Router.'
-      default n
-      help
-          If enabled, The Thread Border Router will connect to Wi-Fi with pre-configured
-          SSID and PSK, and then form a Thread network automatically. Otherwise, user need
-          to configure Wi-Fi and Thread manually.
+    menu "External coexist wire type and pin config"
+        config EXTERNAL_COEX_WIRE_TYPE
+            int "The wire_type of external coexist"
+            depends on ESP_COEX_EXTERNAL_COEXIST_ENABLE
+            default 3
+            range 0 3
+            help
+                Select wire_type for external coexist, the wire_type define in external_coex_wire_t.
 
         config EXTERNAL_COEX_REQUEST_PIN
             int "The number of external coexist request pin"
@@ -173,16 +188,5 @@ menu "UCSC Thread-Ascon Border Router Network Performance Experiments"
             default 21 if ESP_BR_BOARD_P4
             default 37 if ESP_BR_BOARD_M5STACK_CORES3
     endmenu # External coexist wire type and pin config
-
-      config EXTERNAL_COEX_PRIORITY_PIN
-          int "The number of external coexist priority pin"
-          depends on ESP_COEX_EXTERNAL_COEXIST_ENABLE && (EXTERNAL_COEX_WIRE_TYPE >= 2)
-          default 10
-
-      config EXTERNAL_COEX_TX_LINE_PIN
-          int "The number of external coexist tx_line pin"
-          depends on ESP_COEX_EXTERNAL_COEXIST_ENABLE && (EXTERNAL_COEX_WIRE_TYPE = 3)
-          default 11
-  endmenu # External coexist wire type and pin config
 
 endmenu
