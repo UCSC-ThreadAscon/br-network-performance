@@ -9,6 +9,7 @@
 #define EXPERIMENT_PACKET_LOSS_CONFIRMABLE (CONFIG_EXPERIMENT == 2)
 #define EXPERIMENT_THROUGHPUT_OBSERVE (CONFIG_EXPERIMENT == 3)
 #define EXPERIMENT_PACKET_LOSS_OBSERVE (CONFIG_EXPERIMENT == 4)
+#define EXPERIMENT_RTT_CPU_CONFIRMABLE (CONFIG_EXPERIMENT == 5)
 
 #define MAX_PACKETS 1000
 #define PAYLOAD_SIZE_BYTES 4
@@ -17,11 +18,13 @@ typedef enum Experiment
 {
   ThroughputConfirmable,
   PacketLossConfirmable,
+  RttCpuConfirmable
 }
 Experiment;
 
 #define THROUGHPUT_CONFIRMABLE_URI "throughput-confirmable"
 #define PACKET_LOSS_CONFIRMABLE_URI "packet-loss-confirmable"
+#define RTT_CPU_CONFIRMABLE_URI "rtt-cpu-confirmable"
 
 #define OBSERVE_SERVER_URI "temperature"
 

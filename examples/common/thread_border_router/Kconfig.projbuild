@@ -20,7 +20,7 @@ menu "ESP Thread Border Router Example"
   menu "Network Performance Experiment Settings"
     config EXPERIMENT
       int 'The network performance experiment to run.'
-      range 0 4
+      range 0 5
       default 0
       help
         Set '0' to not run any experiment (primarily used for debugging purposes).
@@ -28,6 +28,7 @@ menu "ESP Thread Border Router Example"
         Set '2' to enable the route for the Packet Loss Confirmable experiment.
         Set '3' to enable the server for the Throughput Observe (Non-Confirmable) experiment.
         Set '4' to enable the server for the Packet Loss Observe (Non-Confirmable) experiment.
+        Set '5' to enable the server for the RTT CPU Usage Confirmable experiment.
     
     config COAP_OBSERVE_SERVER_IP
       string 'IP address of the CoAP Observe server.'

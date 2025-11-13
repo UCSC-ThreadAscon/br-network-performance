@@ -66,6 +66,9 @@ otError createResource(otCoapResource *resource,
     case PacketLossConfirmable:
       resource->mUriPath = PACKET_LOSS_CONFIRMABLE_URI;
       break;
+    case RttCpuConfirmable:
+      resource->mUriPath = RTT_CPU_CONFIRMABLE_URI;
+      break;
     default:
       otLogCritPlat("Failed to create CoAP resource: invalid experiment.");
       resource->mUriPath = "";

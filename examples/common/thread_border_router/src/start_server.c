@@ -28,6 +28,13 @@ void expStartCoapServer(void)
 #elif EXPERIMENT_PACKET_LOSS_CONFIRMABLE
   createResource(&experimentRoute, PacketLossConfirmable, "Packet Loss Confirmable",
                  plConRequestHandler);
+#elif EXPERIMENT_RTT_CPU_CONFIRMABLE
+  /**
+   * Functionality of the Border Router for the RTT & CPU Usage experiments is the same
+   * as the Border Router for the Throughput Confirmable experiments.
+   */
+  createResource(&experimentRoute, RttCpuConfirmable, "RTT CPU Usage Confirmable",
+                 tpConRequestHandler);
 #else
   OT_UNUSED_VARIABLE(experimentRoute);
 #endif
