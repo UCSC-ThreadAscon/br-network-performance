@@ -189,7 +189,7 @@ static void ot_task_worker(void *ctx)
      * Set up the callbacks for starting an experiment the moment the border router
      * attaches to a Thread network.
      */
-#if (EXPERIMENT_THROUGHPUT_CONFIRMABLE || EXPERIMENT_PACKET_LOSS_CONFIRMABLE)
+#if (EXPERIMENT_THROUGHPUT_CONFIRMABLE  || EXPERIMENT_PACKET_LOSS_CONFIRMABLE || EXPERIMENT_RTT_CPU_CONFIRMABLE)
     otSetStateChangedCallback(esp_openthread_get_instance(), expServerStartCallback, NULL);
 #elif EXPERIMENT_THROUGHPUT_OBSERVE
     otSetStateChangedCallback(esp_openthread_get_instance(), tpObserveStartCallback, NULL);
