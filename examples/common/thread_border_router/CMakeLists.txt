@@ -7,3 +7,7 @@ endif()
 idf_component_register(SRC_DIRS "src" "src/coap"
                        INCLUDE_DIRS "include"
                        REQUIRES "${requires}")
+
+if(CONFIG_OPENTHREAD_BR_SOFTAP_SETUP)
+    idf_component_optional_requires(PRIVATE esp_ot_br_server)
+endif()
