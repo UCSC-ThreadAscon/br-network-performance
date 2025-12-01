@@ -11,3 +11,7 @@ idf_component_register(SRC_DIRS "src" "src/coap"
 if(CONFIG_OPENTHREAD_BR_SOFTAP_SETUP)
     idf_component_optional_requires(PRIVATE esp_ot_br_server)
 endif()
+
+if(CONFIG_OPENTHREAD_BR_SOFTAP_SETUP)
+    idf_component_optional_requires(PRIVATE esp_ot_br_server)
+endif()
